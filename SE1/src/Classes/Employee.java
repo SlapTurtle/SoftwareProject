@@ -58,6 +58,7 @@ public class Employee {
 	}
 	
 	public List<Activity> getWeeklyActivities(Week w) {
+		// s
 		List<Activity> list = new List<Activity>();
 		return list;
 	}
