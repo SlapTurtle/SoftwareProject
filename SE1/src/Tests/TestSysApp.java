@@ -1,4 +1,6 @@
-package testingSysApp;
+package Tests;
+
+import Classes.*;
 
 import static org.junit.Assert.*;
 
@@ -6,9 +8,7 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import Implementering.*;
-
-public class TestSystemApp {
+public class TestSysApp {
 
 
 	@Test
