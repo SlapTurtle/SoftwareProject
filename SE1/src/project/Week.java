@@ -1,4 +1,4 @@
-package Classes;
+package project;
 
 public class Week {
 	private int year;

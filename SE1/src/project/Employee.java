@@ -1,13 +1,13 @@
-package Classes;
+package project;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Employee {
 	
 	private String initials;
-	public List<Project> projectList;
-	public List<Activity> activityList;
-	public List<double[]> workHourList;
+	public ArrayList<Project> projectList;
+	public ArrayList<Activity> activityList;
+	public ArrayList<double[]> workHourList;
 	
 	public Employee(String initials){
 		this.initials = initials;
@@ -57,9 +57,8 @@ public class Employee {
 		return count;
 	}
 	
-	public List<Activity> getWeeklyActivities(Week w) {
-		// s
-		List<Activity> list = new List<Activity>();
+	public ArrayList<Activity> getWeeklyActivities(Week w) {
+		ArrayList<Activity> list = new ArrayList<Activity>();
 		return list;
 	}
 	
