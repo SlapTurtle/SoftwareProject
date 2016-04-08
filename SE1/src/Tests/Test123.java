@@ -1,6 +1,6 @@
 package Tests;
 
-import static org.junit.Assert.assertEquals;
+/*import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -12,9 +12,9 @@ import org.junit.Test;
 import project.*;
 
 import org.junit.*;
-
+*/
 public class Test123 {
-	
+	/*
 	@Test
 	public static void main(String[] args) {
 		mock(Test123.class);
@@ -25,5 +25,5 @@ public class Test123 {
 	
 	private static int hej(){
 		return 1;
-	}
+	}*/
 }
