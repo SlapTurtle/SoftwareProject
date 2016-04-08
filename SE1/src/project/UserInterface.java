@@ -21,7 +21,11 @@ public class UserInterface {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(0, 0, dim.width, dim.height);
 		frame.setVisible(true);
-		print("A new session has been initialized.");
+	/*  print("A new session has been initialized.");
+		print("line 2");
+		print("line 3");  */
+		//clear();
+		//shiftUp();
 	}
 	
 	public Message print(String message) {
@@ -40,18 +44,20 @@ public class UserInterface {
 		return msg;
 	}
 	
-	public void clearAll() {
+	public void clear() {
 		while (console.size() > 0) {
-			console.get(0).lbl.removeAll();
 			console.remove(0);
 		}
+		game.removeAll();
 		offset = 0;
 	}
 	
 	public void shiftUp() {
+		game.remove(0);
 		console.remove(0);
 		for (int i = 0; i < console.size(); i++) {
 			console.get(i).offset -= HEIGHT;
+			console.get(i).lbl.setBounds(20, console.get(i).offset, console.get(i).lbl.getWidth(), console.get(i).lbl.getHeight());
 		}
 	}
 	
