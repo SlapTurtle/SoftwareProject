@@ -15,8 +15,8 @@ public class Message {
 		lbl.setText(message);
 		lbl.setBackground(background);
 		lbl.setForeground(foreground);
-		lbl.setBounds(0, offset, UserInterface.dim.width, UserInterface.HEIGHT);
-		lbl.setFont(new Font("Arial", Font.PLAIN, 12));
+		lbl.setBounds(20, offset, UserInterface.dim.width - 20, UserInterface.HEIGHT);
+		lbl.setFont(new Font("Arial", Font.PLAIN, 14));
 	}
 	
 }

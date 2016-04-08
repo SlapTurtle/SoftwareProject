@@ -18,13 +18,16 @@ public class UserInterface {
 	public int offset = 0;
 	
 	public UserInterface() {
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(0, 0, dim.width, dim.height);
+		frame.setVisible(true);
 		print("A new session has been initialized.");
 	}
 	
 	public Message print(String message) {
 		offset += HEIGHT;
 		Message msg = new Message(message, Color.WHITE, Color.BLACK, offset);
+		game.add(msg.lbl);
 		console.add(msg);
 		return msg;
 	}
@@ -32,6 +35,7 @@ public class UserInterface {
 	public Message print(String message, Color background, Color foreground) {
 		offset += HEIGHT;
 		Message msg = new Message(message, background, foreground, offset);
+		game.add(msg.lbl);
 		console.add(msg);
 		return msg;
 	}
