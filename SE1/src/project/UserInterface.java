@@ -18,6 +18,7 @@ public class UserInterface {
 	public int offset = 0;
 	
 	public UserInterface() {
+		dim.height -= 100;
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(0, 0, dim.width, dim.height);
 		frame.setVisible(true);
@@ -26,9 +27,13 @@ public class UserInterface {
 		print("line 3");  */
 		//clear();
 		//shiftUp();
+		for (int i = 0; i < 71; i++) {
+			print("message " + i);
+		}
 	}
 	
 	public Message print(String message) {
+		if (offset + 7 * HEIGHT >= dim.height) { shiftUp(); }
 		offset += HEIGHT;
 		Message msg = new Message(message, Color.WHITE, Color.BLACK, offset);
 		game.add(msg.lbl);
@@ -53,8 +58,9 @@ public class UserInterface {
 	}
 	
 	public void shiftUp() {
-		game.remove(0);
+		game.remove(console.get(0).lbl);
 		console.remove(0);
+		offset -= HEIGHT;
 		for (int i = 0; i < console.size(); i++) {
 			console.get(i).offset -= HEIGHT;
 			console.get(i).lbl.setBounds(20, console.get(i).offset, console.get(i).lbl.getWidth(), console.get(i).lbl.getHeight());
