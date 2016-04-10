@@ -27,9 +27,9 @@ public class UserInterface {
 		print("line 3");  */
 		//clear();
 		//shiftUp();
-		for (int i = 0; i < 71; i++) {
+	/*	for (int i = 0; i < 71; i++) {
 			print("message " + i);
-		}
+		}	*/
 	}
 	
 	public Message print(String message) {
