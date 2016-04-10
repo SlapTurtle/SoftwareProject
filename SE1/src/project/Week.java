@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 
 public class Week implements Comparable<Week> {
 	//Fields
+	private static final int maxWeeksOfYear = new GregorianCalendar().getMaximum(Calendar.WEEK_OF_YEAR);
 	private int year;
 	private int week;
 	
@@ -38,19 +39,15 @@ public class Week implements Comparable<Week> {
 	}
 	
 	public int weekDifference(Week other){
-		int wdiff = this.getWeek() - other.getWeek();
 		int ydiff = this.yearDifference(other);
+		int wdiff = this.getWeek() - other.getWeek();
 		if(ydiff == 0){
 			return Math.abs(wdiff);
 		}
-		int i = new GregorianCalendar().getMaximum(Calendar.WEEK_OF_YEAR);
-		if(this.getWeek() > other.getWeek()){
-			wdiff = this.getWeek() + i - other.getWeek();
+		if(this.getYear() < other.getYear()){
+			wdiff *= -1;
 		}
-		else{
-			wdiff = other.getWeek() + i - this.getWeek();
-		}
-		return wdiff + (ydiff * (i-1));
+		return wdiff + maxWeeksOfYear + (ydiff * (maxWeeksOfYear-1));
 	}
 	
 }

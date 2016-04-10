@@ -84,27 +84,27 @@ public class TestWeek extends TestBasis {
 		weekDiff = week1.weekDifference(week9);
 		assertTrue(week1.compareTo(week9) < 0); 
 		assertEquals(yearDiff, i);
-		assertEquals(weekDiff, week1.getWeek()+maxWeeksOfYear-week9.getWeek()+yearDiff*(maxWeeksOfYear-1));
+		assertEquals(weekDiff, week9.getWeek()+maxWeeksOfYear-week1.getWeek()+yearDiff*(maxWeeksOfYear-1));
 		
 		//Week10
 		yearDiff = week1.yearDifference(week10);
 		weekDiff = week1.weekDifference(week10);
 		assertTrue(week1.compareTo(week10) > 0); 
 		assertEquals(yearDiff, i);
-		assertEquals(weekDiff, week10.getWeek()+maxWeeksOfYear-week1.getWeek()+yearDiff*(maxWeeksOfYear-1));
+		assertEquals(weekDiff, week1.getWeek()+maxWeeksOfYear-week10.getWeek()+yearDiff*(maxWeeksOfYear-1));
 		
-		//Week11
+		//year overlap part 1
 		yearDiff = week11.yearDifference(week12);
 		weekDiff = week11.weekDifference(week12);
 		assertTrue(week11.compareTo(week12) < 0); 
 		assertEquals(yearDiff, i);
-		assertEquals(weekDiff, week11.getWeek()+maxWeeksOfYear-week12.getWeek()+yearDiff*(maxWeeksOfYear-1));
+		assertEquals(weekDiff, week12.getWeek()+maxWeeksOfYear-week11.getWeek()+yearDiff*(maxWeeksOfYear-1));
 		
-		//Week12
+		//year overlap part 2
 		yearDiff = week12.yearDifference(week11);
 		weekDiff = week12.weekDifference(week11);
 		assertTrue(week12.compareTo(week11) > 0); 
 		assertEquals(yearDiff, i);
-		assertEquals(weekDiff, week11.getWeek()+maxWeeksOfYear-week12.getWeek()+yearDiff*(maxWeeksOfYear-1));
+		assertEquals(weekDiff, week12.getWeek()+maxWeeksOfYear-week11.getWeek()+yearDiff*(maxWeeksOfYear-1));
 	}
 }
