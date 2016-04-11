@@ -1,6 +1,6 @@
 package Tests;
 
-import Classes.*;
+import project.*;
 
 import static org.junit.Assert.*;
 
