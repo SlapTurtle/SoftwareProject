@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class SysApp {
@@ -13,7 +14,6 @@ public class SysApp {
 	private List<Activity> activityList;
 	private DateServer dateServer;
 	private Employee currentUser;
-	private boolean isLogin;
 	private File systemLog;
 	
 	//Constructor
@@ -23,12 +23,17 @@ public class SysApp {
 		this.activityList = new ArrayList<Activity>();
 		this.dateServer = new DateServer();
 		this.currentUser = null;
-		this.isLogin = false;
 		this.systemLog = new File("systemLog");
 		
+		//Improvement of systemLog TO-DO
 		if(!this.systemLog.exists()){
 			try {
 				this.systemLog.createNewFile();
+				Calendar cal = this.dateServer.getToday();
+				int year = cal.get(Calendar.YEAR);
+				int month = cal.get(Calendar.MONTH);
+				int day = cal.get(Calendar.DAY_OF_MONTH);
+				this.writeToLog("| "+year+"/"+month+"/"+day+" - File created");
 			} catch (IOException e) {
 				//ERROR in creating new File
 				e.printStackTrace();
@@ -87,41 +92,47 @@ public class SysApp {
 
 	// ---- Rest of the methods  ----
 	public boolean loggedIn(){
-		return isLogin;
+		if(this.currentUser != null){
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean login(Employee employee){
-		if (this.isLogin == false){
-			this.isLogin = this.employeeList.contains(employee);
-			if(this.isLogin == true){
+		if (!this.loggedIn()){
+			if( this.employeeList.contains(employee)){
 				this.currentUser = employee;
+				return true;
 			}
+			//error - employee is not in current system
 		}
-		return isLogin;
+		//error - another employee is already logged in
+		return false;
 	}
 	
 	public boolean logoff(){
-		this.isLogin = false;
-		this.currentUser = null;
+		if(this.loggedIn()){
+			this.currentUser = null;
+			return true;
+		}
+		//error - no user is currently logged in
 		return true;
 	}
 	
-	public boolean addEmployee(Employee employee){
-		boolean works = employeeList.add(employee);
-		return works;
+	public boolean addEmployee(Employee ID){
+		return this.employeeList.add(ID);
 	}
 	
 	public boolean addProject(Project ID){
-		return projectList.add(ID);
+		return this.projectList.add(ID);
 	}
 	
 	public boolean addActicity(Activity ID){
-		return activityList.add(ID);
+		return this.activityList.add(ID);
 	}
 	
 	public ArrayList<String> getAvailableEmployees(Activity activity){
 		//TO-DO
-		//return activity.getEmployeeList;
 		return null;
 	} 
 	 
@@ -132,5 +143,4 @@ public class SysApp {
 		note.close();
 		return true;
 	}
-	
 }

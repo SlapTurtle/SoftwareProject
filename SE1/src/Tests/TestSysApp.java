@@ -8,36 +8,37 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-public class TestSysApp {
+public class TestSysApp extends TestBasis{
 
 
 	@Test
 	public void SysApp() {
-		
+		//setup
+		setup();
 		
 		// Test that no employee is logged in
-		assertFalse(sysapp.loggedIn());
+		assertFalse(sysApp.loggedIn());
 		
 		//Tests if addEmployee works
 		
-		assertTrue(sysapp.addEmployee("Jens"));
+		assertTrue(sysApp.addEmployee("Jens"));
 		
 		//Test if login now works
-		boolean login = sysapp.login("Jens");
+		boolean login = sysApp.login("Jens");
 		assertTrue(login);
 		
 		//Testing if logoff works
-		sysapp.logoff();
+		sysApp.logoff();
 		
-		assertFalse(sysapp.loggedIn());
+		assertFalse(sysApp.loggedIn());
 		
 		//Test add project random ID
 		
-		assertTrue(sysapp.addProject("143D92"));
+		assertTrue(sysApp.addProject("143D92"));
 		
 		//Test add activity random ID
 		
-		assertTrue(sysapp.addActicity("143A33"));
+		assertTrue(sysApp.addActicity("143A33"));
 	}
 
 	
