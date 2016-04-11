@@ -13,7 +13,13 @@ public class DateServer {
 		Calendar temp = this.getToday();
 		int year = temp.get(Calendar.YEAR);
 		int week = temp.get(Calendar.WEEK_OF_YEAR);
-		return new Week(year, week);
+		try {
+			return new Week(year, week);
+		} catch (Exception e) {
+			//error - DateServer has invalid calendar.
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public Calendar getToday() {

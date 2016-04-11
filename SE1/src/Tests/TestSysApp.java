@@ -40,21 +40,4 @@ public class TestSysApp extends TestBasis{
 		
 		assertTrue(sysApp.addActicity("143A33"));
 	}
-
-	
-	
-	// Test get week
-	
-	@Test
-	public void DateServer(){
-		
-		DateServer dateServer = new DateServer();
-		
-		System.out.println(dateServer.getWeek());
-		
-		System.out.println(dateServer.getCalendar());
-		
-	}
-	
-	
 }
