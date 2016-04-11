@@ -49,5 +49,4 @@ public class Week implements Comparable<Week> {
 		}
 		return wdiff + maxWeeksOfYear + (ydiff * (maxWeeksOfYear-1));
 	}
-	
 }

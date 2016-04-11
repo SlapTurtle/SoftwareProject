@@ -36,7 +36,6 @@ public class TestWeek extends TestBasis {
 		Week week11 = new Week(year, maxWeeksOfYear-i);	// For Year Overlapping
 		Week week12 = new Week(year+i, i);				// Week11's week + 2*i
 		
-		
 		//tests fields
 		assertEquals(week1.getYear(), year);
 		assertEquals(week1.getWeek(), week);

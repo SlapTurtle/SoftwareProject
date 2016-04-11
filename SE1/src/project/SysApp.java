@@ -5,16 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SysApp {
-	
-	// ---- test? ----
-	public static UserInterface ui = new UserInterface();
-	
-	public static void main(String[] args) {
-		//ui.print("hej");
-	}
-	
-	// ---- Actual SysApp ----
-	
 	//Fields
 	private List<Employee> employeeList;
 	private List<Project> projectList;
@@ -22,6 +12,10 @@ public class SysApp {
 	private DateServer dateServer;
 	private Employee currentUser;
 	private File systemLog;
+	
+	private String logedInUser;
+	private boolean isLogin = false;
+	private boolean FindsEmployee = false;
 	
 	//Constructor
 	public SysApp(){
@@ -83,6 +77,58 @@ public class SysApp {
 	}
 
 	// ---- Rest of the methods  ----
+	public boolean loggedIn(){
+		return isLogin;
+	}
 	
+	public boolean login(String employee){
+		if (isLogin == false){
+			isLogin = employeeList.contains(employee);
+			if(isLogin == true){
+				logedInUser = employee;
+			}
+		}
+		return isLogin;
+	}
+	
+	public boolean logoff(){
+		isLogin = false;
+		logedInUser = null;
+		return isLogin;
+	}
+	
+	public boolean addEmployee(Employee employee){
+		boolean works = employeeList.add(employee);
+		return works;
+	}
+	
+	public boolean addProject(Project ID){
+		return projectList.add(ID);
+	}
+	
+	public boolean addActicity(Activity ID){
+		return activityList.add(ID);
+	}
+	
+	public DateServer getDateServer(){
+		return dateServer;
+	} 
+	
+	public ArrayList<String> getAvailableEmployees(Activity activity){
+		return activity.employeeList;
+	} 
+	 
+	@SuppressWarnings("unused")
+	private boolean writeToLog(String rapport) throws IOException{
+		if(file.exists() == false){
+			file.createNewFile();
+		}
+		FileWriter note = new FileWriter(file);
+		note.write(rapport);
+		note.flush();
+		note.close();
+		
+		return true;
+	}
 	
 }
