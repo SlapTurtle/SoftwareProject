@@ -98,6 +98,20 @@ public class SysApp {
 		return false;
 	}
 	
+	public boolean login(String initials){
+		if (!this.loggedIn()){
+			for(Employee e : this.employeeList){
+				if(e.getInitials().equals(initials)){
+					this.currentUser = e;
+					return true;
+				}
+			}
+			//error - no user with initials found in system
+		}
+		//error - another employee is already logged in
+		return false;
+	}
+	
 	public boolean login(Employee employee){
 		if (!this.loggedIn()){
 			if( this.employeeList.contains(employee)){
@@ -119,8 +133,19 @@ public class SysApp {
 		return true;
 	}
 	
-	public boolean addEmployee(Employee ID){
-		return this.employeeList.add(ID);
+	public boolean addEmployee(String Initials){
+		Employee employee = new Employee(Initials);
+		return this.addEmployee(employee);
+	}
+	
+	public boolean addEmployee(Employee employee){
+		for(Employee e : this.employeeList){
+			if(e.getInitials().equals(employee.getInitials())){
+				//error - another user with those initials exist
+				return false;
+			}
+		}
+		return this.employeeList.add(employee);
 	}
 	
 	public boolean addProject(Project ID){
