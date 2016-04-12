@@ -29,11 +29,7 @@ public class SysApp {
 		if(!this.systemLog.exists()){
 			try {
 				this.systemLog.createNewFile();
-				Calendar cal = this.dateServer.getToday();
-				int year = cal.get(Calendar.YEAR);
-				int month = cal.get(Calendar.MONTH);
-				int day = cal.get(Calendar.DAY_OF_MONTH);
-				this.writeToLog("| "+year+"/"+month+"/"+day+" - File created");
+				this.writeToLog("File Created");
 			} catch (IOException e) {
 				//ERROR in creating new File
 				e.printStackTrace();
@@ -163,7 +159,12 @@ public class SysApp {
 	 
 	private boolean writeToLog(String entry) throws IOException {
 		FileWriter note = new FileWriter(this.systemLog);
-		note.write(entry);
+		Calendar cal = this.dateServer.getToday();
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH);
+		int day = cal.get(Calendar.DAY_OF_MONTH);
+		String s = " | "+year+"/"+month+"/"+day+" - "+entry+" | ";
+		note.write(s);
 		note.flush();
 		note.close();
 		return true;

@@ -15,7 +15,7 @@ import project.*;
 
 public class TestDateServer extends TestBasis {
 	@Test
-	public void testDate(){
+	public void testDateServer(){
 		//setup
 		setup();
 		int year = 2020;
