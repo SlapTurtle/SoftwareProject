@@ -56,7 +56,7 @@ public class TestDateServer extends TestBasis {
 			//tests that weeks created with DateServer can be stored
 			int increase = 20;
 			Week week3 = sysApp.getDateServer().getWeek();
-			cal.set(Calendar.WEEK_OF_YEAR, cal.get(Calendar.WEEK_OF_YEAR) + increase); //increase week of year by 3.
+			cal.set(Calendar.WEEK_OF_YEAR, cal.get(Calendar.WEEK_OF_YEAR) + increase); //increase week of year by 20.
 			Week week4 = new Week(year, cal.get(Calendar.WEEK_OF_YEAR));
 			assertTrue(week3.compareTo(week4) < 0);
 			assertFalse(week3.compareTo(week4) > 0);
