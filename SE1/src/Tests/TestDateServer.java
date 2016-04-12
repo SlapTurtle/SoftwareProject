@@ -63,7 +63,7 @@ public class TestDateServer extends TestBasis {
 			assertTrue(week3.getWeek() == (week4.getWeek() - increase));
 			
 			cal.set(Calendar.WEEK_OF_YEAR, cal.get(Calendar.WEEK_OF_YEAR) - increase); //resets for more testing
-		} catch (Exception e) {
+		} catch (IllegalOperationException e) {
 			//error - week has some sort of failure
 			fail();
 			e.printStackTrace();

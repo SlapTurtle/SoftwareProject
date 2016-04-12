@@ -25,7 +25,7 @@ public class TestWeek extends TestBasis {
 		try {
 			Week w = new Week(year, week);
 		} catch(Exception e){
-			//error - incorrectly thrown exception
+			//error - incorrectly thrown IllegalOperationException
 			fail();
 		}
 		try {

@@ -10,9 +10,12 @@ public class Week implements Comparable<Week> {
 	private int week;
 	
 	//Constructor
-	public Week(int year, int week) throws Exception {
-		if(year < 0 || week <= 0 || week > maxWeeksOfYear){
-			throw new Exception("Year or Week is invalid");
+	public Week(int year, int week) throws IllegalOperationException {
+		if(year < 0){
+			throw new IllegalOperationException("Invalid Year, year must be above 0", "Week");
+		}
+		if(week <= 0 || week > maxWeeksOfYear){
+			throw new IllegalOperationException("Invalid Week, week must be between 1-"+maxWeeksOfYear, "Week");
 		}
 		this.year = year;
 		this.week = week;
