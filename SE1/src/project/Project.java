@@ -6,7 +6,7 @@ public class Project {
 	
 	//Parameters
 	private String ID;
-	//private systemApp sysapp;
+	private SysApp sysApp;
 	public Week startWeek;
 	public Week endWeek;
 	public Week deadline;

@@ -15,7 +15,7 @@ public class DateServer {
 		int week = temp.get(Calendar.WEEK_OF_YEAR);
 		try {
 			return new Week(year, week);
-		} catch (Exception e) {
+		} catch (IllegalOperationException e) {
 			//error - DateServer has invalid calendar.
 			e.printStackTrace();
 			return null;

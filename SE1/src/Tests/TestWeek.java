@@ -31,23 +31,27 @@ public class TestWeek extends TestBasis {
 		try {
 			Week w = new Week(year, 0);
 			fail();
-		} catch(Exception e){
+		} catch(IllegalOperationException e){
+			if(!e.getErrorClass().equals(Week.class)){
+				//error not correctly thrown
+				fail();
+			}
 			//correctly thrown
 		}
 		try {
-			Week w = new Week(year, -1);
+			Week w = new Week(year, -i);
 			fail();
 		} catch(Exception e){
 			//correctly thrown
 		}
 		try {
-			Week w = new Week(-1, week);
+			Week w = new Week(-i, week);
 			fail();
 		} catch(Exception e){
 			//correctly thrown
 		}
 		try {
-			Week w = new Week(-1, -1);
+			Week w = new Week(-i, -i);
 			fail();
 		} catch(Exception e){
 			//correctly thrown

@@ -3,17 +3,17 @@ package project;
 @SuppressWarnings("serial")
 public class IllegalOperationException extends Exception {
 	//Fields
-	private String operationMessage;
+	private Class<?> errorClass;
 	
 	//Constructor
-	public IllegalOperationException(String errormsg, String operationMsg){
+	public IllegalOperationException(String errormsg, Class<?> errorClass){
 		super(errormsg);
-		this.operationMessage = operationMsg;
+		this.errorClass = errorClass;
 	}
 	
 	//Getter
-	public String getOperation() {
-		return this.operationMessage;
+	public Class<?> getErrorClass() {
+		return this.errorClass;
 	}
 }
 
