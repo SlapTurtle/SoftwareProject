@@ -52,16 +52,19 @@ public class Project {
 	}
 	
 	 public boolean setReportComment(Week w){
+		 return true;
 	 }
 	
-	 public boolean getWeeklyReport(Week w){}
+	 public boolean getWeeklyReport(Week w){
+		 return true;
+	 }
 	 
 	 public boolean getTotalProjectBudget(){
-		 
+		 return true;
 	 }
 	 
 	 public boolean getActivityDiversion(Activity a, Week w){
-		 
+		 return true;
 	 }
 	 
 	 

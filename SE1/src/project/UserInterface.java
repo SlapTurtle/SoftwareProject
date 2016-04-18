@@ -2,6 +2,7 @@ package project;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
@@ -13,17 +14,30 @@ public class UserInterface {
 	public JFrame frame = new JFrame("UI");
 	public JLayeredPane game = frame.getLayeredPane();
 	public static Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-	public static int HEIGHT = 16;
+	public static int HEIGHT = 18;
 	public ArrayList<Message> console = new ArrayList<Message>();
+	public InputField input;
 	public int offset = 0;
+	public MessageStyle[] style = new MessageStyle[]{
+		new MessageStyle(Font.PLAIN, Color.BLACK, Color.WHITE),
+		new MessageStyle(Font.ITALIC, Color.DARK_GRAY, Color.WHITE),
+		new MessageStyle(Font.PLAIN, Color.BLACK, Color.GREEN.brighter())
+	};
+	public String latestInput = "";
 	
 	public UserInterface() {
 		dim.height -= 100;
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(0, 0, dim.width, dim.height);
+		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setVisible(true);
-	/*  print("A new session has been initialized.");
-		print("line 2");
+		input = new InputField(dim.height - 6 * HEIGHT);
+		game.add(input.obj);
+		input.obj.requestFocusInWindow();
+		print("A new session has been initialized.", style[2]);
+		print("Example use");
+		print("User Input", style[1]);
+	/*	print("line 2");
 		print("line 3");  */
 		//clear();
 		//shiftUp();
@@ -33,19 +47,22 @@ public class UserInterface {
 	}
 	
 	public Message print(String message) {
-		if (offset + 7 * HEIGHT >= dim.height) { shiftUp(); }
+		if (offset + 8 * HEIGHT >= dim.height) { shiftUp(); }
 		offset += HEIGHT;
-		Message msg = new Message(message, Color.WHITE, Color.BLACK, offset);
+		Message msg = new Message(message, style[0], offset);
 		game.add(msg.lbl);
 		console.add(msg);
+		latestInput = message;
 		return msg;
 	}
 	
-	public Message print(String message, Color background, Color foreground) {
+	public Message print(String message, MessageStyle style) {
+		if (offset + 8 * HEIGHT >= dim.height) { shiftUp(); }
 		offset += HEIGHT;
-		Message msg = new Message(message, background, foreground, offset);
+		Message msg = new Message(message, style, offset);
 		game.add(msg.lbl);
 		console.add(msg);
+		latestInput = message;
 		return msg;
 	}
 	
