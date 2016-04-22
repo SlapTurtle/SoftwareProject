@@ -80,10 +80,10 @@ public class Project {
 	 }
 
 	public boolean getWeeklyReport(Week w){
-		return false;}
+		return true;}
 	 
 	 public boolean getTotalProjectBudget(){
-		return false;
+		return true;
 	 
 	 }
 	 public boolean getActivityDiversion(Activity a, Week w){

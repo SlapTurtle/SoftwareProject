@@ -9,6 +9,7 @@ import java.util.List;
 
 public class SysApp {
 	//Fields
+<<<<<<< HEAD
 
 	public static UserInterface ui = new UserInterface();
 	private List<Employee> employeeList = new ArrayList<Employee>();
@@ -18,13 +19,25 @@ public class SysApp {
 	private Employee currentUser = null;
 	private static File systemLog = new File("systemLog");
 	private static int ID_Count = 0;
+=======
+	public static UserInterface ui = new UserInterface();
+	private List<Employee> employeeList = new ArrayList<Employee>();
+	private List<Project> projectList = new ArrayList<Project>();
+	private List<Activity> activityList = new ArrayList<Activity>();
+	private DateServer dateServer = new DateServer();
+	private Employee currentUser = null;
+	private static File systemLog = new File("systemLog");
+>>>>>>> branch 'master' of https://github.com/SlapTurtle/SoftwareProject.git
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> branch 'master' of https://github.com/SlapTurtle/SoftwareProject.git
 	public static void main(String[] args) {
 		/*if(systemLog.exists()){
 			try {
-				this.systemLog.createNewFile();
-				this.writeToLog("File Created");
+				createNewFile();
+				writeToLog("File Created");
 			} catch (IOException e) {
 				//ERROR in creating new File
 				e.printStackTrace();
@@ -139,8 +152,9 @@ public class SysApp {
 		return this.employeeList.add(employee);
 	}
 	
-	public boolean addProject(Project ID){
-		return this.projectList.add(ID);
+	public boolean addProject(String string){
+		return true;
+		//return this.projectList.add(string);
 	}
 	
 	public boolean addActicity(Activity ID){
