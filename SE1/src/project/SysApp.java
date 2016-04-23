@@ -9,6 +9,7 @@ import java.util.List;
 
 public class SysApp {
 	//Fields
+
 	public static UserInterface ui = new UserInterface();
 	private List<Employee> employeeList = new ArrayList<Employee>();
 	private List<Project> projectList = new ArrayList<Project>();
@@ -16,6 +17,8 @@ public class SysApp {
 	private DateServer dateServer = new DateServer();
 	private Employee currentUser = null;
 	private static File systemLog = new File("systemLog");
+	private static int ID_Count = 0;
+
 	
 	public static void main(String[] args) {
 		/*if(systemLog.exists()){
@@ -162,4 +165,26 @@ public class SysApp {
 		note.close();
 		return true;
 	}
+	private static void incrementIDCount() {
+		ID_Count++;
+	}
+	public static int getIDCount(){
+		incrementIDCount();
+		return ID_Count;	
+	}
+	public Project projectByID(String ID){
+		for(Project x : projectList)
+			if (x.checkUniqueID()==ID){
+				return x;
+			}
+		return null;
+	}
+	public Employee employeeByInitials(String initi){
+		for(Employee x : employeeList)
+			if (x.getInitials()==initi){
+				return x;
+			}
+		return null;
+	}
+	
 }

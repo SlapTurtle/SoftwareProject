@@ -1,11 +1,12 @@
 package project;
 
+import java.util.ArrayList;
 import java.util.List;
-
 public class Project {
 	
 	//Parameters
-	private String ID;
+	private String name;
+	private String projectID;
 	private SysApp sysApp;
 	public Week startWeek;
 	public Week endWeek;
@@ -13,24 +14,30 @@ public class Project {
 	
 	//methods
 	public List<Employee> employeeList;
-	public Employee PM;
+	public List<Employee> projectManagers;
 	public List<Activity> activityList;
 	public List<double[]> timeSpentList;
 	public String type;
+	public int budget;
 	
 	
 	public Project(String ID, Week sW,Week eW,Week dL){
-		this.ID = ID;
+		this.name = name;
 		this.startWeek = sW;
 		this.endWeek = eW;
 		this.deadline = dL;
+		this.projectID = setUniqueID();
+		this.employeeList = new ArrayList<Employee>();
+		this.activityList = new ArrayList<Activity>();
+		this.projectManagers = new ArrayList<Employee>();
+		this.budget = 0;
 	}
-	
-	
+
 	public boolean assignManager(Employee employee){
-		if(PM == null){
-			PM = employee;
+		if(projectManagers.size()==0){
+			projectManagers.add(employee);
 			// error if PM is already assigned
+			// ArrayList is used to be able to configure program to handle more project managers
 			return true;
 		}
 		return false;
@@ -51,20 +58,41 @@ public class Project {
 		return false;
 	}
 	
-	 public boolean setReportComment(Week w){
-		 return true;
-	 }
+	public boolean findEmployee(Employee x){
+		return employeeList.contains(x);
+		
+	}
+	//ID counter implemented in SysApp
+	private String setUniqueID() {
+		String ID = "ID";
+		ID = ID + SysApp.getIDCount();
+		return ID;
+	}
 	
-	 public boolean getWeeklyReport(Week w){
-		 return true;
+	public String checkUniqueID() {
+		return this.projectID;
+	}
+	
+	public boolean setReportComment(Week w){
+		
+		return false;
+	
 	 }
+
+	public boolean getWeeklyReport(Week w){
+		return true;}
 	 
 	 public boolean getTotalProjectBudget(){
-		 return true;
-	 }
+		return true;
 	 
+	 }
 	 public boolean getActivityDiversion(Activity a, Week w){
-		 return true;
+		return false;
+		 
+	 }
+	 //Positive integer values adds to budget, negative removes.
+	 public void manageExpense(int value){
+		 this.budget = this.budget + value;
 	 }
 	 
 	 
