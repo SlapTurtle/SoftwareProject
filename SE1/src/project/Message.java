@@ -18,6 +18,5 @@ public class Message {
 		lbl.setForeground(style.foreground);
 		lbl.setBounds(20, offset, UserInterface.dim.width - 60, UserInterface.HEIGHT);
 		lbl.setFont(style.font);
-	}
-	
+	}	
 }
