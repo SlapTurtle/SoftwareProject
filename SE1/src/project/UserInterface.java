@@ -85,4 +85,9 @@ public class UserInterface {
 		}
 	}
 	
+	public String next() {
+		//synchronized()
+		return "";
+	}
+	
 }
