@@ -1,12 +1,10 @@
 package project;
 
-import java.util.EventObject;
-
-public class InputEvent extends EventObject{
+public class InputEvent {
 	private String message;
 	
-	public InputEvent(Object source) {
-		super(source);
+	public InputEvent(String message) {
+		this.message = message;
 	}
 	
 	public String getMessage() {
