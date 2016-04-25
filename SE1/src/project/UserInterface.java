@@ -19,9 +19,10 @@ public class UserInterface {
 	public InputField input;
 	public int offset = 0;
 	public MessageStyle[] style = new MessageStyle[]{
-		new MessageStyle(Font.PLAIN, Color.BLACK, Color.WHITE),
-		new MessageStyle(Font.ITALIC, Color.DARK_GRAY, Color.WHITE),
-		new MessageStyle(Font.PLAIN, Color.BLACK, Color.GREEN.brighter())
+		new MessageStyle(Font.PLAIN, Color.BLACK, Color.WHITE), // Standard print format
+		new MessageStyle(Font.ITALIC, Color.DARK_GRAY, Color.WHITE), // User input
+		new MessageStyle(Font.PLAIN, Color.BLACK, Color.GREEN.brighter()), // Green notification
+		new MessageStyle(Font.PLAIN, Color.WHITE, Color.RED) // Error message
 	};
 	public String latestInput = "";
 	
@@ -37,8 +38,8 @@ public class UserInterface {
 		print("A new session has been initialized.", style[2]);
 		print("Example use");
 		print("User Input", style[1]);
-	/*	print("line 2");
-		print("line 3");  */
+		print("Error: You fucked up, son.", style[3]);
+		//print("line 3");  
 		//clear();
 		//shiftUp();
 	/*	for (int i = 0; i < 71; i++) {
