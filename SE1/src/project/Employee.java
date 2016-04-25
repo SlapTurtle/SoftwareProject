@@ -23,7 +23,7 @@ public class Employee {
 	
 	public boolean assignProject(Project p) {
 		if (p != null && !projectList.contains(p)) {
-			projectList.add(p);
+			projectList.add(0,p);
 			return true;
 		}
 		return false;
