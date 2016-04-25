@@ -30,6 +30,8 @@ public class SysApp {
 				e.printStackTrace();
 			}
 		}*/
+		ui.print("Welcome. Please enter your initials:");
+		ui.print("Attempted login as " + ui.next() + ".");
 	}
 
 	// ---- Getter and Setter Methods are only used for testing ----

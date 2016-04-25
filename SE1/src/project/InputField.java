@@ -30,7 +30,11 @@ public class InputField{
 			
 			@Override
 			public void inputSent(InputEvent e) {
-				SysApp.ui.print("listener");
+				synchronized (SysApp.ui.lock) {
+					SysApp.ui.wakeUpThread();
+					SysApp.ui.lock.notifyAll();
+					obj.setText("");
+				}
 			}
 		});
 	}
@@ -49,6 +53,6 @@ public class InputField{
 		}
 		for (InputListener l : tempList) {
 			l.inputSent(inputEvent);
-		}			
+		}
 	}
 }

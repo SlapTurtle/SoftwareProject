@@ -25,6 +25,8 @@ public class UserInterface {
 		new MessageStyle(Font.PLAIN, Color.WHITE, Color.RED) // Error message
 	};
 	public String latestInput = "";
+	public final Object lock = new Object();
+	private boolean wakeUp = false;
 	
 	public UserInterface() {
 		dim.height -= 100;
@@ -36,9 +38,9 @@ public class UserInterface {
 		game.add(input.obj);
 		input.obj.requestFocusInWindow();
 		print("A new session has been initialized.", style[2]);
-		print("Example use");
-		print("User Input", style[1]);
-		print("Error: You fucked up, son.", style[3]);
+		//print("Example use");
+		//print("User Input", style[1]);
+		//print("Error: You fucked up, son.", style[3]);
 		//print("line 3");  
 		//clear();
 		//shiftUp();
@@ -86,8 +88,19 @@ public class UserInterface {
 	}
 	
 	public String next() {
-		//synchronized()
-		return "";
+		synchronized(lock) {
+			while (!wakeUp) {
+				try {
+					lock.wait();
+				} catch (InterruptedException e) {}
+			}
+		}
+		wakeUp = false;
+		return latestInput;
+	}
+	
+	public void wakeUpThread() {
+		wakeUp = true;
 	}
 	
 }
