@@ -14,7 +14,7 @@ public class UserInterface {
 	public JFrame frame = new JFrame("UI");
 	public JLayeredPane game = frame.getLayeredPane();
 	public static Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-	public static int HEIGHT = 18;
+	public static int HEIGHT = 24;
 	public ArrayList<Message> console = new ArrayList<Message>();
 	public InputField input;
 	public int offset = 0;

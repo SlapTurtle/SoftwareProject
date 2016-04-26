@@ -22,8 +22,9 @@ public class InputField{
 		obj.setBounds(20, offset, UserInterface.dim.width - 60, 20);
 		obj.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				SysApp.ui.print(obj.getText(), SysApp.ui.style[1]);
-				processEvent(new InputEvent(obj.getText()));
+				redirectInput();
+				//SysApp.ui.print(obj.getText(), SysApp.ui.style[1]);
+				//processEvent(new InputEvent(obj.getText()));
 			}
 		});
 		constructListener(new InputListener() {
@@ -37,6 +38,15 @@ public class InputField{
 				}
 			}
 		});
+	}
+	
+	public void redirectInput() {
+		String msg = obj.getText();
+		switch (msg) {
+		case "clear": SysApp.ui.clear();
+		default: SysApp.ui.print(msg, SysApp.ui.style[1]);
+		}
+		processEvent(new InputEvent(obj.getText()));
 	}
 	
 	public synchronized void constructListener(InputListener listener) {
