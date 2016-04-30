@@ -21,6 +21,7 @@ public class Employee {
 		return initials;
 	}
 	
+	
 	public boolean assignProject(Project p) {
 		if (p != null && !projectList.contains(p)) {
 			projectList.add(0,p);
