@@ -9,30 +9,48 @@ import java.util.Vector;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class InputField{
 	String defaultText = "";
-	JTextField obj;
+	public JTextField obj;
 	private ArrayList<InputListener> listeners = new ArrayList<InputListener>();
 	
 	public InputField(int offset) {
-		this.obj = new JTextField(defaultText);
+		this.obj = new JTextField(defaultText) {
+			@Override public void setBorder(Border border) {
+			}
+		};
+		obj.setFont(UserInterface.style[2].font);
 		obj.setBounds(20, offset, UserInterface.dim.width - 60, 20);
 		obj.addActionListener(new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				SysApp.ui.print(obj.getText(), SysApp.ui.style[1]);
-				processEvent(new InputEvent(obj.getText()));
+				redirectInput();
 			}
 		});
 		constructListener(new InputListener() {
 			
 			@Override
 			public void inputSent(InputEvent e) {
-				SysApp.ui.print("listener");
+				synchronized (SysApp.ui.lock) {
+					SysApp.ui.wakeUpThread();
+					SysApp.ui.lock.notifyAll();
+					obj.setText("");
+				}
 			}
 		});
+	}
+	
+	public boolean redirectInput() {
+		String msg = obj.getText();
+		switch (msg) {
+		case "clear": SysApp.ui.clear();
+		default: SysApp.ui.print(msg, SysApp.ui.style[1]);
+		}
+		processEvent(new InputEvent(obj.getText()));
+		return true;
 	}
 	
 	public synchronized void constructListener(InputListener listener) {
@@ -49,6 +67,6 @@ public class InputField{
 		}
 		for (InputListener l : tempList) {
 			l.inputSent(inputEvent);
-		}			
+		}
 	}
 }
