@@ -11,123 +11,113 @@ import project.*;
 
 
 public class TestEmployee extends TestBasis{
-	@Test
-	public void testName(){
-		//Makes employee Brian Andersen
-		String s = "BRIAN";
-		Employee e = new Employee("BRIAN");
+	int year;
+	int week;
+	Week week1;
+	Week week2;
+	Week week3;
+	Project p1;
+	Project p2;
+	Project p3;
+	Activity a1;
+	Activity a2;
+	Activity a3;
+	Employee e1;
+	Employee e2;
+	Employee e3;
+	
+	@Before @Test
+	public void testName() throws IllegalOperationException {
+		year = 2016;
+		week = 10;
+
+		week1 = new Week(year, week);
+		week2 = new Week(year, week+1);
+		week3 = new Week(year, week+2);
 		
-		//Tests that the initials match the constructors
-		assertEquals(s, e.getInitials());
+		p1 = new Project("1Axxx", week1, week2, week3);
+		p2 = new Project("2Bxxx", week1, week2, week3);
+		p3 = new Project("3Cxxx", week1, week2, week3);
+		
+		a1 = new Activity("01xxx", week1, week3);
+		a2 = new Activity("02xxx", week3, week3);
+		a3 = new Activity("03xxx", week2, week3);
+		
+		e1 = new Employee("AAAA");
+		e2 = new Employee("BBBB");
+		e3 = new Employee("CCCC");
 	}
 	
 	@Test
 	public void testAssignProject() throws IllegalOperationException{
-		//make employee Brian Andersen
-		Employee e = new Employee("BRIAN");
 		
-		//make Project
-		int year = 2016;
-		int week = 10;
+		assertEquals(e1.projectList.size(), 0);
 		
-		Week week1 = new Week(year, week);
-		Week week2 = new Week(year, week+1);
-		Week week3 = new Week(year, week+2);
+		assertTrue(e1.assignProject(p1));
+		assertEquals(e1.projectList.size(), 1);
 		
-		Project a = new Project("1axxx", week1, week2, week3);
-		Project b = new Project("2bxxx", week1, week2, week3);
-		Project c = new Project("3cxxx", week1, week2, week3);
+		assertTrue(e1.assignProject(p2));
+		assertEquals(e1.projectList.size(), 2);
 		
-		//Assigns projects
-		assertTrue(e.assignProject(a));
-		assertTrue(e.assignProject(b));
-		assertTrue(e.assignProject(c));
+		assertTrue(e1.assignProject(p3));
+		assertEquals(e1.projectList.size(), 3);
 		
-		//No double assigning
-		assertFalse(e.assignProject(a));
-		assertFalse(e.assignProject(b));
-		assertFalse(e.assignProject(c));
+		assertFalse(e1.assignProject(p1));
+		assertFalse(e1.assignProject(p2));
+		assertFalse(e1.assignProject(p3));
+		assertEquals(e1.projectList.size(), 3);
 	}
 	
 	@Test
 	public void testAssignActivity() throws IllegalOperationException{
-		//make employee Brian Andersen
-		Employee e = new Employee("BRIAN");
+		assertEquals(e1.activityList.size(), 0);
+
+		assertTrue(e1.assignActivity(a1));
+		assertEquals(e1.activityList.size(), 1);
 		
-		//make Activity and assign to employee
-		int year = 2016;
-		int week = 10;
+		assertTrue(e1.assignActivity(a2));
+		assertEquals(e1.activityList.size(), 2);
 		
-		Week week1 = new Week(year, week);
-		Week week2 = new Week(year, week+1);
-		Week week3 = new Week(year, week+2);
+		assertTrue(e1.assignActivity(a3));
+		assertEquals(e1.activityList.size(), 3);
 		
-		Activity a = new Activity("01xxx", week1, week3);
-		Activity b = new Activity("02xxx", week3, week3);
-		Activity c = new Activity("03xxx", week2, week3);
-		
-		//Assigns activities
-		assertTrue(e.assignActivity(a));
-		assertTrue(e.assignActivity(b));
-		assertTrue(e.assignActivity(c));
-		
-		//No double assigning
-		assertFalse(e.assignActivity(a));
-		assertFalse(e.assignActivity(b));
-		assertFalse(e.assignActivity(c));	
+		assertFalse(e1.assignActivity(a1));
+		assertFalse(e1.assignActivity(a2));
+		assertFalse(e1.assignActivity(a2));
+		assertEquals(e1.activityList.size(), 3);
 	}
 	
 	@Test
 	public void testWeeklyHours() throws IllegalOperationException{
-		//make employee Brian Andersen
-		Employee e = new Employee("BRIAN");
-		
-		//make Activity and assign to employee
-		int year = 2016;
-		int week = 10;
-		
-		Week week1 = new Week(year, week);
-		Week week2 = new Week(year, week+1);
-		Week week3 = new Week(year, week+2);
-		
-		Activity a = new Activity("01xxx", week1, week3);
-		Activity b = new Activity("02xxx", week3, week3);
-		Activity c = new Activity("03xxx", week2, week3);
-		a.type = "a1xxx";
-		b.type = "b2xxx";
-		c.type = "c3xxx";
-		
-		e.assignActivity(a);
-		e.assignActivity(b);
-		e.assignActivity(c);
+		e1.assignActivity(a1);
+		e1.assignActivity(a2);
+		e1.assignActivity(a3);
 		
 		//test for setHours
-		
 		boolean[] addedHours1 = { //for a
-			e.setHours(a, 8.0, week3, 0),
-			e.setHours(a, 8.0, week3, 1),
-			e.setHours(a, 8.0, week3, 2),
-			e.setHours(a, 8.0, week3, 3),
-			e.setHours(a, 8.0, week3, 4),
-			e.setHours(a, 8.0, week3, 5),
-			e.setHours(a, 8.0, week3, 6),
-			e.setHours(a, 8.0, week3, 7),
-			e.setHours(a, 8.0, week3, 8)
+			e1.setHours(a1, 8.0, week3, 0),
+			e1.setHours(a1, 8.0, week3, 1),
+			e1.setHours(a1, 8.0, week3, 2),
+			e1.setHours(a1, 8.0, week3, 3),
+			e1.setHours(a1, 8.0, week3, 4),
+			e1.setHours(a1, 8.0, week3, 5),
+			e1.setHours(a1, 8.0, week3, 6),
+			e1.setHours(a1, 8.0, week3, 7),
+			e1.setHours(a1, 8.0, week3, 8)
 		};
 		
 		boolean[] addedHours2 = { //for b
-			e.setHours(b, 4.0, week3, 0),
-			e.setHours(b, 4.0, week3, 1),
-			e.setHours(b, 4.0, week3, 2),
-			e.setHours(b, 4.0, week3, 3),
-			e.setHours(b, 4.0, week3, 4),
-			e.setHours(b, 4.0, week3, 5),
-			e.setHours(b, 4.0, week3, 6),
-			e.setHours(b, 4.0, week3, 7),
-			e.setHours(b, 4.0, week3, 8)
+			e1.setHours(a2, 4.0, week3, 0),
+			e1.setHours(a2, 4.0, week3, 1),
+			e1.setHours(a2, 4.0, week3, 2),
+			e1.setHours(a2, 4.0, week3, 3),
+			e1.setHours(a2, 4.0, week3, 4),
+			e1.setHours(a2, 4.0, week3, 5),
+			e1.setHours(a2, 4.0, week3, 6),
+			e1.setHours(a2, 4.0, week3, 7),
+			e1.setHours(a2, 4.0, week3, 8)
 		};
 		
-		//asserts
 		assertFalse(addedHours1[0]);
 		assertFalse(addedHours2[0]);
 		for(int i = 1; i<8; i++){
@@ -138,25 +128,25 @@ public class TestEmployee extends TestBasis{
 		assertFalse(addedHours2[8]);
 		
 		//Tests for getWorkHours
-		double d1 = e.getWorkHours(a, week3);
-		double d2 = e.getWorkHours(b, week3);
-		double actual1 = 8*7;
-		double actual2 = 4*7;
+		double d1 = e1.getWorkHours(a1, week3);
+		double d2 = e1.getWorkHours(a2, week3);
+		double actual1 = 8.0*7.0;
+		double actual2 = 4.0*7.0;
 		
 		assertTrue(d1 == actual1);
 		assertTrue(d2 == actual2);
 		
 		//Tests for getWeeklyActivities
-		ArrayList<Activity> list1 = e.getWeeklyActivities(week1);
-		ArrayList<Activity> list2 = e.getWeeklyActivities(week2);
-		ArrayList<Activity> list3 = e.getWeeklyActivities(week3);
+		ArrayList<Activity> list1 = e1.getWeeklyActivities(week1);
+		ArrayList<Activity> list2 = e1.getWeeklyActivities(week2);
+		ArrayList<Activity> list3 = e1.getWeeklyActivities(week3);
 		assertEquals(list1.size(), 1);
 		assertEquals(list2.size(), 2);
 		assertEquals(list3.size(), 3);
 		
 		//Tests for getWeeklyHours
-		double d = e.getWeeklyHours(week3);
+		double d = e1.getWeeklyHours(week3);
 		double actual = actual1 + actual2;
-		assertTrue(d == actual);
+		assertEquals(d, actual, Double.MAX_VALUE);
 	}
 }

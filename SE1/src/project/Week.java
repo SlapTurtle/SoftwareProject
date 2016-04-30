@@ -30,16 +30,20 @@ public class Week implements Comparable<Week> {
 		return year;
 	}
 	
-	//Comparable
+	//Methods
 	@Override
 	public int compareTo(Week other) {
 		if(this.getYear() - other.getYear() == 0){
-			return this.getWeek() - other.getWeek();
+			return this.week - other.getWeek();
 		}
 		return this.getYear() - other.getYear();
 	}
 	
-	//Other Methods
+	@Override
+	public String toString(){
+		return "Year: "+year+".   Week:"+week;
+	}
+	
 	public int yearDifference(Week other){
 		return Math.abs(this.getYear() - other.getYear());
 	}
@@ -53,6 +57,6 @@ public class Week implements Comparable<Week> {
 		if(this.getYear() < other.getYear()){
 			wdiff *= -1;
 		}
-		return wdiff + maxWeeksOfYear + (ydiff * (maxWeeksOfYear-1));
+		return wdiff + (ydiff * (maxWeeksOfYear));
 	}
 }

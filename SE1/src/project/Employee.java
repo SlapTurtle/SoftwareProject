@@ -21,7 +21,6 @@ public class Employee {
 		return initials;
 	}
 	
-	
 	public boolean assignProject(Project p) {
 		if (p != null && !projectList.contains(p)) {
 			projectList.add(0,p);
@@ -64,30 +63,38 @@ public class Employee {
 		double count = 0;
 		ArrayList<Activity> list = getWeeklyActivities(w);
 		for(Activity a : list){
-			double d = getWorkHours(a,w);
-			/* Possibly print work hours for every activity *//*
+			try {
+				double d;
+				d = getWorkHours(a,w);
+				count = d;
+			} catch (IllegalOperationException e) {}
+			/* Possibly print work hours for every activity */
+			/*
 			String s = a.type+" : "+d; 
 			sysApp.ui.print(s, sysApp.ui.style[2]);
 			//System.out.println(s);
 			*/
-			count += d;
 		}
 		return count;
 	}
 	
-	public double getWorkHours(Activity a, Week w) {
+	public double getWorkHours(Activity a, Week w) throws IllegalOperationException {
 		double count = 0;
 		if(a.startWeek.compareTo(w) <= 0 && a.endWeek.compareTo(w) >= 0){
 			double[] list = workHourList.get(activityList.indexOf(a));
 			int currentweek = a.startWeek.weekDifference(a.endWeek) - a.endWeek.weekDifference(w);
 			for(int i = (currentweek)*7; i<(currentweek)*7 + 7; i++){
-				/* Possibly print all hours per day of week *//*
+				/* Possibly print all hours per day of week */
+				/*
 				String s = ((i%7)+1)+" : "+list[i]; 
 				sysApp.ui.print(s, sysApp.ui.style[2]);
 				//System.out.println(s);
 				*/
 				count += list[i];
 			}
+		}
+		else{
+			throw new IllegalOperationException("Week "+w.getWeek()+" is not within "+a.type, this.getClass());
 		}
 		return count;
 	}
