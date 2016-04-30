@@ -11,11 +11,16 @@ import java.util.GregorianCalendar;
 import project.*;
 
 public class TestWeek extends TestBasis {
-	private static final int year  = 2016;	//year used for testing
-	private static final int week  = 20;		//week used for testing
 	private static final int yInc = 3;		//year increment
 	private static final int wInc = 5;		//week increment
 	private static final int maxWeeksOfYear = new GregorianCalendar().getMaximum(Calendar.WEEK_OF_YEAR);
+	
+	@Before @Override
+	public void setup(){
+		super.setup();;
+		year = 2016;
+		week = 15;
+	}
 	
 	@Test
 	public void testConstructor(){
