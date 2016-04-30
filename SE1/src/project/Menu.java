@@ -1,21 +1,19 @@
 package project;
 
-import java.lang.reflect.Method;
-
 public class Menu {
 
 	SysApp sys;
 	String header;
 	Menu[] m;
 	Menu currentPrevious;
-	Method method;
+	boolean method = false;
 	boolean showHeader;
 	boolean returnOption;
 	
-	public Menu(SysApp sys, String header, Method method) {
+	public Menu(SysApp sys, String header) {
 		this.sys = sys;
 		this.header = header;
-		this.method = method;
+		this.method = true;
 	}
 	
 	public Menu(SysApp sys, String header, Menu[] m, boolean showHeader, boolean returnOption) {
@@ -27,7 +25,8 @@ public class Menu {
 	}
 	
 	public void show() {
-		if (method != null || m == null) { return; }
+		if (method == true) { runMethod(); }
+		if (m == null) { return; }
 		currentPrevious = sys.currentMenu;
 		sys.currentMenu = this;
 		if (!(header == null) && !(header.equals(""))) { sys.ui.print(header, sys.ui.style[4]); }
@@ -42,7 +41,6 @@ public class Menu {
 			}
 			if (returnOption) { sys.ui.print("return"); }
 		}
-		//if (m == null) { return; }
 		boolean b = false;
 		String str;
 		while (!b) {
@@ -62,6 +60,14 @@ public class Menu {
 		}
 	}
 	
-	
+	public void runMethod() {
+		
+		switch (header) {
+		case "Exit": System.exit(0);
+		case "Add Employee": sys.addEmployee();
+		default:
+		}
+		
+	}
 	
 }
