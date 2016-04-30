@@ -47,8 +47,9 @@ public class InputField{
 	public boolean redirectInput() {
 		String msg = obj.getText();
 		switch (msg) {
-		case "clear": sys.ui.clear();
-		default: sys.ui.print(msg, sys.ui.style[1]);
+		case "help": sys.ui.help(); break;
+		case "clear": sys.ui.clear(); break;
+		default: sys.ui.print(msg, sys.ui.style[1]); break;
 		}
 		processEvent(new InputEvent(obj.getText()));
 		return true;

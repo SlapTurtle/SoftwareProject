@@ -67,11 +67,17 @@ public class Menu {
 	}
 	
 	public void runMethod() {
-		//sys.ui.print("Previous: " + currentPrevious.header + "\nCurrent: " + sys.currentMenu.header);
 		switch (header) {
-		case "Exit": System.exit(0);
-		case "Add Employee": sys.addEmployee();
-		default:
+		case "Exit": System.exit(0); break;
+		case "Help": sys.ui.help(); break;
+		case "Add Employee": sys.addEmployee(); break;
+		case "Remove Employee": break;
+		case "Set Font Size": sys.ui.setFontSize(); break;
+		/*case "Add Project": break;
+		case "Manage Project": break;
+		case "Add Activity": break;
+		case "Show Logs": break;*/
+		default: sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
 		}
 		parent.show();
 	}

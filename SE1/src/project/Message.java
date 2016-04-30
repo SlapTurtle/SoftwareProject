@@ -1,5 +1,6 @@
 package project;
 
+import java.awt.Font;
 import javax.swing.JLabel;
 
 public class Message {
@@ -14,7 +15,7 @@ public class Message {
 		lbl.setBackground(style.background);
 		lbl.setForeground(style.foreground);
 		lbl.setBounds(20, offset, UserInterface.dim.width - 60, UserInterface.HEIGHT);
-		lbl.setFont(style.font);
+		lbl.setFont(new Font(style.font.getFontName(), style.font.getStyle(), UserInterface.HEIGHT - 16));
 	}
 	
 }

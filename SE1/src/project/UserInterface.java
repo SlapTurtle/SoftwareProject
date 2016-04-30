@@ -59,7 +59,7 @@ public class UserInterface {
 		game.add(msg.lbl);
 		console.add(msg);
 		latestInput = message;
-		input.obj.setBounds(24, offset + HEIGHT, UserInterface.dim.width - 60, HEIGHT);
+		input.obj.setBounds(26, offset + HEIGHT, UserInterface.dim.width - 60, HEIGHT);
 		return msg;
 	}
 	
@@ -67,8 +67,8 @@ public class UserInterface {
 		while (console.size() > 0) {
 			shiftUp();
 		}
+		offset = 0;
 	}
-	
 	
 	public void shiftUp() {
 		game.remove(console.get(0).lbl);
@@ -95,6 +95,34 @@ public class UserInterface {
 	public boolean wakeUpThread() {
 		wakeUp = true;
 		return wakeUp;
+	}
+	
+	public void setFontSize() {
+		print("Enter your desired new font size:");
+		while (true) {
+			String s = next();
+			try {
+				int i = Integer.parseInt(s);
+				if (i >= 10 && i <= 20) {
+					clear();
+					HEIGHT = i + 16;
+					print("Font size has been set to " + i + ".", style[2]);
+					break;
+				} else {
+					print("Error: Only integers in range 10-20 permitted. Please try again:", style[3]);
+				}
+			} catch(NumberFormatException e) {
+				print("Error: Invalid input. Please try again:", style[3]);
+			}
+		}
+	}
+	
+	public void help() {
+		clear();
+		print("Available Commands", style[4]);
+		print("\"help\" - displays a list of commands");
+		print("\"clear\" - clears the console");
+		print("\"exit\" - terminates the current session");
 	}
 	
 }
