@@ -6,6 +6,7 @@ public class Menu {
 	String header;
 	Menu[] m;
 	Menu currentPrevious;
+	Menu parent;
 	boolean method = false;
 	boolean showHeader;
 	boolean returnOption;
@@ -22,13 +23,16 @@ public class Menu {
 		this.m = m;
 		this.showHeader = showHeader;
 		this.returnOption = returnOption;
+		if (m != null) {
+			for (Menu menu : m) { menu.parent = this; }
+		}
 	}
 	
 	public void show() {
-		if (method == true) { runMethod(); return; }
-		if (m == null) { return; }
 		currentPrevious = sys.currentMenu;
 		sys.currentMenu = this;
+		if (method == true) { runMethod(); return; }
+		if (m == null) { return; }
 		if (!(header == null) && !(header.equals(""))) { sys.ui.print(header, sys.ui.style[4]); }
 		if (showHeader == true) {
 			for (int i = 0; i < m.length; i++) {
@@ -47,7 +51,7 @@ public class Menu {
 			str = sys.ui.next().toLowerCase();
 			if (returnOption && (str.equals("return") || str.equals(Integer.toString(m.length+1)))) {
 				sys.ui.clear();
-				currentPrevious.show();
+				parent.show();
 				break;
 			}
 			for (int i = 0; i < m.length; i++) {
@@ -64,11 +68,18 @@ public class Menu {
 	
 	public void runMethod() {
 		switch (header) {
-		case "Exit": System.exit(0);
-		case "Add Employee": sys.addEmployee();
-		default:
+		case "Exit": System.exit(0); break;
+		case "Help": sys.ui.help(); break;
+		case "Add Employee": sys.addEmployee(); break;
+		case "Remove Employee": break;
+		case "Set Font Size": sys.ui.setFontSize(); break;
+		/*case "Add Project": break;
+		case "Manage Project": break;
+		case "Add Activity": break;
+		case "Show Logs": break;*/
+		default: sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
 		}
-		sys.currentMenu.show();
+		parent.show();
 	}
 	
 }

@@ -24,34 +24,30 @@ public class SysApp {
 	public ArrayList<Menu> menus = new ArrayList<Menu>();
 	
 	public SysApp() {
-		addEmployee("BRIAN");
+		addEmployee("admin");
 		ui.print("Welcome. Please enter your initials to proceed:");
 		while (!loggedIn()) {
 			login(ui.next());
 		}
-		//menus.add(mainmenu);
-		menus.add(new Menu(this, "Employees", null, true, true));
 		menus.add(new Menu(this, "Add Employee"));
-		menus.add(new Menu(this, "Remove Employee", null, true, true));
-		menus.add(new Menu(this, "Add Project", null, true, true));
-		menus.add(new Menu(this, "Manage Project", null, true, true));
-		menus.add(new Menu(this, "Add Activity", null, true, true));
-		menus.add(new Menu(this, "Show Logs", null, true, true));
-		
+		menus.add(new Menu(this, "Remove Employee"));
+		menus.add(new Menu(this, "Add Project"));
+		menus.add(new Menu(this, "Manage Project"));
+		menus.add(new Menu(this, "Add Activity"));
+		menus.add(new Menu(this, "Show Logs"));
+		menus.add(new Menu(this, "Set Font Size"));
 		Menu[] m = new Menu[] {
-				new Menu(this, "Employees", new Menu[] {menus.get(1), menus.get(2)}, true, true),
-				new Menu(this, "Projects", new Menu[] {menus.get(3), menus.get(4)}, true, true),
-				new Menu(this, "Activities", new Menu[] {menus.get(5)}, true, true),
-				new Menu(this, "System", new Menu[] {menus.get(6)}, true, true ),
-				new Menu(this, "Exit")
+				new Menu(this, "Employees", new Menu[] {menus.get(0), menus.get(1)}, true, true),
+				new Menu(this, "Projects", new Menu[] {menus.get(2), menus.get(3)}, true, true),
+				new Menu(this, "Activities", new Menu[] {menus.get(4)}, true, true),
+				new Menu(this, "System", new Menu[] {menus.get(5)}, true, true ),
+				new Menu(this, "Settings", new Menu[] {menus.get(6)}, true, true),
+				new Menu(this, "Help"),
+				new Menu(this, "Exit"),
 		};
 		mainmenu = new Menu(this, "Main Menu", m, true, false);
 		mainmenu.show();
 	}
-	
-	/*public void menu() {
-		ui.print()
-	}*/
 	
 	/*public static void main(String[] args) {
 		/*if(systemLog.exists()){
@@ -171,8 +167,13 @@ public class SysApp {
 		ui.print("Enter initials of new employee:");
 		String initials = ui.next().toUpperCase();
 		Employee employee = new Employee(initials);
-		ui.print("Successfully added employee \"" + initials + "\" to the system.", ui.style[2]);
-		return true;
+		boolean b = addEmployee(employee);
+		if (b) {
+			ui.print("Successfully added employee \"" + initials + "\" to the system.", ui.style[2]);
+		} else {
+			ui.print("Error: Employee with initials \"" + initials + "\" already exists.", ui.style[3]);
+		}
+		return b;
 	}
 	
 	public boolean addEmployee(String initials){
