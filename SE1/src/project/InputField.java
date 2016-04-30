@@ -14,11 +14,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class InputField{
+	SysApp sys;
 	String defaultText = "";
 	public JTextField obj;
 	private ArrayList<InputListener> listeners = new ArrayList<InputListener>();
 	
-	public InputField(int offset) {
+	public InputField(SysApp sys, int offset) {
+		this.sys = sys;
 		this.obj = new JTextField(defaultText) {
 			@Override public void setBorder(Border border) {
 			}
@@ -31,12 +33,11 @@ public class InputField{
 			}
 		});
 		constructListener(new InputListener() {
-			
 			@Override
 			public void inputSent(InputEvent e) {
-				synchronized (SysApp.ui.lock) {
-					SysApp.ui.wakeUpThread();
-					SysApp.ui.lock.notifyAll();
+				synchronized (sys.ui.lock) {
+					sys.ui.wakeUpThread();
+					sys.ui.lock.notifyAll();
 					obj.setText("");
 				}
 			}
@@ -46,8 +47,8 @@ public class InputField{
 	public boolean redirectInput() {
 		String msg = obj.getText();
 		switch (msg) {
-		case "clear": SysApp.ui.clear();
-		default: SysApp.ui.print(msg, SysApp.ui.style[1]);
+		case "clear": sys.ui.clear();
+		default: sys.ui.print(msg, sys.ui.style[1]);
 		}
 		processEvent(new InputEvent(obj.getText()));
 		return true;
