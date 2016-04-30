@@ -64,7 +64,7 @@ public class Employee {
 		ArrayList<Activity> list = getWeeklyActivities(w);
 		for(Activity a : list){
 			double d = getWorkHours(a,w);
-			/* Possibly print work hours for every activity 
+			/* Possibly print work hours for every activity *//*
 			String s = a.type+" : "+d; 
 			sysApp.ui.print(s, sysApp.ui.style[2]);
 			//System.out.println(s);
@@ -80,7 +80,7 @@ public class Employee {
 			double[] list = workHourList.get(activityList.indexOf(a));
 			int currentweek = a.startWeek.weekDifference(a.endWeek) - a.endWeek.weekDifference(w);
 			for(int i = (currentweek)*7; i<(currentweek)*7 + 7; i++){
-				/* Possibly print all hours per day of week
+				/* Possibly print all hours per day of week *//*
 				String s = ((i%7)+1)+" : "+list[i]; 
 				sysApp.ui.print(s, sysApp.ui.style[2]);
 				//System.out.println(s);

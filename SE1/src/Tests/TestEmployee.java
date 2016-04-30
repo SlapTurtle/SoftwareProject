@@ -101,8 +101,8 @@ public class TestEmployee extends TestBasis{
 		e.assignActivity(c);
 		
 		//test for setHours
-		//for a
-		boolean[] addedHours1 = {
+		
+		boolean[] addedHours1 = { //for a
 			e.setHours(a, 8.0, week3, 0),
 			e.setHours(a, 8.0, week3, 1),
 			e.setHours(a, 8.0, week3, 2),
@@ -114,8 +114,7 @@ public class TestEmployee extends TestBasis{
 			e.setHours(a, 8.0, week3, 8)
 		};
 		
-		//for b
-		boolean[] addedHours2 = {
+		boolean[] addedHours2 = { //for b
 			e.setHours(b, 4.0, week3, 0),
 			e.setHours(b, 4.0, week3, 1),
 			e.setHours(b, 4.0, week3, 2),
@@ -135,7 +134,7 @@ public class TestEmployee extends TestBasis{
 			assertTrue(addedHours2[i]);
 		}
 		assertFalse(addedHours1[8]);
-		assertFalse(addedHours2[0]);
+		assertFalse(addedHours2[8]);
 		
 		//Tests for getWorkHours
 		double d1 = e.getWorkHours(a, week3);
@@ -156,7 +155,7 @@ public class TestEmployee extends TestBasis{
 		
 		//Tests for getWeeklyHours
 		double d = e.getWeeklyHours(week3);
-		double actual = (8*7) + (4*7);
+		double actual = actual1 + actual2;
 		assertTrue(d == actual);
 	}
 }
