@@ -3,6 +3,7 @@ package project;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -20,7 +21,7 @@ public class SysApp {
 	private static int ID_Count = 0;
 	public Menu currentMenu;
 	public Menu mainmenu;
-	public ArrayList<Menu> menus;
+	public ArrayList<Menu> menus = new ArrayList<Menu>();
 	
 	public SysApp() {
 		addEmployee("BRIAN");
@@ -28,15 +29,19 @@ public class SysApp {
 		while (!loggedIn()) {
 			login(ui.next());
 		}
-		menus.add(mainmenu);
+		//menus.add(mainmenu);
 		menus.add(new Menu(this, "Employees", null, true, true));
-		menus.add(new Menu(this, "Projects", null, true, true));
-		menus.add(new Menu(this, "Activities", null, true, true));
-		menus.add(new Menu(this, "Exit", null, true, true));
+		menus.add(new Menu(this, "Add Employee", null, true, true));
+		menus.add(new Menu(this, "Remove Employee", null, true, true));
+		menus.add(new Menu(this, "Add Project", null, true, true));
+		menus.add(new Menu(this, "Manage Project", null, true, true));
+		menus.add(new Menu(this, "Add Activity", null, true, true));
 		
 		Menu[] m = new Menu[] {
-				new Menu(this, "Employees", null, true, true),
-				new Menu(this, "Projects", null, true, true)
+				new Menu(this, "Employees", new Menu[] {menus.get(1), menus.get(2)}, true, true),
+				new Menu(this, "Projects", new Menu[] {menus.get(3), menus.get(4)}, true, true),
+				new Menu(this, "Activities", new Menu[] {menus.get(5)}, true, true),
+				new Menu(this, "Exit", null, true, true)
 		};
 		mainmenu = new Menu(this, "Main Menu", m, true, false);
 		mainmenu.show();

@@ -27,7 +27,7 @@ public class Menu {
 	}
 	
 	public void show() {
-		// if !method
+		if (method != null || m == null) { return; }
 		currentPrevious = sys.currentMenu;
 		sys.currentMenu = this;
 		if (!(header == null) && !(header.equals(""))) { sys.ui.print(header, sys.ui.style[4]); }
