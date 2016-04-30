@@ -10,7 +10,7 @@ import java.util.List;
 public class SysApp {
 	//Fields
 
-	public static UserInterface ui = new UserInterface();
+	public UserInterface ui = new UserInterface(this);
 	private List<Employee> employeeList = new ArrayList<Employee>();
 	private List<Project> projectList = new ArrayList<Project>();
 	private List<Activity> activityList = new ArrayList<Activity>();
@@ -18,9 +18,35 @@ public class SysApp {
 	private Employee currentUser = null;
 	private static File systemLog = new File("systemLog");
 	private static int ID_Count = 0;
-
+	public Menu currentMenu;
+	public Menu mainmenu;
+	public ArrayList<Menu> menus;
 	
-	public static void main(String[] args) {
+	public SysApp() {
+		addEmployee("BRIAN");
+		ui.print("Welcome. Please enter your initials to proceed:");
+		while (!loggedIn()) {
+			login(ui.next());
+		}
+		menus.add(mainmenu);
+		menus.add(new Menu(this, "Employees", null, true, true));
+		menus.add(new Menu(this, "Projects", null, true, true));
+		menus.add(new Menu(this, "Activities", null, true, true));
+		menus.add(new Menu(this, "Exit", null, true, true));
+		
+		Menu[] m = new Menu[] {
+				new Menu(this, "Employees", null, true, true),
+				new Menu(this, "Projects", null, true, true)
+		};
+		mainmenu = new Menu(this, "Main Menu", m, true, false);
+		mainmenu.show();
+	}
+	
+	/*public void menu() {
+		ui.print()
+	}*/
+	
+	/*public static void main(String[] args) {
 		/*if(systemLog.exists()){
 			try {
 				createNewFile();
@@ -30,10 +56,14 @@ public class SysApp {
 				e.printStackTrace();
 			}
 		}*/
-		ui.print("Welcome. Please enter your initials to proceed:");
-		ui.print("Attempting to log in as \"" + ui.next() + "\".");
-		ui.print("Error: No employee with such initials.", ui.style[3]);
-	}
+		/*
+		Employee e = new Employee("BRIAN");
+		addEmployee("BRIAN");
+		while (true) {
+			ui.print("Attempting to log in as \"" + ui.next() + "\".");
+			ui.print("Error: No employee with such initials. Please try again:", ui.style[3]);
+		}
+	}*/
 
 	// ---- Getter and Setter Methods are only used for testing ----
 	public List<Employee> getEmployeeList() {
@@ -93,16 +123,19 @@ public class SysApp {
 	}
 	
 	public boolean login(String initials){
-		if (!this.loggedIn()){
+		if (!loggedIn()){
 			for(Employee e : this.employeeList){
-				if(e.getInitials().equals(initials)){
+				if(e.getInitials().equals(initials.toUpperCase())){
+					//ui.clear();
+					ui.print("Successfully logged in as \"" + initials.toUpperCase() + "\".", ui.style[2]);
 					this.currentUser = e;
 					return true;
 				}
 			}
-			//error - no user with initials found in system
+			ui.print("Error: No employee with initials \"" + initials.toUpperCase() + "\". Please try again:", ui.style[3]);
+			return false;
 		}
-		//error - another employee is already logged in
+		ui.print("Error: An employee is already logged in.", ui.style[3]);
 		return false;
 	}
 	
@@ -127,8 +160,8 @@ public class SysApp {
 		return true;
 	}
 	
-	public boolean addEmployee(String Initials){
-		Employee employee = new Employee(Initials);
+	public boolean addEmployee(String initials){
+		Employee employee = new Employee(initials.toUpperCase());
 		return this.addEmployee(employee);
 	}
 	
