@@ -25,7 +25,7 @@ public class Menu {
 	}
 	
 	public void show() {
-		if (method == true) { runMethod(); }
+		if (method == true) { runMethod(); return; }
 		if (m == null) { return; }
 		currentPrevious = sys.currentMenu;
 		sys.currentMenu = this;
@@ -46,12 +46,14 @@ public class Menu {
 		while (!b) {
 			str = sys.ui.next().toLowerCase();
 			if (returnOption && (str.equals("return") || str.equals(Integer.toString(m.length+1)))) {
-				currentPrevious.show(); 
+				sys.ui.clear();
+				currentPrevious.show();
 				break;
 			}
 			for (int i = 0; i < m.length; i++) {
 				if (str.equals(m[i].header.toLowerCase()) || str.equals(Integer.toString(i + 1))) {
 					b = true;
+					if (!m[i].method) { sys.ui.clear(); }
 					m[i].show();
 					break;
 				}
@@ -61,13 +63,12 @@ public class Menu {
 	}
 	
 	public void runMethod() {
-		
 		switch (header) {
 		case "Exit": System.exit(0);
 		case "Add Employee": sys.addEmployee();
 		default:
 		}
-		
+		sys.currentMenu.show();
 	}
 	
 }

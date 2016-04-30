@@ -74,9 +74,8 @@ public class UserInterface {
 	
 	public void clear() {
 		while (console.size() > 0) {
-			console.remove(0);
+			shiftUp();
 		}
-		game.removeAll();
 		offset = 0;
 	}
 	
