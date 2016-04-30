@@ -6,6 +6,7 @@ public class Menu {
 	String header;
 	Menu[] m;
 	Menu currentPrevious;
+	Menu parent;
 	boolean method = false;
 	boolean showHeader;
 	boolean returnOption;
@@ -22,13 +23,16 @@ public class Menu {
 		this.m = m;
 		this.showHeader = showHeader;
 		this.returnOption = returnOption;
+		if (m != null) {
+			for (Menu menu : m) { menu.parent = this; }
+		}
 	}
 	
 	public void show() {
-		if (method == true) { runMethod(); return; }
-		if (m == null) { return; }
 		currentPrevious = sys.currentMenu;
 		sys.currentMenu = this;
+		if (method == true) { runMethod(); return; }
+		if (m == null) { return; }
 		if (!(header == null) && !(header.equals(""))) { sys.ui.print(header, sys.ui.style[4]); }
 		if (showHeader == true) {
 			for (int i = 0; i < m.length; i++) {
@@ -47,7 +51,7 @@ public class Menu {
 			str = sys.ui.next().toLowerCase();
 			if (returnOption && (str.equals("return") || str.equals(Integer.toString(m.length+1)))) {
 				sys.ui.clear();
-				currentPrevious.show();
+				parent.show();
 				break;
 			}
 			for (int i = 0; i < m.length; i++) {
@@ -63,12 +67,13 @@ public class Menu {
 	}
 	
 	public void runMethod() {
+		//sys.ui.print("Previous: " + currentPrevious.header + "\nCurrent: " + sys.currentMenu.header);
 		switch (header) {
 		case "Exit": System.exit(0);
 		case "Add Employee": sys.addEmployee();
 		default:
 		}
-		sys.currentMenu.show();
+		parent.show();
 	}
 	
 }

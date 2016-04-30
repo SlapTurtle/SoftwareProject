@@ -9,7 +9,7 @@ public class Message {
 	
 	public Message(String message, MessageStyle style, int offset) {
 		this.offset = offset;
-		lbl.setText(" " + message);
+		lbl.setText("  " + message);
 		lbl.setOpaque(true);
 		lbl.setBackground(style.background);
 		lbl.setForeground(style.foreground);

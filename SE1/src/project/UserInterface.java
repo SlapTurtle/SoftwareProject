@@ -14,7 +14,7 @@ public class UserInterface {
 	public JFrame frame = new JFrame("UI");
 	public JLayeredPane game = frame.getLayeredPane();
 	public static Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-	public static int HEIGHT = 24;
+	public static int HEIGHT = 30;
 	public ArrayList<Message> console = new ArrayList<Message>();
 	public InputField input;
 	public int offset = 0;
@@ -39,15 +39,6 @@ public class UserInterface {
 		game.add(input.obj);
 		input.obj.requestFocusInWindow();
 		print("A new session has been initialized.", style[2]);
-		//print("Example use");
-		//print("User Input", style[1]);
-		//print("Error: You fucked up, son.", style[3]);
-		//print("line 3");  
-		//clear();
-		//shiftUp();
-	/*	for (int i = 0; i < 71; i++) {
-			print("message " + i);
-		}	*/
 	}
 	
 	public Message print(String message) {
@@ -76,8 +67,8 @@ public class UserInterface {
 		while (console.size() > 0) {
 			shiftUp();
 		}
-		offset = 0;
 	}
+	
 	
 	public void shiftUp() {
 		game.remove(console.get(0).lbl);
