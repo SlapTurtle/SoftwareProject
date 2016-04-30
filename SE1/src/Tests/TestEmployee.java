@@ -11,20 +11,6 @@ import project.*;
 
 
 public class TestEmployee extends TestBasis{
-	int year;
-	int week;
-	Week week1;
-	Week week2;
-	Week week3;
-	Project p1;
-	Project p2;
-	Project p3;
-	Activity a1;
-	Activity a2;
-	Activity a3;
-	Employee e1;
-	Employee e2;
-	Employee e3;
 	
 	@Before @Test
 	public void testName() throws IllegalOperationException {
