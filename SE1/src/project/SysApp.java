@@ -10,15 +10,14 @@ import java.util.List;
 
 public class SysApp {
 	//Fields
-
 	public UserInterface ui = new UserInterface(this);
 	private List<Employee> employeeList = new ArrayList<Employee>();
 	private List<Project> projectList = new ArrayList<Project>();
 	private List<Activity> activityList = new ArrayList<Activity>();
 	private DateServer dateServer = new DateServer();
 	private Employee currentUser = null;
-	private static File systemLog = new File("systemLog");
-	private static int ID_Count = 0;
+	private File systemLog = new File("systemLog");
+	private int ID_Count = 0;
 	public Menu currentMenu;
 	public Menu mainmenu;
 	public ArrayList<Menu> menus = new ArrayList<Menu>();
@@ -27,15 +26,19 @@ public class SysApp {
 		addEmployee("admin");
 		ui.print("Welcome. Please enter your initials to proceed:");
 		while (!loggedIn()) {
-			login(ui.next());
+			try {
+				login(ui.next());
+			} catch (Exception e) {
+				ui.print("Error: No Actions are allowed until after login is performed", ui.style[3]);
+			}
 		}
-		menus.add(new Menu(this, "Add Employee"));
-		menus.add(new Menu(this, "Remove Employee"));
-		menus.add(new Menu(this, "Add Project"));
-		menus.add(new Menu(this, "Manage Project"));
-		menus.add(new Menu(this, "Add Activity"));
-		menus.add(new Menu(this, "Show Logs"));
-		menus.add(new Menu(this, "Set Font Size"));
+		menus.add(new Menu(this, "Add Employee")); 		//0
+		menus.add(new Menu(this, "Remove Employee"));	//1
+		menus.add(new Menu(this, "Add Project"));		//2
+		menus.add(new Menu(this, "Manage Project"));	//3
+		menus.add(new Menu(this, "Add Activity"));		//4
+		menus.add(new Menu(this, "Show Logs"));			//5
+		menus.add(new Menu(this, "Set Font Size"));		//6
 		Menu[] m = new Menu[] {
 				new Menu(this, "Employees", new Menu[] {menus.get(0), menus.get(1)}, true, true),
 				new Menu(this, "Projects", new Menu[] {menus.get(2), menus.get(3)}, true, true),
@@ -46,7 +49,13 @@ public class SysApp {
 				new Menu(this, "Exit"),
 		};
 		mainmenu = new Menu(this, "Main Menu", m, true, false);
-		mainmenu.show();
+		while(true)
+		try {
+			mainmenu.show();
+		} catch (Exception e) {
+			ui.clear();
+			ui.print("Error: Unexpected Error. You've been returned to the main menu", ui.style[3]);
+		}
 	}
 	
 	/*public static void main(String[] args) {
@@ -129,7 +138,7 @@ public class SysApp {
 		if (!loggedIn()){
 			for(Employee e : this.employeeList){
 				if(e.getInitials().equals(initials.toUpperCase())){
-					//ui.clear();
+					ui.clear();
 					ui.print("Successfully logged in as \"" + initials.toUpperCase() + "\".", ui.style[2]);
 					this.currentUser = e;
 					return true;
@@ -161,19 +170,6 @@ public class SysApp {
 		}
 		//error - no user is currently logged in
 		return true;
-	}
-	
-	public boolean addEmployee() {
-		ui.print("Enter initials of new employee:");
-		String initials = ui.next().toUpperCase();
-		Employee employee = new Employee(initials);
-		boolean b = addEmployee(employee);
-		if (b) {
-			ui.print("Successfully added employee \"" + initials + "\" to the system.", ui.style[2]);
-		} else {
-			ui.print("Error: Employee with initials \"" + initials + "\" already exists.", ui.style[3]);
-		}
-		return b;
 	}
 	
 	public boolean addEmployee(String initials){
@@ -217,10 +213,10 @@ public class SysApp {
 		note.close();
 		return true;
 	}
-	private static void incrementIDCount() {
+	private void incrementIDCount() {
 		ID_Count++;
 	}
-	public static int getIDCount(){
+	public int getIDCount(){
 		incrementIDCount();
 		return ID_Count;	
 	}

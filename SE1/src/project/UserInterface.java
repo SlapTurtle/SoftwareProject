@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class UserInterface {
-	SysApp sys;
+	public SysApp sys;
 	public JFrame frame = new JFrame("UI");
 	public JLayeredPane game = frame.getLayeredPane();
 	public static Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -23,7 +23,12 @@ public class UserInterface {
 		new MessageStyle(Font.ITALIC, Color.DARK_GRAY, Color.WHITE), // User input
 		new MessageStyle(Font.PLAIN, Color.BLACK, Color.GREEN.brighter()), // Green notification
 		new MessageStyle(Font.PLAIN, Color.WHITE, Color.RED), // Error message
-		new MessageStyle(Font.BOLD, Color.WHITE, Color.BLUE.darker())
+		new MessageStyle(Font.BOLD, Color.WHITE, Color.BLUE.darker()), //header
+		new MessageStyle(Font.PLAIN, Color.WHITE, Color.GREEN.darker()) //information
+	};
+	public String[] actionbreakers = {
+			"!cancel",
+			"!restart"
 	};
 	public String latestInput = "";
 	public final Object lock = new Object();
@@ -80,7 +85,7 @@ public class UserInterface {
 		}
 	}
 	
-	public String next() {
+	public String next() throws Exception{
 		synchronized(lock) {
 			while (!wakeUp) {
 				try {
@@ -89,6 +94,11 @@ public class UserInterface {
 			}
 		}
 		wakeUp = false;
+		for(String s : actionbreakers){
+			if (s.equals(latestInput)){
+				throw new Exception(latestInput.toLowerCase());
+			}
+		}
 		return latestInput;
 	}
 	
@@ -97,7 +107,7 @@ public class UserInterface {
 		return wakeUp;
 	}
 	
-	public void setFontSize() {
+	public void setFontSize() throws Exception {
 		print("Enter your desired new font size:");
 		while (true) {
 			String s = next();
@@ -123,6 +133,21 @@ public class UserInterface {
 		print("\"help\" - displays a list of commands");
 		print("\"clear\" - clears the console");
 		print("\"exit\" - terminates the current session");
+		print("\"!cancel\" - cancels the current action");
+		print("\"!restart\" - restart the current action");
+	}
+	
+	public boolean yesNoQuestion(String message) throws Exception{
+		this.print(message + " (yes / no)");
+		while(true){
+			String s = this.next();
+			if(s.equals("y") || s.equals("yes")){
+				return true;
+			}
+			else if(s.equals("n") || s.equals("no")){
+				return false;
+			}
+		}
 	}
 	
 }

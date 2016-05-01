@@ -65,7 +65,7 @@ public class Project {
 	//ID counter implemented in SysApp
 	private String setUniqueID() {
 		String ID = "ID";
-		ID = ID + SysApp.getIDCount();
+		ID = ID + sysApp.getIDCount();
 		return ID;
 	}
 	

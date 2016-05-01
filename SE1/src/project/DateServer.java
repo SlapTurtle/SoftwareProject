@@ -9,14 +9,13 @@ public class DateServer {
 		
 	}
 	
-	public Week getWeek(){
+	public Week getWeek(int weak){
 		Calendar temp = this.getToday();
 		int year = temp.get(Calendar.YEAR);
-		int week = temp.get(Calendar.WEEK_OF_YEAR);
 		try {
-			return new Week(year, week);
+			return new Week(year, weak);
 		} catch (IllegalOperationException e) {
-			//error - DateServer has invalid calendar.
+			//error - week is invalid
 			e.printStackTrace();
 			return null;
 		}

@@ -35,7 +35,7 @@ public class TestDateServer extends TestBasis {
 			
 			when(dS.getToday()).thenReturn(cal);
 			
-				when(dS.getWeek()).thenReturn(new Week(cal.get(Calendar.YEAR), cal.get(Calendar.WEEK_OF_YEAR)));
+				when(dS.getWeek(cal.get(Calendar.WEEK_OF_YEAR))).thenReturn(new Week(cal.get(Calendar.YEAR), cal.get(Calendar.WEEK_OF_YEAR)));
 			
 			
 			//makes the sysApp use the mocked dateServer
@@ -50,12 +50,12 @@ public class TestDateServer extends TestBasis {
 			
 			//tests that a newly created week is correctly changed as well
 			Week week1 = new Week(year, cal.get(Calendar.WEEK_OF_YEAR));
-			Week week2 = sysApp.getDateServer().getWeek();
+			Week week2 = sysApp.getDateServer().getWeek(cal.get(Calendar.WEEK_OF_YEAR));
 			assertTrue(week1.compareTo(week2) == 0);
 			
 			//tests that weeks created with DateServer can be stored
 			int increase = 20;
-			Week week3 = sysApp.getDateServer().getWeek();
+			Week week3 = sysApp.getDateServer().getWeek(cal.get(Calendar.WEEK_OF_YEAR));
 			cal.set(Calendar.WEEK_OF_YEAR, cal.get(Calendar.WEEK_OF_YEAR) + increase); //increase week of year by 20.
 			Week week4 = new Week(year, cal.get(Calendar.WEEK_OF_YEAR));
 			assertTrue(week3.compareTo(week4) < 0);
