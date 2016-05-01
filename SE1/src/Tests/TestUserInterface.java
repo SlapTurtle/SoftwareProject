@@ -10,6 +10,12 @@ import project.*;
 
 public class TestUserInterface extends TestBasis {
 	
+	@Override
+	public void setup() throws IllegalOperationException{
+		super.setup();
+		sysApp.ui = new UserInterface(sysApp);
+	}
+	
 	@Test
 	public void TestUserInterface() throws IllegalOperationException {
 		setup();
