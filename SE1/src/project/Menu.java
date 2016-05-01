@@ -72,14 +72,25 @@ public class Menu {
 	
 	public void runMethod() {
 		try{
+			String initials;
 			switch (header) {
 			case "Exit": System.exit(0); return;
 			
 			case "Help": sys.ui.help(); break;
 			
+			case "Manage Employee":
+				sys.ui.print("Enter initials of existing employee:");
+				initials = sys.ui.next().toUpperCase();
+				Employee emp = sys.employeeByInitials(initials);
+				if(emp != null){
+					//execute Manage Employee Menu with employee's name.
+					return;
+				}
+				break;
+			
 			case "Add Employee": 
 				sys.ui.print("Enter initials of new employee:");
-				String initials = sys.ui.next().toUpperCase();
+				initials = sys.ui.next().toUpperCase();
 				Employee employee = new Employee(initials);
 				if (sys.addEmployee(employee)) {
 					if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")){

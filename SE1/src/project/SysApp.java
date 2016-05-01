@@ -32,19 +32,20 @@ public class SysApp {
 				ui.print("Error: No Actions are allowed until after login is performed", ui.style[3]);
 			}
 		}
-		menus.add(new Menu(this, "Add Employee")); 		//0
-		menus.add(new Menu(this, "Remove Employee"));	//1
-		menus.add(new Menu(this, "Add Project"));		//2
-		menus.add(new Menu(this, "Manage Project"));	//3
-		menus.add(new Menu(this, "Add Activity"));		//4
-		menus.add(new Menu(this, "Show Logs"));			//5
-		menus.add(new Menu(this, "Set Font Size"));		//6
+		menus.add(new Menu(this, "Manage Employee"));	//0
+		menus.add(new Menu(this, "Add Employee")); 		//1
+		menus.add(new Menu(this, "Remove Employee"));	//2
+		menus.add(new Menu(this, "Add Project"));		//3
+		menus.add(new Menu(this, "Manage Project"));	//4
+		menus.add(new Menu(this, "Add Activity"));		//5
+		menus.add(new Menu(this, "Show Logs"));			//6
+		menus.add(new Menu(this, "Set Font Size"));		//7
 		Menu[] m = new Menu[] {
-				new Menu(this, "Employees", new Menu[] {menus.get(0), menus.get(1)}, true, true),
-				new Menu(this, "Projects", new Menu[] {menus.get(2), menus.get(3)}, true, true),
-				new Menu(this, "Activities", new Menu[] {menus.get(4)}, true, true),
-				new Menu(this, "System", new Menu[] {menus.get(5)}, true, true ),
-				new Menu(this, "Settings", new Menu[] {menus.get(6)}, true, true),
+				new Menu(this, "Employees", new Menu[] {menus.get(0), menus.get(1), menus.get(2)}, true, true),
+				new Menu(this, "Projects", new Menu[] {menus.get(3), menus.get(4)}, true, true),
+				new Menu(this, "Activities", new Menu[] {menus.get(5)}, true, true),
+				new Menu(this, "System", new Menu[] {menus.get(6)}, true, true ),
+				new Menu(this, "Settings", new Menu[] {menus.get(7)}, true, true),
 				new Menu(this, "Help"),
 				new Menu(this, "Exit"),
 		};

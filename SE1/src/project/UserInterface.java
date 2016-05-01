@@ -138,7 +138,7 @@ public class UserInterface {
 	}
 	
 	public boolean yesNoQuestion(String message) throws Exception{
-		this.print(message + " (yes / no)");
+		print(message + " (yes / no)");
 		while(true){
 			String s = this.next();
 			if(s.equals("y") || s.equals("yes")){
