@@ -28,7 +28,7 @@ public class SysApp {
 		ui.print("Welcome. Please enter your initials to proceed:");
 		while (!loggedIn()) {
 			try {
-				login(ui.next());
+				loginUI(ui.next());
 			} catch (Exception e) {
 				ui.print("Error: No Actions are allowed until after login is performed", ui.style[3]);
 			}
@@ -140,7 +140,7 @@ public class SysApp {
 		return false;
 	}
 	
-	public boolean login(String initials){
+	public boolean loginUI(String initials){
 		if (!loggedIn()){
 			for(Employee e : this.employeeList){
 				if(e.getInitials().equals(initials.toUpperCase())){
@@ -154,6 +154,21 @@ public class SysApp {
 			return false;
 		}
 		ui.print("Error: An employee is already logged in.", ui.style[3]);
+		return false;
+	}
+	
+	public boolean login(String initials){
+		if (!loggedIn()){
+			for(Employee e : this.employeeList){
+				if(e.getInitials().equals(initials.toUpperCase())){
+					this.currentUser = e;
+					return true;
+				}
+			}
+			//error - no user with those initials found
+			return false;
+		}
+		//error - a user is already logged in
 		return false;
 	}
 	
