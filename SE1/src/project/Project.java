@@ -21,12 +21,13 @@ public class Project {
 	public int budget;
 	
 	
-	public Project(String ID, Week sW,Week eW,Week dL){
+	public Project(SysApp sys, String name, Week sW,Week eW,Week dL){
+		this.sysApp = sys;
 		this.name = name;
 		this.startWeek = sW;
 		this.endWeek = eW;
 		this.deadline = dL;
-		this.projectID = ID;
+		this.projectID = setUniqueID();
 		this.employeeList = new ArrayList<Employee>();
 		this.activityList = new ArrayList<Activity>();
 		this.projectManagers = new ArrayList<Employee>();
@@ -64,9 +65,9 @@ public class Project {
 	}
 	//ID counter implemented in SysApp
 	private String setUniqueID() {
-		String ID = "ID";
-		ID = ID + sysApp.getIDCount();
-		return ID;
+		String newID = "ID" + sysApp.getIDCount();
+		System.out.println(newID);
+		return newID;
 	}
 	
 	public String checkUniqueID() {

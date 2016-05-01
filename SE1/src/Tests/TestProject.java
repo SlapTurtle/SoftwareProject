@@ -13,16 +13,16 @@ public class TestProject extends TestBasis{
 	
 	@Test
 	public void Project() throws Exception{ //TODO Handle Exception on Week
-		Project makeCastle = new Project("Build a Castle", new Week(2017, 5), new Week(2017, 6), new Week(2017, 7));
-		Project makeFort = new Project("Build a Castle", new Week(2017, 5), new Week(2017, 6), new Week(2017, 7));
+		Project makeCastle = new Project(sysApp, "Build a Castle", new Week(2017, 5), new Week(2017, 6), new Week(2017, 7));
+		Project makeFort = new Project(sysApp, "Build a Castle", new Week(2017, 5), new Week(2017, 6), new Week(2017, 7));
 		//Test addEmployee - UseCase 4
 		Employee timHansson = new Employee("TIHAN");
 		makeCastle.addEmployee(timHansson);
 		assertTrue(makeCastle.findEmployee(timHansson));
 		
 		//Test UniqueID
-		assertEquals(makeCastle.checkUniqueID(),"ID1");
-		assertEquals(makeFort.checkUniqueID(),"ID2");
+		assertEquals(makeCastle.checkUniqueID(),"ID4"); //3 project created earlier
+		assertEquals(makeFort.checkUniqueID(),"ID5");   //4 project created earlier
 		
 		
 		//Assign project manager - Case 5

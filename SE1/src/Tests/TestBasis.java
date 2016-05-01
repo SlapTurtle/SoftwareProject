@@ -43,9 +43,9 @@ public class TestBasis {
 		week2 = new Week(year, week+1);
 		week3 = new Week(year, week+2);
 		
-		p1 = new Project("1Axxx", week1, week2, week3);
-		p2 = new Project("2Bxxx", week1, week2, week3);
-		p3 = new Project("3Cxxx", week1, week2, week3);
+		p1 = new Project(sysApp, "ID1", week1, week2, week3);
+		p2 = new Project(sysApp, "ID2", week1, week2, week3);
+		p3 = new Project(sysApp, "ID3", week1, week2, week3);
 		
 		a1 = new Activity("01xxx", week1, week3);
 		a2 = new Activity("02xxx", week3, week3);
