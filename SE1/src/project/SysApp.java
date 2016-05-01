@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SysApp {
 	//Fields
-	public UserInterface ui = new UserInterface(this);
+	public UserInterface ui;
 	private List<Employee> employeeList = new ArrayList<Employee>();
 	private List<Project> projectList = new ArrayList<Project>();
 	private List<Activity> activityList = new ArrayList<Activity>();
@@ -23,6 +23,7 @@ public class SysApp {
 	public ArrayList<Menu> menus = new ArrayList<Menu>();
 	
 	public SysApp() {
+		ui = new UserInterface(this);
 		addEmployee("admin");
 		ui.print("Welcome. Please enter your initials to proceed:");
 		while (!loggedIn()) {
@@ -57,6 +58,10 @@ public class SysApp {
 			ui.clear();
 			ui.print("Error: Unexpected Error. You've been returned to the main menu", ui.style[3]);
 		}
+	}
+	
+	public SysApp(boolean b){
+		
 	}
 	
 	/*public static void main(String[] args) {

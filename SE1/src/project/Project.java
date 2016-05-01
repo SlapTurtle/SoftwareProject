@@ -26,7 +26,7 @@ public class Project {
 		this.startWeek = sW;
 		this.endWeek = eW;
 		this.deadline = dL;
-		this.projectID = setUniqueID();
+		this.projectID = ID;
 		this.employeeList = new ArrayList<Employee>();
 		this.activityList = new ArrayList<Activity>();
 		this.projectManagers = new ArrayList<Employee>();

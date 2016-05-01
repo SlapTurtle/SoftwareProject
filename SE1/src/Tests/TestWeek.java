@@ -16,8 +16,8 @@ public class TestWeek extends TestBasis {
 	private static final int maxWeeksOfYear = new GregorianCalendar().getMaximum(Calendar.WEEK_OF_YEAR);
 	
 	@Before @Override
-	public void setup(){
-		super.setup();;
+	public void setup() throws IllegalOperationException{
+		super.setup();
 		year = 2016;
 		week = 15;
 	}

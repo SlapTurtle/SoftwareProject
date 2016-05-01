@@ -12,8 +12,9 @@ import project.*;
 
 public class TestEmployee extends TestBasis{
 	
-	@Before @Test
+	@Test
 	public void testName() throws IllegalOperationException {
+		/*
 		year = 2016;
 		week = 10;
 
@@ -32,6 +33,7 @@ public class TestEmployee extends TestBasis{
 		e1 = new Employee("AAAA");
 		e2 = new Employee("BBBB");
 		e3 = new Employee("CCCC");
+		*/
 	}
 	
 	@Test
