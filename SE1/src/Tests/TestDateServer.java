@@ -15,7 +15,7 @@ import project.*;
 
 public class TestDateServer extends TestBasis {
 	@Test
-	public void testDateServer(){
+	public void testDateServer() throws IllegalOperationException{
 		//setup
 		setup();
 		int year = 2020;

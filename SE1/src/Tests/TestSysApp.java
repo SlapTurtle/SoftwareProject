@@ -12,7 +12,7 @@ public class TestSysApp extends TestBasis{
 
 
 	@Test
-	public void SysApp() {
+	public void SysApp() throws IllegalOperationException {
 		//setup
 		setup();
 		

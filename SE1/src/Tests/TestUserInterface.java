@@ -11,7 +11,7 @@ import project.*;
 public class TestUserInterface extends TestBasis {
 	
 	@Test
-	public void TestUserInterface() {
+	public void TestUserInterface() throws IllegalOperationException {
 		setup();
 		UserInterface ui = sysApp.ui;
 		int size = ui.console.size();
