@@ -65,6 +65,10 @@ public class UserInterface {
 		return msg;
 	}
 	
+	public void invalidInput() {
+		invalidInput();
+	}
+	
 	public void clear() {
 		while (console.size() > 0) {
 			shiftUp();
@@ -127,7 +131,7 @@ public class UserInterface {
 					print("Error: Only integers in range 10-20 permitted. Please try again:", style[3]);
 				}
 			} catch(NumberFormatException e) {
-				print("Error: Invalid input. Please try again:", style[3]);
+				invalidInput();
 			}
 		}
 	}
@@ -157,7 +161,7 @@ public class UserInterface {
 			else if(s.equals("n") || s.equals("no")){
 				return false;
 			}
-			print("Error: Invalid input. Please try again:", style[3]);
+			invalidInput();
 		}
 	}
 	
