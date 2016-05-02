@@ -23,8 +23,9 @@ public class UserInterface {
 		new MessageStyle(Font.ITALIC, Color.DARK_GRAY, Color.WHITE), // User input
 		new MessageStyle(Font.PLAIN, Color.BLACK, Color.GREEN.brighter()), // Green notification
 		new MessageStyle(Font.PLAIN, Color.WHITE, Color.RED), // Error message
-		new MessageStyle(Font.BOLD, Color.WHITE, Color.BLUE.darker()), //header
-		new MessageStyle(Font.PLAIN, Color.BLACK, Color.yellow.brighter()) //information
+		new MessageStyle(Font.BOLD, Color.WHITE, Color.BLUE.darker()), // Header
+		new MessageStyle(Font.PLAIN, Color.BLACK, Color.yellow.brighter()), // Prompt
+		new MessageStyle(Font.BOLD, Color.BLACK, Color.WHITE)
 	};
 	public String latestInput = "";
 	public final Object lock = new Object();
@@ -117,7 +118,7 @@ public class UserInterface {
 	}
 	
 	public void setFontSize() {
-		print("Enter your desired new font size:");
+		print("Enter your desired new font size:", style[6]);
 		while (true) {
 			String s = next();
 			try {

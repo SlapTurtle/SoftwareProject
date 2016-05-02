@@ -77,18 +77,12 @@ public class Menu {
 		String initials;
 		switch (header) {
 		case "Exit": System.exit(0); return;
-		
-		case "Help": sys.ui.help(); break;
-		
-
-		
+		case "Help": sys.ui.help(); break;		
 		case "Add Employee": addEmployee(); break;
 		case "Manage Employee": manageEmployee(); break;
 		case "Remove Employee": break;
-		
-		
+		case "Manage Project": manageProject(); break;
 		case "Set Font Size": sys.ui.setFontSize(); break;
-		
 		case "Add Activity":
 			String name = null;
 			Boolean b;
@@ -96,7 +90,7 @@ public class Menu {
 			
 			b = false;
 			while(!b){
-				sys.ui.print("Enter name of new Activity:");
+				sys.ui.print("Enter name of new Activity:", sys.ui.style[6]);
 				name = sys.ui.next();
 				/*  does name meet the criteria ?
 				b = (name == acceptable);
@@ -111,14 +105,14 @@ public class Menu {
 			b = false;
 			while(!b){
 				try{
-					sys.ui.print("Enter starting week of Activity \"" + name + "\"");
+					sys.ui.print("Enter starting week of Activity \"" + name + "\"", sys.ui.style[6]);
 					i = Integer.parseInt(sys.ui.next());
 					b = i > 0 && i <= 53;
 					if(!b){
 						throw new NumberFormatException();
 					}
 				} catch(NumberFormatException e){
-					sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
+					sys.ui.invalidInput();
 				}
 			}
 			Week start = sys.getDateServer().getWeek(i);
@@ -127,14 +121,14 @@ public class Menu {
 			b = false;
 			while(!b){
 				try{
-					sys.ui.print("Enter ending week of Activity \"" + name + "\"");
+					sys.ui.print("Enter ending week of Activity \"" + name + "\"", sys.ui.style[6]);
 					i = Integer.parseInt(sys.ui.next());
 					b = i > 0 && i <= 53 && start.compareTo(sys.getDateServer().getWeek(i)) <= 0;
 					if(!b){
 						throw new NumberFormatException();
 					}
 				} catch(NumberFormatException e){
-					sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
+					sys.ui.invalidInput();
 				}
 			}
 			Week end = sys.getDateServer().getWeek(i);
@@ -147,7 +141,7 @@ public class Menu {
 					sys.ui.print("Successfully added Activity \"" + name + "\" to the system.", sys.ui.style[2]);
 				}
 				else{
-					sys.ui.print("Error: Invalid Activity. Please try again:", sys.ui.style[3]);
+					sys.ui.invalidInput();
 				}
 			}
 			else{
@@ -164,7 +158,7 @@ public class Menu {
 	 */
 	
 	private void addEmployee(){
-		sys.ui.print("Enter initials of new employee:");
+		sys.ui.print("Enter initials of new employee:", sys.ui.style[6]);
 		String initials = sys.ui.next().toUpperCase();
 		Employee employee = new Employee(initials);
 		if (sys.addEmployee(employee)) {
@@ -182,23 +176,39 @@ public class Menu {
 	}
 	
 	private void manageEmployee(){
-		sys.ui.print("Enter initials of employee to manage:");
+		sys.ui.print("Enter initials of employee to manage:", sys.ui.style[6]);
 		String initials = sys.ui.next().toUpperCase();
 		Employee e = sys.employeeByInitials(initials);
 		if(e == null){
 			sys.ui.clear();
-			sys.ui.print("Error: Employee with initials \"" + initials + "\" dosen't exist.", sys.ui.style[3]);
+			sys.ui.print("Error: Employee with initials \"" + initials + "\" does not exist.", sys.ui.style[3]);
 		}
 		else{
-			//Menu manageEmployee = sys.menus.get("MANAGE EMPLOYEE MENU!")
 			Menu manageEmployee = sys.menus.get(2);
+			sys.currentMenu = manageEmployee;
 			manageEmployee.currentEmployee = e;
 			manageEmployee.show();
 		}
 	}
 	
+	private void manageProject(){
+		sys.ui.print("Enter ID of project to manage:", sys.ui.style[6]);
+		String ID = sys.ui.next().toUpperCase();
+		Project p = sys.projectByID(ID);
+		if(p == null){
+			sys.ui.clear();
+			sys.ui.print("Error: Project with ID \"" + ID + "\" does not exist.", sys.ui.style[3]);
+		}
+		else{
+			Menu manageProject = sys.menus.get(6);
+			sys.currentMenu = manageProject;
+			manageProject.currentProject = p;
+			manageProject.show();
+		}
+	}
+	
 	private void assignToProject(){
-		sys.ui.print("Enter Name or ID of Project:");
+		sys.ui.print("Enter Name or ID of Project:", sys.ui.style[6]);
 		String project = sys.ui.next().toUpperCase();
 		Project p = sys.projectByID(project);
 		if(p == null){
@@ -216,7 +226,7 @@ public class Menu {
 	}
 	
 	private void AssignToActivity(){
-		sys.ui.print("Enter Name or ID of Activity:");
+		sys.ui.print("Enter Name or ID of Activity:", sys.ui.style[6]);
 		String act = sys.ui.next().toUpperCase();
 		Activity a = sys.activityByID(act);
 		if(a == null){
