@@ -1,7 +1,6 @@
 package project;
 
 import java.util.List;
-
 public class Activity {
 	
 	public Activity(String name){
@@ -24,20 +23,22 @@ public class Activity {
 		this.name = name;
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
-		this.activityID = setUniqueID();
+		this.activityID = "0"; 
 	}
 	
 	//ID counter implemented in SysApp
-	private String setUniqueID() {
-		String newID = "ID" + sysApp.getaIDCount();
-		//System.out.println(newID);
+	/*private String setUniqueID() {
+		System.out.println("hello");
+		int ID = sysApp.getaIDCount();
+		System.out.println("man");
+		String newID = "ID" + ID;
 		return newID;
 	}
 	
 	public String checkUniqueID() {
 		return this.activityID;
 	}
-	
+	*/
 	
 	//Makes it possible to extend the end week.
 	public void setEndWeek(Week endweek){

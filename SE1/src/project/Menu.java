@@ -165,7 +165,7 @@ public class Menu {
 			}
 			Week end = sys.getDateServer().getWeek(i);
 			
-			Activity A = new Activity(String.valueOf(sys.getaIDCount()), start, end);
+			Activity A = new Activity(String.valueOf(sys.getIDCount()), start, end);
 			A.type = name; //A.setType(name);
 			if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + A.type + "\" to the system?")){
 				if(sys.addActicity(A)){

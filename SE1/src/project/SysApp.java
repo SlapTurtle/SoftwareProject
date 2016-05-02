@@ -17,14 +17,14 @@ public class SysApp {
 	private DateServer dateServer = new DateServer();
 	private Employee currentUser = null;
 	private File systemLog = new File("systemLog");
-	private int pIDcount = 0; //Project ID count
-	private int aIDcount = 0; //Activity ID count
+	private int ID_Count = 0;
 	public Menu currentMenu;
 	public Menu mainmenu;
 	public ArrayList<Menu> menus = new ArrayList<Menu>();
 	public ArrayList<Menu> menuEmpMng = new ArrayList<Menu>();
 	
 	public SysApp() {
+		
 		ui = new UserInterface(this);
 		addEmployee("admin");
 		ui.print("Welcome. Please enter your initials to proceed:");
@@ -252,14 +252,14 @@ public class SysApp {
 	}
 	
 	//ID counters for project and activity
-	public int getpIDCount(){
-		pIDcount++;
-		return pIDcount;	
+	private void incrementIDCount() {
+		ID_Count++;
 	}
-	public int getaIDCount(){
-		aIDcount++;
-		return aIDcount;	
+	public int getIDCount(){
+		incrementIDCount();
+		return ID_Count;	
 	}
+	
 	//Method to get a project by its ID.
 	public Project projectByID(String ID){
 		for(Project x : projectList)
