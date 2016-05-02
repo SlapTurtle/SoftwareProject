@@ -77,11 +77,7 @@ public class Menu {
 		String initials;
 		switch (header) {
 		case "Exit": System.exit(0); return;
-		
-		case "Help": sys.ui.help(); break;
-		
-
-		
+		case "Help": sys.ui.help(); break;		
 		case "Add Employee": addEmployee(); break;
 		case "Manage Employee": manageEmployee(); break;
 		case "Assign To Project": assignToProject(); break;
@@ -89,10 +85,8 @@ public class Menu {
 		case "Set Workhours For Activities For Week": setWorkhousForActivityForWeek(); break;
 		case "Get Activities for Week": getActivitiesForWeek(); break;
 		case "Remove Employee": removeEmployee(); break;
-		
-		
+		case "Manage Project": manageProject(); break;
 		case "Set Font Size": sys.ui.setFontSize(); break;
-		
 		case "Add Activity": addActivity();break;
 	
 		default: sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
@@ -106,7 +100,7 @@ public class Menu {
 	
 
 	private void addEmployee(){
-		sys.ui.print("Enter initials of new employee:");
+		sys.ui.print("Enter initials of new employee:", sys.ui.style[6]);
 		String initials = sys.ui.next().toUpperCase();
 		Employee employee = new Employee(initials);
 		if (sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")) {
@@ -125,23 +119,39 @@ public class Menu {
 	}
 	
 	private void manageEmployee(){
-		sys.ui.print("Enter initials of employee to manage:");
+		sys.ui.print("Enter initials of employee to manage:", sys.ui.style[6]);
 		String initials = sys.ui.next().toUpperCase();
 		Employee e = sys.employeeByInitials(initials);
 		if(e == null){
 			sys.ui.clear();
-			sys.ui.print("Error: Employee with initials \"" + initials + "\" dosen't exist.", sys.ui.style[3]);
+			sys.ui.print("Error: Employee with initials \"" + initials + "\" does not exist.", sys.ui.style[3]);
 		}
 		else{
-			//Menu manageEmployee = sys.menus.get("MANAGE EMPLOYEE MENU!")
-			Menu manageEmployee = sys.mainmenu;
+			Menu manageEmployee = sys.menus.get(2);
+			sys.currentMenu = manageEmployee;
 			manageEmployee.currentEmployee = e;
 			manageEmployee.show();
 		}
 	}
 	
+	private void manageProject(){
+		sys.ui.print("Enter ID of project to manage:", sys.ui.style[6]);
+		String ID = sys.ui.next().toUpperCase();
+		Project p = sys.projectByID(ID);
+		if(p == null){
+			sys.ui.clear();
+			sys.ui.print("Error: Project with ID \"" + ID + "\" does not exist.", sys.ui.style[3]);
+		}
+		else{
+			Menu manageProject = sys.menus.get(6);
+			sys.currentMenu = manageProject;
+			manageProject.currentProject = p;
+			manageProject.show();
+		}
+	}
+	
 	private void assignToProject(){
-		sys.ui.print("Enter Name or ID of Project:");
+		sys.ui.print("Enter Name or ID of Project:", sys.ui.style[6]);
 		String project = sys.ui.next().toUpperCase();
 		Project p = sys.projectByID(project);
 		if(p == null){
@@ -159,7 +169,7 @@ public class Menu {
 	}
 	
 	private void assignToActivity(){
-		sys.ui.print("Enter Name or ID of Activity:");
+		sys.ui.print("Enter Name or ID of Activity:", sys.ui.style[6]);
 		String act = sys.ui.next().toUpperCase();
 		Activity a = sys.activityByID(act);
 		if(a == null){

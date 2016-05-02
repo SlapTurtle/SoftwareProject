@@ -3,7 +3,6 @@ package project;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -21,11 +20,14 @@ public class SysApp {
 	public Menu currentMenu;
 	public Menu mainmenu;
 	public ArrayList<Menu> menus = new ArrayList<Menu>();
+	public ArrayList<Menu> menuEmpMng = new ArrayList<Menu>();
+	public ArrayList<Menu> menuPrjMng = new ArrayList<Menu>();
+	public ArrayList<Menu> menuActMng = new ArrayList<Menu>();
 	
 	public SysApp() {
 		ui = new UserInterface(this);
 		addEmployee("admin");
-		ui.print("Welcome. Please enter your initials to proceed:");
+		ui.print("Welcome. Please enter your initials to proceed:", ui.style[6]);
 		while (!loggedIn()) {
 			try {
 				loginUI(ui.next());
@@ -33,17 +35,42 @@ public class SysApp {
 				ui.print("Error: Action denied. Please try again:", ui.style[3]);
 			}
 		}
+		
+		menuEmpMng.add(new Menu(this, "Assign to Project"));
+		menuEmpMng.add(new Menu(this, "Assign to Activity"));
+		menuEmpMng.add(new Menu(this, "Set Work Hours for Activity By Week"));
+		menuEmpMng.add(new Menu(this, "Get Work Hours for Week"));
+		menuEmpMng.add(new Menu(this, "Get Work Hours for Activity By Week"));
+		menuEmpMng.add(new Menu(this, "Get Activities for Week"));
+		menuEmpMng.add(new Menu(this, "Remove Employee"));
+		
+		menuPrjMng.add(new Menu(this, "Add Employee to Project"));
+		menuPrjMng.add(new Menu(this, "Get All Employees on Project"));
+		menuPrjMng.add(new Menu(this, "Add Activity to Project"));
+		menuPrjMng.add(new Menu(this, "Get All Activities on Project"));
+		menuPrjMng.add(new Menu(this, "Set Report Comment"));
+		menuPrjMng.add(new Menu(this, "View Weekly Report"));
+		menuPrjMng.add(new Menu(this, "Set Time Budget of Project"));
+		menuPrjMng.add(new Menu(this, "Get Total Project Budget Price"));
+		menuPrjMng.add(new Menu(this, "Get Activeness of Activity"));
+		
+		
 		menus.add(new Menu(this, "Add Employee")); 		//0
-		menus.add(new Menu(this, "Remove Employee"));	//1
-		menus.add(new Menu(this, "Manage Employee"));	//2
+		menus.add(new Menu(this, "Manage Employee"));	// 1
+		menus.add(new Menu(this, "Manage Employee", menuEmpMng.toArray(new Menu[menuEmpMng.size()]), true, true));	//1
+		menus.add(new Menu(this, "Get All Employees"));	//2
 		menus.add(new Menu(this, "Add Project"));		//3
+		menus.add(new Menu(this, "Manage Project"));
+		menus.add(new Menu(this, "Manage Project", menuPrjMng.toArray(new Menu[menuPrjMng.size()]), true, true));
+		menus.add(new Menu(this, "Get All Projects"));
 		menus.add(new Menu(this, "Manage Project"));	//4
 		menus.add(new Menu(this, "Add Activity"));		//5
 		menus.add(new Menu(this, "Show Logs"));			//6
 		menus.add(new Menu(this, "Set Font Size"));		//7
+		
 		Menu[] m = new Menu[] {
 				new Menu(this, "Employees", new Menu[] {menus.get(0), menus.get(1), menus.get(2)}, true, true),
-				new Menu(this, "Projects", new Menu[] {menus.get(3), menus.get(4)}, true, true),
+				new Menu(this, "Projects", new Menu[] {menus.get(4), menus.get(5), menus.get(7)}, true, true),
 				new Menu(this, "Activities", new Menu[] {menus.get(5)}, true, true),
 				new Menu(this, "System", new Menu[] {menus.get(6)}, true, true ),
 				new Menu(this, "Settings", new Menu[] {menus.get(7)}, true, true),
@@ -56,7 +83,7 @@ public class SysApp {
 			mainmenu.show();
 		} catch (Exception e) {
 			ui.clear();
-			ui.print("Error: Unexpected Error. You've been returned to the main menu", ui.style[3]);
+			ui.print("Error: Unexpected Error. You have been returned to the main menu.", ui.style[3]);
 		}
 	}
 	
@@ -242,10 +269,11 @@ public class SysApp {
 		return null;
 	}
 	public Employee employeeByInitials(String initi){
-		for(Employee x : employeeList)
-			if (x.getInitials()==initi){
+		for(Employee x : employeeList) {
+			if (x.getInitials().equals(initi)){
 				return x;
 			}
+		}
 		return null;
 	}
 
