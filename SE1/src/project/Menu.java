@@ -69,12 +69,12 @@ public class Menu {
 					break;
 				}
 			}
-			if (!b) { sys.ui.print("Error: Invalid input. Please try again:", sys.ui.style[3]); }
+			if (!b) { sys.ui.invalidInput(); }
 		}
 	}
 	
 	public void runMethod() {
-		String initials;
+		//String initials;
 		switch (header) {
 		case "Exit": System.exit(0); return;
 		case "Help": sys.ui.help(); break;
@@ -82,6 +82,7 @@ public class Menu {
 		case "Add Employee": addEmployee(); break;
 		case "Manage Employee": manageEmployee(); break;
 		case "Remove Employee": removeEmployee(); break;
+		case "Get All Employees": getAllEmployees(); break;
 		// Project
 		case "Assign To Project": assignToProject(); break;
 		case "Manage Project": manageProject(); break;
@@ -94,6 +95,7 @@ public class Menu {
 		case "Show Logs": ShowFuckingLogs(); break;
 		default: break;
 		}
+		parent.show();
 	}
 	
 	/*
@@ -305,11 +307,19 @@ public class Menu {
 			else{
 				sys.ui.print("Error: Employee with initials \"" + initials + "\" doesn't exists.", sys.ui.style[3]);
 			}
-			
 		} else {
 			sys.ui.clear();
 			sys.ui.cancel();
 		}
+	}
+	
+	private void getAllEmployees() {
+		int sz = sys.getEmployeeList().size();
+		String[] s = new String[sz];
+		for (int i = 0; i < sz; i++) {
+			s[i] = sys.getEmployeeList().get(i).getInitials();
+		}
+		sys.ui.listDisplay(s, "Registered Employees", 10);
 	}
 	
 	/*
@@ -344,7 +354,6 @@ public class Menu {
 		 	*/
 			b = true;
 		}
-		
 		i = -1;
 		b = false;
 		while(!b){

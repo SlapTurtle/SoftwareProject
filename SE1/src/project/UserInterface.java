@@ -51,7 +51,7 @@ public class UserInterface {
 		game.add(msg.lbl);
 		console.add(msg);
 		latestInput = message;
-		input.obj.setBounds(24, offset + HEIGHT, UserInterface.dim.width - 60, 20);
+		input.obj.setBounds(28, offset + HEIGHT, UserInterface.dim.width - 60, 20);
 		return msg;
 	}
 	
@@ -62,12 +62,12 @@ public class UserInterface {
 		game.add(msg.lbl);
 		console.add(msg);
 		latestInput = message;
-		input.obj.setBounds(26, offset + HEIGHT, UserInterface.dim.width - 60, HEIGHT);
+		input.obj.setBounds(28, offset + HEIGHT, UserInterface.dim.width - 60, HEIGHT);
 		return msg;
 	}
 	
 	public void invalidInput() {
-		invalidInput();
+		sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
 	}
 	
 	public void clear() {
@@ -157,10 +157,10 @@ public class UserInterface {
 		print("Press enter to return from list view.", style[6]);
 		next();
 		clear();
-		sys.currentMenu.parent.show();
 	}
 	
 	public void help() {
+		clear();
 		print("Available Commands", style[4]);
 		print("\"!help\" - displays a list of commands");
 		print("\"!clear\" - clears the console");
