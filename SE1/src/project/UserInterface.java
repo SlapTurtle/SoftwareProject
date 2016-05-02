@@ -82,15 +82,28 @@ public class UserInterface {
 		}
 	}
 	
-	public String next(){
+	public String next() {
 		synchronized(lock) {
 			while (!wakeUp) {
 				try {
 					lock.wait();
-				} catch (InterruptedException e) { print("Interrupted"); }
+				} catch (InterruptedException e) { }
 			}
 		}
 		wakeUp = false;
+		return latestInput;
+	}
+	
+	public String next(boolean b) throws ActionCancelledException {
+		synchronized(lock) {
+			while (!wakeUp) {
+				try {
+					lock.wait();
+				} catch (InterruptedException e) { }
+			}
+		}
+		wakeUp = false;
+		if (latestInput.toLowerCase().equals("!cancel")) { throw new ActionCancelledException(sys); }
 		return latestInput;
 	}
 	
@@ -131,7 +144,7 @@ public class UserInterface {
 	
 	public void cancel() {
 		clear();
-		print("Action cancelled.", style[3]);
+		print("Action has been cancelled.", style[3]);
 		sys.currentMenu.parent.show();
 	}
 	public boolean yesNoQuestion(String message){

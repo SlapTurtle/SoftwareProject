@@ -85,9 +85,13 @@ public class Menu {
 			}
 			break;
 		
-		case "Add Employee": 
+		case "Add Employee":
 			sys.ui.print("Enter initials of new employee:");
-			initials = sys.ui.next().toUpperCase();
+			try {
+				initials = sys.ui.next(true).toUpperCase();
+			} catch (ActionCancelledException e1) {
+				return;
+			}
 			Employee employee = new Employee(initials);
 			if (sys.addEmployee(employee)) {
 				if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")){

@@ -50,7 +50,6 @@ public class InputField{
 		switch (msg) {
 		case "!help": sys.ui.help(); break;
 		case "!clear": sys.ui.clear(); break;
-		case "!cancel": sys.ui.cancel(); break;
 		default:
 			sys.ui.print(msg, sys.ui.style[1]);
 			b = true;
