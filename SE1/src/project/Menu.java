@@ -149,8 +149,11 @@ public class Menu {
 			}
 			break;
 	
-		default: sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
+		default:
+			sys.ui.clear();
+			sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
 		}
+		parent.show();
 	}
 
 	/*
@@ -169,13 +172,13 @@ public class Menu {
 			else{
 				sys.ui.cancel();
 			}
-			
 		} else {
 			sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
 		}
 	}
 	
 	private void manageEmployee(){
+		sys.currentMenu = this;
 		sys.ui.print("Enter initials of employee to manage:", sys.ui.style[6]);
 		String initials = sys.ui.next().toUpperCase();
 		Employee e = sys.employeeByInitials(initials);
@@ -192,6 +195,7 @@ public class Menu {
 	}
 	
 	private void manageProject(){
+		sys.currentMenu = this;
 		sys.ui.print("Enter ID of project to manage:", sys.ui.style[6]);
 		String ID = sys.ui.next().toUpperCase();
 		Project p = sys.projectByID(ID);
