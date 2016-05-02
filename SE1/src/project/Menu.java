@@ -84,7 +84,11 @@ public class Menu {
 		
 		case "Add Employee": addEmployee(); break;
 		case "Manage Employee": manageEmployee(); break;
-		case "Remove Employee": break;
+		case "Assign To Project": assignToProject(); break;
+		case "Assign To Activity": assignToActivity(); break;
+		case "Set Workhours For Activities For Week": setWorkhousForActivityForWeek(); break;
+		case "Get Activities for Week": getActivitiesForWeek(); break;
+		case "Remove Employee": removeEmployee(); break;
 		
 		
 		case "Set Font Size": sys.ui.setFontSize(); break;
@@ -105,17 +109,18 @@ public class Menu {
 		sys.ui.print("Enter initials of new employee:");
 		String initials = sys.ui.next().toUpperCase();
 		Employee employee = new Employee(initials);
-		if (sys.addEmployee(employee)) {
-			if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")){
+		if (sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")) {
+			if(sys.addEmployee(employee)){
 				sys.ui.clear();
 				sys.ui.print("Successfully added employee \"" + initials + "\" to the system.", sys.ui.style[2]);
 			}
 			else{
-				sys.ui.cancel();
+				sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
 			}
 			
 		} else {
-			sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
+			sys.ui.cancel();
+			
 		}
 	}
 	
@@ -153,7 +158,7 @@ public class Menu {
 		}
 	}
 	
-	private void AssignToActivity(){
+	private void assignToActivity(){
 		sys.ui.print("Enter Name or ID of Activity:");
 		String act = sys.ui.next().toUpperCase();
 		Activity a = sys.activityByID(act);
@@ -171,35 +176,80 @@ public class Menu {
 		}
 	}
 	
-	private void setWorkhousForActivityforWeek(){
+	private void setWorkhousForActivityForWeek(){
 		//Gets Activity
-		sys.ui.print("Enter Name or ID of Activity:");
-		String act = sys.ui.next().toUpperCase();
-		Activity a = sys.activityByID(act);
-		if(a == null){
-			a = sys.activityByName(act);
+		Activity a;
+		while(true){
+			sys.ui.print("Enter Name or ID of Activity:");
+			String act = sys.ui.next().toUpperCase();
+			a = sys.activityByID(act);
+			if(a == null){
+				a = sys.activityByName(act);
+			}
+			if(a == null){
+				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
+			}
+			else{
+				break;
+			}
 		}
-		if(a == null){
+		//Gets week
+		int i = -1;
+		while(true){
+			try{
+				sys.ui.print("Enter week within Activity \"" + a.type + "\"");
+				i = Integer.parseInt(sys.ui.next());
+				if(!(i > 0 && i <= 53)){
+					throw new NumberFormatException();
+				}
+				else{
+					break;
+				}
+			} catch(NumberFormatException e){
+				sys.ui.print("Error: Invalid week.", sys.ui.style[3]);
+			}
+		}
+		Week w = sys.getDateServer().getWeek(i);
+		//Gets weekday
+		int j = -1;
+		while(true){
+			try{
+				sys.ui.print("Enter weekday (1-7)");
+				j = Integer.parseInt(sys.ui.next());
+				if(!(j > 0 && j <= 7)){
+					throw new NumberFormatException();
+				}
+				else{
+					break;
+				}
+			} catch(NumberFormatException e){
+				sys.ui.print("Error: Invalid weekday.", sys.ui.style[3]);
+			}
+		}
+		//Gets Hours
+		double d = 0;
+		while(true){
+			try{
+				sys.ui.print("Enter amount of hours of work to to \"" + a.type + "\" in week "+w.getWeek());
+				d = Double.parseDouble(sys.ui.next());
+				if(d <= 0.0){
+					throw new NumberFormatException();
+				}
+				else{
+					break;
+				}
+			} catch(NumberFormatException e){
+				sys.ui.print("Error: Invalid week.", sys.ui.style[3]);
+			}
+		}
+		//Puts it all together
+		if(sys.ui.yesNoQuestion("Are you sure you want to add "+d+" hours to \""+a.type+"\" on weekday "+j+" of week "+w.getWeek()+"?")){
+			currentEmployee.setHours(a, d, w, j);
 			sys.ui.clear();
-			sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
+			sys.ui.print("Successfully added "+d+" hours to \""+a.type+"\" on weekday "+j+" of week "+w.getWeek(), sys.ui.style[2]);
 		}
 		else{
-			//Gets week
-			int i = -1;
-			boolean b = false;
-			while(!b){
-				try{
-					sys.ui.print("Enter week within Activity \"" + a.type + "\"");
-					i = Integer.parseInt(sys.ui.next());
-					b = i > 0 && i <= 53;
-					if(!b){
-						throw new NumberFormatException();
-					}
-				} catch(NumberFormatException e){
-					sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
-				}
-			}
-			Week w = sys.getDateServer().getWeek(i);
+			sys.ui.cancel();
 		}
 	}
 	
@@ -207,8 +257,23 @@ public class Menu {
 		
 	}
 	
-	private void remove(){
-		
+	private void removeEmployee(){
+		sys.ui.print("Enter initials of employee to remove:");
+		String initials = sys.ui.next().toUpperCase();
+		Employee employee = new Employee(initials);
+		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + initials + "\" from the system?")) {
+			if(sys.getEmployeeList().remove(employee)){
+				sys.ui.clear();
+				sys.ui.print("Successfully removed employee \"" + initials + "\" from the system.", sys.ui.style[2]);
+			}
+			else{
+				sys.ui.print("Error: Employee with initials \"" + initials + "\" doesn't exists.", sys.ui.style[3]);
+			}
+			
+		} else {
+			sys.ui.cancel();
+			
+		}
 	}
 	
 	/*
