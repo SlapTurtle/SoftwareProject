@@ -5,7 +5,6 @@ public class Menu {
 	SysApp sys;
 	String header;
 	Menu[] m;
-	Menu currentPrevious;
 	Menu parent;
 	boolean method = false;
 	boolean showHeader;
@@ -29,7 +28,6 @@ public class Menu {
 	}
 	
 	public void show() {
-		currentPrevious = sys.currentMenu;
 		sys.currentMenu = this;
 		if (method == true) { runMethod(); return; }
 		if (m == null) { return; }
@@ -71,133 +69,130 @@ public class Menu {
 	}
 	
 	public void runMethod() {
-		try{
-			String initials;
-			switch (header) {
-			case "Exit": System.exit(0); return;
-			
-			case "Help": sys.ui.help(); break;
-			
-			case "Manage Employee":
-				sys.ui.print("Enter initials of existing employee:");
-				initials = sys.ui.next().toUpperCase();
-				Employee emp = sys.employeeByInitials(initials);
-				if(emp != null){
-					//execute Manage Employee Menu with employee's name.
-					return;
-				}
-				break;
-			
-			case "Add Employee": 
-				sys.ui.print("Enter initials of new employee:");
-				initials = sys.ui.next().toUpperCase();
-				Employee employee = new Employee(initials);
-				if (sys.addEmployee(employee)) {
-					if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")){
-						sys.ui.clear();
-						sys.ui.print("Successfully added employee \"" + initials + "\" to the system.", sys.ui.style[2]);
-					}
-					else{
-						throw new Exception("!cancel");
-					}
-					
-				} else {
-					sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
-				}
-				break;
-				
-			case "Remove Employee": break;
-			case "Set Font Size": sys.ui.setFontSize(); break;
-			
-			case "Add Activity":
-				String name = null;
-				Boolean b;
-				int i;
-				
-				b = false;
-				while(!b){
-					sys.ui.print("Enter name of new Activity:");
-					name = sys.ui.next();
-					/*  does name meet the criteria ?
-					b = (name == acceptable);
-					if(!b) {
-						{sys.ui.print("Error: Invalid name. Please try again:", sys.ui.style[3]);
-				 	}
-				 	*/
-					b = true;
-				}
-				
-				i = -1;
-				b = false;
-				while(!b){
-					try{
-						sys.ui.print("Enter starting week of Activity \"" + name + "\"");
-						i = Integer.parseInt(sys.ui.next());
-						b = i > 0 && i <= 53;
-						if(!b){
-							throw new NumberFormatException();
-						}
-					} catch(NumberFormatException e){
-						sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
-					}
-				}
-				Week start = sys.getDateServer().getWeek(i);
-				
-				i = -1;
-				b = false;
-				while(!b){
-					try{
-						sys.ui.print("Enter ending week of Activity \"" + name + "\"");
-						i = Integer.parseInt(sys.ui.next());
-						b = i > 0 && i <= 53 && start.compareTo(sys.getDateServer().getWeek(i)) <= 0;
-						if(!b){
-							throw new NumberFormatException();
-						}
-					} catch(NumberFormatException e){
-						sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
-					}
-				}
-				Week end = sys.getDateServer().getWeek(i);
-				
-				Activity A = new Activity(String.valueOf(sys.getIDCount()), start, end);
-				A.type = name; //A.setType(name);
-				if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + A.type + "\" to the system?")){
-					if(sys.addActicity(A)){
-						sys.ui.clear();
-						sys.ui.print("Successfully added Activity \"" + name + "\" to the system.", sys.ui.style[2]);
-					}
-					else{
-						sys.ui.print("Error: Invalid Activity. Please try again:", sys.ui.style[3]);
-					}
+		String initials;
+		switch (header) {
+		case "Exit": System.exit(0); return;
+		
+		case "Help": sys.ui.help(); break;
+		
+		case "Manage Employee":
+			sys.ui.print("Enter initials of existing employee:");
+			initials = sys.ui.next().toUpperCase();
+			Employee emp = sys.employeeByInitials(initials);
+			if(emp != null){
+				//execute Manage Employee Menu with employee's name.
+				return;
+			}
+			break;
+		
+		case "Add Employee": 
+			sys.ui.print("Enter initials of new employee:");
+			initials = sys.ui.next().toUpperCase();
+			Employee employee = new Employee(initials);
+			if (sys.addEmployee(employee)) {
+				if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")){
+					sys.ui.clear();
+					sys.ui.print("Successfully added employee \"" + initials + "\" to the system.", sys.ui.style[2]);
 				}
 				else{
-					throw new Exception("!cancel");
+					sys.ui.cancel();
 				}
-				break;
 				
-			/*case "Manage Project": break;
-			case "Add Activity": break;
-			case "Show Logs": break;*/
-				
-			default: sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
+			} else {
+				sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
+			}
+			break;
+			
+		case "Remove Employee": break;
+		case "Set Font Size": sys.ui.setFontSize(); break;
+		
+		case "Add Activity":
+			String name = null;
+			Boolean b;
+			int i;
+			
+			b = false;
+			while(!b){
+				sys.ui.print("Enter name of new Activity:");
+				name = sys.ui.next();
+				/*  does name meet the criteria ?
+				b = (name == acceptable);
+				if(!b) {
+					{sys.ui.print("Error: Invalid name. Please try again:", sys.ui.style[3]);
+			 	}
+			 	*/
+				b = true;
 			}
 			
-		} catch (Exception e){
-			switch (e.getMessage()){
-			case "!cancel":
-				sys.ui.clear();
-				sys.ui.print("Action canceled", sys.ui.style[5]);
-				break;
-				
-			case "!restart":
-				sys.ui.print("Action restarted", sys.ui.style[5]);
-				runMethod();
-				return;
-				
-			default: sys.ui.print("Error: Unidentified Error, "+e.getMessage()+", performed.", sys.ui.style[3]); break;
+			i = -1;
+			b = false;
+			while(!b){
+				try{
+					sys.ui.print("Enter starting week of Activity \"" + name + "\"");
+					i = Integer.parseInt(sys.ui.next());
+					b = i > 0 && i <= 53;
+					if(!b){
+						throw new NumberFormatException();
+					}
+				} catch(NumberFormatException e){
+					sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
+				}
 			}
+			Week start = sys.getDateServer().getWeek(i);
+			
+			i = -1;
+			b = false;
+			while(!b){
+				try{
+					sys.ui.print("Enter ending week of Activity \"" + name + "\"");
+					i = Integer.parseInt(sys.ui.next());
+					b = i > 0 && i <= 53 && start.compareTo(sys.getDateServer().getWeek(i)) <= 0;
+					if(!b){
+						throw new NumberFormatException();
+					}
+				} catch(NumberFormatException e){
+					sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
+				}
+			}
+			Week end = sys.getDateServer().getWeek(i);
+			
+			Activity A = new Activity(String.valueOf(sys.getIDCount()), start, end);
+			A.type = name; //A.setType(name);
+			if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + A.type + "\" to the system?")){
+				if(sys.addActicity(A)){
+					sys.ui.clear();
+					sys.ui.print("Successfully added Activity \"" + name + "\" to the system.", sys.ui.style[2]);
+				}
+				else{
+					sys.ui.print("Error: Invalid Activity. Please try again:", sys.ui.style[3]);
+				}
+			}
+			else{
+				sys.ui.cancel();
+			}
+			break;
+			
+		/*case "Manage Project": break;
+		case "Add Activity": break;
+		case "Show Logs": break;*/
+			
+		default: sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
 		}
-		parent.show();
+		
+	/*} catch (Exception e){
+		switch (e.getMessage()){
+		case "!cancel":
+			sys.ui.clear();
+			sys.ui.print("Action canceled.", sys.ui.style[3]);
+			break;
+			
+		case "!restart":
+			sys.ui.print("Action restarted.", sys.ui.style[3]);
+			runMethod();
+			return;
+			
+		default: sys.ui.print("Error: Unidentified Error, "+e.getMessage()+", performed.", sys.ui.style[3]); break;
+		}*/
 	}
 	
 }

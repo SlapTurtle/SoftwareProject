@@ -44,15 +44,20 @@ public class InputField{
 		});
 	}
 	
-	public boolean redirectInput() {
+	public void redirectInput() {
 		String msg = obj.getText();
+		boolean b = false;
 		switch (msg) {
-		case "help": sys.ui.help(); break;
-		case "clear": sys.ui.clear(); break;
-		default: sys.ui.print(msg, sys.ui.style[1]); break;
+		case "!help": sys.ui.help(); break;
+		case "!clear": sys.ui.clear(); break;
+		case "!cancel": sys.ui.cancel(); break;
+		default:
+			sys.ui.print(msg, sys.ui.style[1]);
+			b = true;
+			processEvent(new InputEvent(obj.getText()));
+			break;
 		}
-		processEvent(new InputEvent(obj.getText()));
-		return true;
+		if (!b) { sys.ui.input.obj.setText(""); }
 	}
 	
 	public synchronized void constructListener(InputListener listener) {
