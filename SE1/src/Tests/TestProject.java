@@ -11,14 +11,20 @@ import project.Week;
 
 public class TestProject extends TestBasis{
 	
-	@Test
+	@Test 
 	public void Project() throws Exception{ //TODO Handle Exception on Week
+		//Test add project
 		Project makeCastle = new Project(sysApp, "Build a Castle", new Week(2017, 5), new Week(2017, 6), new Week(2017, 7));
 		Project makeFort = new Project(sysApp, "Build a Castle", new Week(2017, 5), new Week(2017, 6), new Week(2017, 7));
+		assertTrue(makeCastle.budget==0); //Checks that project is created and that budget is set to 0.
+		
 		//Test addEmployee - UseCase 4
 		Employee timHansson = new Employee("TIHAN");
 		makeCastle.addEmployee(timHansson);
 		assertTrue(makeCastle.findEmployee(timHansson));
+		
+		//Test addActiviy
+		//Activity gatherStones();
 		
 		//Test UniqueID
 		assertEquals(makeCastle.checkUniqueID(),"ID4"); //3 project created earlier
