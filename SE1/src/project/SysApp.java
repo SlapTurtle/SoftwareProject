@@ -248,5 +248,20 @@ public class SysApp {
 			}
 		return null;
 	}
+
+	public Project projectByName(String project) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Activity activityByID(String act) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Activity activityByName(String act) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

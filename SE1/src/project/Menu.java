@@ -1,11 +1,16 @@
 package project;
 
+import java.util.ArrayList;
+
 public class Menu {
 
 	SysApp sys;
 	String header;
 	Menu[] m;
 	Menu parent;
+	Project currentProject;
+	Activity currentActivity;
+	Employee currentEmployee;
 	boolean method = false;
 	boolean showHeader;
 	boolean returnOption;
@@ -75,35 +80,13 @@ public class Menu {
 		
 		case "Help": sys.ui.help(); break;
 		
-		case "Manage Employee":
-			sys.ui.print("Enter initials of existing employee:");
-			initials = sys.ui.next().toUpperCase();
-			Employee emp = sys.employeeByInitials(initials);
-			if(emp != null){
-				//execute Manage Employee Menu with employee's name.
-				return;
-			}
-			break;
+
 		
-		case "Add Employee": 
-			sys.ui.print("Enter initials of new employee:");
-			initials = sys.ui.next().toUpperCase();
-			Employee employee = new Employee(initials);
-			if (sys.addEmployee(employee)) {
-				if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")){
-					sys.ui.clear();
-					sys.ui.print("Successfully added employee \"" + initials + "\" to the system.", sys.ui.style[2]);
-				}
-				else{
-					sys.ui.cancel();
-				}
-				
-			} else {
-				sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
-			}
-			break;
-			
+		case "Add Employee": addEmployee(); break;
+		case "Manage Employee": manageEmployee(); break;
 		case "Remove Employee": break;
+		
+		
 		case "Set Font Size": sys.ui.setFontSize(); break;
 		
 		case "Add Activity":
@@ -194,5 +177,95 @@ public class Menu {
 		default: sys.ui.print("Error: Unidentified Error, "+e.getMessage()+", performed.", sys.ui.style[3]); break;
 		}*/
 	}
+
+	/*
+	 *  EMPLOYEE MENUES
+	 */
 	
+	private void addEmployee(){
+		sys.ui.print("Enter initials of new employee:");
+		String initials = sys.ui.next().toUpperCase();
+		Employee employee = new Employee(initials);
+		if (sys.addEmployee(employee)) {
+			if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")){
+				sys.ui.clear();
+				sys.ui.print("Successfully added employee \"" + initials + "\" to the system.", sys.ui.style[2]);
+			}
+			else{
+				sys.ui.cancel();
+			}
+			
+		} else {
+			sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
+		}
+	}
+	
+	private void manageEmployee(){
+		sys.ui.print("Enter initials of employee to manage:");
+		String initials = sys.ui.next().toUpperCase();
+		Employee e = sys.employeeByInitials(initials);
+		if(e == null){
+			sys.ui.clear();
+			sys.ui.print("Error: Employee with initials \"" + initials + "\" dosen't exist.", sys.ui.style[3]);
+		}
+		else{
+			//Menu manageEmployee = sys.menus.get("MANAGE EMPLOYEE MENU!")
+			Menu manageEmployee = sys.mainmenu;
+			manageEmployee.currentEmployee = e;
+			manageEmployee.show();
+		}
+	}
+	
+	private void assignToProject(){
+		sys.ui.print("Enter Name or ID of Project:");
+		String project = sys.ui.next().toUpperCase();
+		Project p = sys.projectByID(project);
+		if(p == null){
+			p = sys.projectByName(project);
+		}
+		if(p == null){
+			sys.ui.clear();
+			sys.ui.print("Error: Project with ID or Name \"" + project + "\" dosen't exist.", sys.ui.style[3]);
+		}
+		else{
+			p.addEmployee(currentEmployee);
+			currentEmployee.assignProject(p);
+			sys.ui.print("Successfully added \"" + currentEmployee.getInitials() + "\" to \""+ project +"\"", sys.ui.style[2]);
+		}
+	}
+	
+	private void AssignToActivity(){
+		sys.ui.print("Enter Name or ID of Activity:");
+		String act = sys.ui.next().toUpperCase();
+		Activity a = sys.activityByID(act);
+		if(a == null){
+			a = sys.activityByName(act);
+		}
+		if(a == null){
+			sys.ui.clear();
+			sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
+		}
+		else{
+			a.assignEmployee(currentEmployee);
+			currentEmployee.assignActivity(a);
+			sys.ui.print("Successfully added \"" + currentEmployee.getInitials() + "\" to \""+ act +"\"", sys.ui.style[2]);
+		}
+	}
+	
+	private void setWorkhousForActivityforWeek(){
+		
+	}
+	
+	private void getActivitiesForWeek(){
+		
+	}
+	
+	private void remove(){
+		
+	}
+	
+	/*
+	 * END OG EMPLOYEE MENUES
+	 */
+
 }
