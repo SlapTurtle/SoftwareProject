@@ -48,6 +48,7 @@ public class InputField{
 		String msg = obj.getText();
 		boolean b = false;
 		switch (msg) {
+		case "!exit": System.exit(0);
 		case "!help": sys.ui.help(); break;
 		case "!clear": sys.ui.clear(); break;
 		default:

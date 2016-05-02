@@ -161,13 +161,11 @@ public class UserInterface {
 	}
 	
 	public void help() {
-		clear();
 		print("Available Commands", style[4]);
 		print("\"!help\" - displays a list of commands");
 		print("\"!clear\" - clears the console");
 		print("\"!exit\" - terminates the current session");
 		print("\"!cancel\" - cancels the current action");
-		print("\"!restart\" - restart the current action");
 	}
 	
 	public void cancel() {

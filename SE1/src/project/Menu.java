@@ -77,15 +77,19 @@ public class Menu {
 		String initials;
 		switch (header) {
 		case "Exit": System.exit(0); return;
-		case "Help": sys.ui.help(); break;		
+		case "Help": sys.ui.help(); break;
+		// Employee
 		case "Add Employee": addEmployee(); break;
 		case "Manage Employee": manageEmployee(); break;
+		case "Remove Employee": removeEmployee(); break;
+		// Project
 		case "Assign To Project": assignToProject(); break;
+		case "Manage Project": manageProject(); break;
+		// Activity
 		case "Assign To Activity": assignToActivity(); break;
 		case "Set Work Hours For Activities For Week": setWorkhousForActivityForWeek(); break;
 		case "Get Activities for Week": getActivitiesForWeek(); break;
-		case "Remove Employee": removeEmployee(); break;
-		case "Manage Project": manageProject(); break;
+		// Other
 		case "Set Font Size": sys.ui.setFontSize(); break;
 		case "Show Logs": ShowFuckingLogs(); break;
 		default: break;
