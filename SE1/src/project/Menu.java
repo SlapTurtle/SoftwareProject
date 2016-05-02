@@ -1,7 +1,5 @@
 package project;
 
-import java.util.ArrayList;
-
 public class Menu {
 
 	SysApp sys;
@@ -80,10 +78,38 @@ public class Menu {
 		
 		case "Help": sys.ui.help(); break;
 		
-
+		case "Manage Employee":
+			sys.ui.print("Enter initials of existing employee:");
+			initials = sys.ui.next().toUpperCase();
+			Employee emp = sys.employeeByInitials(initials);
+			if(emp != null){
+				//execute Manage Employee Menu with employee's name.
+				return;
+			}
+			break;
 		
-		case "Add Employee": addEmployee(); break;
-		case "Manage Employee": manageEmployee(); break;
+		case "Add Employee":
+			sys.ui.print("Enter initials of new employee:");
+			try {
+				initials = sys.ui.next(true).toUpperCase();
+			} catch (ActionCancelledException e1) {
+				return;
+			}
+			Employee employee = new Employee(initials);
+			if (sys.addEmployee(employee)) {
+				if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")){
+					sys.ui.clear();
+					sys.ui.print("Successfully added employee \"" + initials + "\" to the system.", sys.ui.style[2]);
+				}
+				else{
+					sys.ui.cancel();
+				}
+				
+			} else {
+				sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
+			}
+			break;
+			
 		case "Remove Employee": break;
 		
 		
@@ -154,27 +180,25 @@ public class Menu {
 				sys.ui.cancel();
 			}
 			break;
-	
+			
+		/*case "Manage Project": break;
+		case "Add Activity": break;
+		case "Show Logs": break;*/
+			
 		default: sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
 		}
-	}
-
-	/*
-	 *  EMPLOYEE MENUES
-	 */
-	
-	private void addEmployee(){
-		sys.ui.print("Enter initials of new employee:");
-		String initials = sys.ui.next().toUpperCase();
-		Employee employee = new Employee(initials);
-		if (sys.addEmployee(employee)) {
-			if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")){
-				sys.ui.clear();
-				sys.ui.print("Successfully added employee \"" + initials + "\" to the system.", sys.ui.style[2]);
-			}
-			else{
-				sys.ui.cancel();
-			}
+		
+	/*} catch (Exception e){
+		switch (e.getMessage()){
+		case "!cancel":
+			sys.ui.clear();
+			sys.ui.print("Action canceled.", sys.ui.style[3]);
+			break;
+			
+		case "!restart":
+			sys.ui.print("Action restarted.", sys.ui.style[3]);
+			runMethod();
+			return;
 			
 		} else {
 			sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
@@ -249,4 +273,5 @@ public class Menu {
 	 * END OG EMPLOYEE MENUES
 	 */
 
+	}
 }
