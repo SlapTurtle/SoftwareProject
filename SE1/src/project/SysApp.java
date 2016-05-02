@@ -16,8 +16,8 @@ public class SysApp {
 	private DateServer dateServer = new DateServer();
 	private Employee currentUser = null;
 	private File systemLog = new File("systemLog");
-	private int pIDcount = 0;
 	private int aIDcount = 0;
+	private int pIDcount = 0;
 	public Menu currentMenu;
 	public Menu mainmenu;
 	public ArrayList<Menu> menus = new ArrayList<Menu>();
@@ -26,7 +26,6 @@ public class SysApp {
 	public ArrayList<Menu> menuActMng = new ArrayList<Menu>();
 	
 	public SysApp() {
-		
 		ui = new UserInterface(this);
 		addEmployee("admin");
 		ui.print("Welcome. Please enter your initials to proceed:", ui.style[6]);
@@ -34,9 +33,10 @@ public class SysApp {
 			try {
 				loginUI(ui.next());
 			} catch (Exception e) {
-				ui.print("Error: No Actions are allowed until after login is performed", ui.style[3]);
+				ui.print("Error: Action denied. Please try again:", ui.style[3]);
 			}
 		}
+		
 		menuEmpMng.add(new Menu(this, "Assign to Project"));
 		menuEmpMng.add(new Menu(this, "Assign to Activity"));
 		menuEmpMng.add(new Menu(this, "Set Work Hours for Activity By Week"));
@@ -65,6 +65,11 @@ public class SysApp {
 		menuActMng.add(new Menu(this, "Set Time Budget"));
 		menuActMng.add(new Menu(this, "Remove Activity"));
 		
+		menus.add(new Menu(this, "Add Employee")); // 0
+		menus.add(new Menu(this, "Manage Employee"));
+		menus.add(new Menu(this, "Manage Employee", menuEmpMng.toArray(new Menu[menuEmpMng.size()]), true, true));
+		menus.add(new Menu(this, "Get All Employees"));
+		menus.add(new Menu(this, "Add Project")); // 4
 		menus.add(new Menu(this, "Manage Project"));
 		menus.add(new Menu(this, "Manage Project", menuPrjMng.toArray(new Menu[menuPrjMng.size()]), true, true));
 		menus.add(new Menu(this, "Get All Projects"));
