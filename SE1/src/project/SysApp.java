@@ -30,12 +30,12 @@ public class SysApp {
 			try {
 				loginUI(ui.next());
 			} catch (Exception e) {
-				ui.print("Error: No Actions are allowed until after login is performed", ui.style[3]);
+				ui.print("Error: Action denied. Please try again:", ui.style[3]);
 			}
 		}
-		menus.add(new Menu(this, "Manage Employee"));	//0
-		menus.add(new Menu(this, "Add Employee")); 		//1
-		menus.add(new Menu(this, "Remove Employee"));	//2
+		menus.add(new Menu(this, "Add Employee")); 		//0
+		menus.add(new Menu(this, "Remove Employee"));	//1
+		menus.add(new Menu(this, "Manage Employee"));	//2
 		menus.add(new Menu(this, "Add Project"));		//3
 		menus.add(new Menu(this, "Manage Project"));	//4
 		menus.add(new Menu(this, "Add Activity"));		//5
@@ -73,13 +73,6 @@ public class SysApp {
 				//ERROR in creating new File
 				e.printStackTrace();
 			}
-		}*/
-		/*
-		Employee e = new Employee("BRIAN");
-		addEmployee("BRIAN");
-		while (true) {
-			ui.print("Attempting to log in as \"" + ui.next() + "\".");
-			ui.print("Error: No employee with such initials. Please try again:", ui.style[3]);
 		}
 	}*/
 

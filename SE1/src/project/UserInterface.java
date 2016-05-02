@@ -24,17 +24,14 @@ public class UserInterface {
 		new MessageStyle(Font.PLAIN, Color.BLACK, Color.GREEN.brighter()), // Green notification
 		new MessageStyle(Font.PLAIN, Color.WHITE, Color.RED), // Error message
 		new MessageStyle(Font.BOLD, Color.WHITE, Color.BLUE.darker()), //header
-		new MessageStyle(Font.PLAIN, Color.WHITE, Color.GREEN.darker()) //information
-	};
-	public String[] actionbreakers = {
-			"!cancel",
-			"!restart"
+		new MessageStyle(Font.PLAIN, Color.BLACK, Color.yellow.brighter()) //information
 	};
 	public String latestInput = "";
 	public final Object lock = new Object();
 	private boolean wakeUp = false;
 	
 	public UserInterface(SysApp sys) {
+		this.sys = sys;
 		dim.height -= 100;
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(0, 0, dim.width, dim.height);
@@ -85,20 +82,28 @@ public class UserInterface {
 		}
 	}
 	
-	public String next() throws Exception{
+	public String next() {
 		synchronized(lock) {
 			while (!wakeUp) {
 				try {
 					lock.wait();
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) { }
 			}
 		}
 		wakeUp = false;
-		for(String s : actionbreakers){
-			if (s.equals(latestInput)){
-				throw new Exception(latestInput.toLowerCase());
+		return latestInput;
+	}
+	
+	public String next(boolean b) throws ActionCancelledException {
+		synchronized(lock) {
+			while (!wakeUp) {
+				try {
+					lock.wait();
+				} catch (InterruptedException e) { }
 			}
 		}
+		wakeUp = false;
+		if (latestInput.toLowerCase().equals("!cancel")) { throw new ActionCancelledException(sys); }
 		return latestInput;
 	}
 	
@@ -107,7 +112,7 @@ public class UserInterface {
 		return wakeUp;
 	}
 	
-	public void setFontSize() throws Exception {
+	public void setFontSize() {
 		print("Enter your desired new font size:");
 		while (true) {
 			String s = next();
@@ -130,23 +135,29 @@ public class UserInterface {
 	public void help() {
 		clear();
 		print("Available Commands", style[4]);
-		print("\"help\" - displays a list of commands");
-		print("\"clear\" - clears the console");
-		print("\"exit\" - terminates the current session");
+		print("\"!help\" - displays a list of commands");
+		print("\"!clear\" - clears the console");
+		print("\"!exit\" - terminates the current session");
 		print("\"!cancel\" - cancels the current action");
 		print("\"!restart\" - restart the current action");
 	}
 	
-	public boolean yesNoQuestion(String message) throws Exception{
-		print(message + " (yes / no)");
+	public void cancel() {
+		clear();
+		print("Action has been cancelled.", style[3]);
+		sys.currentMenu.parent.show();
+	}
+	public boolean yesNoQuestion(String message){
+		print(message + " (y / n)", style[5]);
 		while(true){
-			String s = this.next();
+			String s = next();
 			if(s.equals("y") || s.equals("yes")){
 				return true;
 			}
 			else if(s.equals("n") || s.equals("no")){
 				return false;
 			}
+			print("Error: Invalid input. Please try again:", style[3]);
 		}
 	}
 	
