@@ -36,7 +36,7 @@ public class Activity {
 		}
 	}
 	
-	public boolean assignEmploye(Employee employee) {
+	public boolean assignEmployee(Employee employee) {
 		
 		if (employee!=null && !employeelist.contains(employee)) {
 			employeelist.add(employee);
