@@ -17,7 +17,8 @@ public class SysApp {
 	private DateServer dateServer = new DateServer();
 	private Employee currentUser = null;
 	private File systemLog = new File("systemLog");
-	private int ID_Count = 0;
+	private int pIDcount = 0;
+	private int aIDcount = 0;
 	public Menu currentMenu;
 	public Menu mainmenu;
 	public ArrayList<Menu> menus = new ArrayList<Menu>();
@@ -48,7 +49,7 @@ public class SysApp {
 		menuEmpMng.add(new Menu(this, "Remove Employee"));
 		
 		menus.add(new Menu(this, "Add Employee")); 		//0
-		menus.add(new Menu(this, "Manage Employee"));	// 1
+		menus.add(new Menu(this, "Manage Employee"));	//1
 		menus.add(new Menu(this, "Manage Employee", menuEmpMng.toArray(new Menu[menuEmpMng.size()]), true, true));	//1
 		menus.add(new Menu(this, "Get All Employees"));	//2
 		menus.add(new Menu(this, "Add Project"));		//3
@@ -252,12 +253,13 @@ public class SysApp {
 	}
 	
 	//ID counters for project and activity
-	private void incrementIDCount() {
-		ID_Count++;
+	public int getPcount(){
+		pIDcount++;
+		return pIDcount;	
 	}
-	public int getIDCount(){
-		incrementIDCount();
-		return ID_Count;	
+	public int getAcount(){
+		aIDcount++;
+		return aIDcount;	
 	}
 	
 	//Method to get a project by its ID.

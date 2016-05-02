@@ -46,9 +46,9 @@ public class TestBasis {
 		p2 = new Project(sysApp, "Project2", week1, week2, week3);
 		p3 = new Project(sysApp, "Project3", week1, week2, week3);
 		
-		a1 = new Activity("Activity01", week1, week3);
-		a2 = new Activity("Activity02", week3, week3);
-		a3 = new Activity("Activity03", week2, week3);
+		a1 = new Activity(sysApp, "Activity01", week1, week3);
+		a2 = new Activity(sysApp, "Activity02", week3, week3);
+		a3 = new Activity(sysApp, "Activity03", week2, week3);
 		
 		e1 = new Employee("AAAA");
 		e2 = new Employee("BBBB");

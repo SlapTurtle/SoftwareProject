@@ -27,6 +27,7 @@ public class TestProject extends TestBasis{
 		//Activity gatherStones();
 		
 		//Test UniqueID
+		System.out.println(makeCastle.checkUniqueID());
 		assertEquals(makeCastle.checkUniqueID(),"ID4"); //3 project created earlier
 		assertEquals(makeFort.checkUniqueID(),"ID5");   //4 project created earlier
 		

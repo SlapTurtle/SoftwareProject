@@ -19,11 +19,12 @@ public class Activity {
 	
 	// -------- Sets the activity ID and planed work weeks ----
 	
-	public Activity(String name, Week startWeek, Week endWeek) {
+	public Activity(SysApp sysApp, String name, Week startWeek, Week endWeek) {
+		this.sysApp = sysApp;
 		this.name = name;
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
-		this.activityID = "0"; 
+		this.activityID = setUniqueID();
 	}
 	
 	//ID counter implemented in SysApp
@@ -39,6 +40,15 @@ public class Activity {
 		return this.activityID;
 	}
 	*/
+	private String setUniqueID() {
+		String newID = "ID" + sysApp.getAcount();
+		return newID;
+	}
+	
+	public String checkUniqueID() {
+		return this.activityID;
+	}
+	
 	
 	//Makes it possible to extend the end week.
 	public void setEndWeek(Week endweek){
