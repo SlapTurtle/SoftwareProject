@@ -1,5 +1,7 @@
 package project;
 
+import java.util.ArrayList;
+
 public class Menu {
 
 	SysApp sys;
@@ -253,6 +255,7 @@ public class Menu {
 			sys.ui.print("Successfully added "+d+" hours to \""+a.type+"\" on weekday "+j+" of week "+w.getWeek(), sys.ui.style[2]);
 		}
 		else{
+			sys.ui.clear();
 			sys.ui.cancel();
 		}
 	}
@@ -274,6 +277,13 @@ public class Menu {
 			}
 		}
 		Week w = sys.getDateServer().getWeek(i);
+		ArrayList<Activity> a_list = currentEmployee.getWeeklyActivities(w);
+		ArrayList<String> list = new ArrayList<String>();
+		for(Activity a : a_list){
+			String s = a.type + " : " + currentEmployee.getWorkHours(a, w)+" hours";
+			list.add(s);
+		}
+		NicklasDisplayMedSideSkift(list);
 	}
 	
 	private void removeEmployee(){
@@ -290,8 +300,8 @@ public class Menu {
 			}
 			
 		} else {
+			sys.ui.clear();
 			sys.ui.cancel();
-			
 		}
 	}
 	
@@ -363,6 +373,7 @@ public class Menu {
 			}
 		}
 		else{
+			sys.ui.clear();
 			sys.ui.cancel();
 		}
 	}
