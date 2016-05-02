@@ -75,7 +75,6 @@ public class Menu {
 		String initials;
 		switch (header) {
 		case "Exit": System.exit(0); return;
-<<<<<<< HEAD
 		case "Help": sys.ui.help(); break;		
 		case "Add Employee": addEmployee(); break;
 		case "Manage Employee": manageEmployee(); break;
@@ -85,123 +84,10 @@ public class Menu {
 		case "Get Activities for Week": getActivitiesForWeek(); break;
 		case "Remove Employee": removeEmployee(); break;
 		case "Manage Project": manageProject(); break;
-=======
 		
-		case "Help": sys.ui.help(); break;
-		
-		case "Manage Employee":
-			sys.ui.print("Enter initials of existing employee:");
-			initials = sys.ui.next().toUpperCase();
-			Employee emp = sys.employeeByInitials(initials);
-			if(emp != null){
-				//execute Manage Employee Menu with employee's name.
-				return;
-			}
-			break;
-		
-		case "Add Employee":
-			sys.ui.print("Enter initials of new employee:");
-			try {
-				initials = sys.ui.next(true).toUpperCase();
-			} catch (ActionCancelledException e1) {
-				return;
-			}
-			Employee employee = new Employee(initials);
-			if (sys.addEmployee(employee)) {
-				if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")){
-					sys.ui.clear();
-					sys.ui.print("Successfully added employee \"" + initials + "\" to the system.", sys.ui.style[2]);
-				}
-				else{
-					sys.ui.cancel();
-				}
-				
-			} else {
-				sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
-			}
-			break;
-			
-		case "Remove Employee": break;
-		
-		
->>>>>>> branch 'master' of https://github.com/SlapTurtle/SoftwareProject
-		case "Set Font Size": sys.ui.setFontSize(); break;
-<<<<<<< HEAD
-		case "Add Activity": addActivity();break;
-	
-=======
-		
-		case "Add Activity":
-			String name = null;
-			Boolean b;
-			int i;
-			
-			b = false;
-			while(!b){
-				sys.ui.print("Enter name of new Activity:");
-				name = sys.ui.next();
-				/*  does name meet the criteria ?
-				b = (name == acceptable);
-				if(!b) {
-					{sys.ui.print("Error: Invalid name. Please try again:", sys.ui.style[3]);
-			 	}
-			 	*/
-				b = true;
-			}
-			
-			i = -1;
-			b = false;
-			while(!b){
-				try{
-					sys.ui.print("Enter starting week of Activity \"" + name + "\"");
-					i = Integer.parseInt(sys.ui.next());
-					b = i > 0 && i <= 53;
-					if(!b){
-						throw new NumberFormatException();
-					}
-				} catch(NumberFormatException e){
-					sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
-				}
-			}
-			Week start = sys.getDateServer().getWeek(i);
-			
-			i = -1;
-			b = false;
-			while(!b){
-				try{
-					sys.ui.print("Enter ending week of Activity \"" + name + "\"");
-					i = Integer.parseInt(sys.ui.next());
-					b = i > 0 && i <= 53 && start.compareTo(sys.getDateServer().getWeek(i)) <= 0;
-					if(!b){
-						throw new NumberFormatException();
-					}
-				} catch(NumberFormatException e){
-					sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
-				}
-			}
-			Week end = sys.getDateServer().getWeek(i);
-			
-			Activity A = new Activity(sys, String.valueOf(sys.getAcount()), start, end);
-			A.type = name; //A.setType(name);
-			if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + A.type + "\" to the system?")){
-				if(sys.addActicity(A)){
-					sys.ui.clear();
-					sys.ui.print("Successfully added Activity \"" + name + "\" to the system.", sys.ui.style[2]);
-				}
-				else{
-					sys.ui.print("Error: Invalid Activity. Please try again:", sys.ui.style[3]);
-				}
-			}
-			else{
-				sys.ui.cancel();
-			}
-			break;
-			
 		/*case "Manage Project": break;
 		case "Add Activity": break;
 		case "Show Logs": break;*/
-			
->>>>>>> branch 'master' of https://github.com/SlapTurtle/SoftwareProject
 		default: sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
 		}
 		parent.show();
@@ -221,7 +107,6 @@ public class Menu {
 			manageProject.currentProject = p;
 			manageProject.show();
 		}
-<<<<<<< HEAD
 	}
 
 	/*
@@ -240,24 +125,6 @@ public class Menu {
 				sys.ui.clear();
 				sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
 			}
-=======
-		
-	/*} catch (Exception e){
-		switch (e.getMessage()){
-		case "!cancel":
-			sys.ui.clear();
-			sys.ui.print("Action canceled.", sys.ui.style[3]);
-			break;
-			
-		case "!restart":
-			sys.ui.print("Action restarted.", sys.ui.style[3]);
-			runMethod();
-			return;
->>>>>>> branch 'master' of https://github.com/SlapTurtle/SoftwareProject
-			
-		} else {
-			sys.ui.cancel();
-			
 		}
 	}
 	
@@ -431,8 +298,6 @@ public class Menu {
 	/*
 	 * END OF EMPLOYEE MENUES
 	 */
-
-<<<<<<< HEAD
 	
 	/*
 	 * ACTVITY MENUES
@@ -487,8 +352,7 @@ public class Menu {
 		}
 		Week end = sys.getDateServer().getWeek(i);
 		
-		Activity A = new Activity(String.valueOf(sys.getIDCount()), start, end);
-		A.type = name;
+		Activity A = new Activity(sys, name, start, end);
 		if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + A.type + "\" to the system?")){
 			if(sys.addActicity(A)){
 				sys.ui.clear();
@@ -501,7 +365,5 @@ public class Menu {
 		else{
 			sys.ui.cancel();
 		}
-=======
->>>>>>> branch 'master' of https://github.com/SlapTurtle/SoftwareProject
 	}
 }
