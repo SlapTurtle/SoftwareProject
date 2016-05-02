@@ -65,14 +65,14 @@ public class Project {
 	}
 	//ID counter implemented in SysApp
 	private String setUniqueID() {
-		String newID = "ID" + sysApp.getIDCount();
-		System.out.println(newID);
+		String newID = "ID" + sysApp.getPcount();
 		return newID;
 	}
 	
 	public String checkUniqueID() {
 		return this.projectID;
 	}
+	
 	
 	public boolean setReportComment(Week w){
 		

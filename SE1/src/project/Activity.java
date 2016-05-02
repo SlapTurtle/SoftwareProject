@@ -1,14 +1,14 @@
 package project;
 
 import java.util.List;
-
 public class Activity {
 	
 	public Activity(String name){
 		
 	}
-	private String ID;
-	//private SysApp sysapp;
+	private String name;
+	private String activityID;
+	private SysApp sysApp;
 	public Week startWeek; 
 	public Week endWeek;	
 	public List<Employee> employeelist;
@@ -19,15 +19,36 @@ public class Activity {
 	
 	// -------- Sets the activity ID and planed work weeks ----
 	
-	public Activity(String ID, Week startWeek, Week endWeek) {
-		this.ID = ID;
+	public Activity(SysApp sysApp, String name, Week startWeek, Week endWeek) {
+		this.sysApp = sysApp;
+		this.name = name;
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
+		this.activityID = setUniqueID();
 	}
 	
-	public String getID() {
-		return this.ID;
+	//ID counter implemented in SysApp
+	/*private String setUniqueID() {
+		System.out.println("hello");
+		int ID = sysApp.getaIDCount();
+		System.out.println("man");
+		String newID = "ID" + ID;
+		return newID;
 	}
+	
+	public String checkUniqueID() {
+		return this.activityID;
+	}
+	*/
+	private String setUniqueID() {
+		String newID = "ID" + sysApp.getAcount();
+		return newID;
+	}
+	
+	public String checkUniqueID() {
+		return this.activityID;
+	}
+	
 	
 	//Makes it possible to extend the end week.
 	public void setEndWeek(Week endweek){

@@ -16,7 +16,8 @@ public class SysApp {
 	private DateServer dateServer = new DateServer();
 	private Employee currentUser = null;
 	private File systemLog = new File("systemLog");
-	private int ID_Count = 0;
+	private int pIDcount = 0;
+	private int aIDcount = 0;
 	public Menu currentMenu;
 	public Menu mainmenu;
 	public ArrayList<Menu> menus = new ArrayList<Menu>();
@@ -25,6 +26,7 @@ public class SysApp {
 	public ArrayList<Menu> menuActMng = new ArrayList<Menu>();
 	
 	public SysApp() {
+		
 		ui = new UserInterface(this);
 		addEmployee("admin");
 		ui.print("Welcome. Please enter your initials to proceed:", ui.style[6]);
@@ -32,9 +34,12 @@ public class SysApp {
 			try {
 				loginUI(ui.next());
 			} catch (Exception e) {
-				ui.print("Error: Action denied. Please try again:", ui.style[3]);
+				ui.print("Error: No Actions are allowed until after login is performed", ui.style[3]);
 			}
 		}
+		menus.add(new Menu(this, "Manage Employee"));	//0
+		menus.add(new Menu(this, "Add Employee")); 		//1
+		menus.add(new Menu(this, "Remove Employee"));	//2
 		
 		menuEmpMng.add(new Menu(this, "Assign to Project"));
 		menuEmpMng.add(new Menu(this, "Assign to Activity"));
@@ -56,7 +61,7 @@ public class SysApp {
 		
 		
 		menus.add(new Menu(this, "Add Employee")); 		//0
-		menus.add(new Menu(this, "Manage Employee"));	// 1
+		menus.add(new Menu(this, "Manage Employee"));	//1
 		menus.add(new Menu(this, "Manage Employee", menuEmpMng.toArray(new Menu[menuEmpMng.size()]), true, true));	//1
 		menus.add(new Menu(this, "Get All Employees"));	//2
 		menus.add(new Menu(this, "Add Project"));		//3
@@ -100,6 +105,13 @@ public class SysApp {
 				//ERROR in creating new File
 				e.printStackTrace();
 			}
+		}*/
+		/*
+		Employee e = new Employee("BRIAN");
+		addEmployee("BRIAN");
+		while (true) {
+			ui.print("Attempting to log in as \"" + ui.next() + "\".");
+			ui.print("Error: No employee with such initials. Please try again:", ui.style[3]);
 		}
 	}*/
 
@@ -254,13 +266,18 @@ public class SysApp {
 		note.close();
 		return true;
 	}
-	private void incrementIDCount() {
-		ID_Count++;
+	
+	//ID counters for project and activity
+	public int getPcount(){
+		pIDcount++;
+		return pIDcount;	
 	}
-	public int getIDCount(){
-		incrementIDCount();
-		return ID_Count;	
+	public int getAcount(){
+		aIDcount++;
+		return aIDcount;	
 	}
+	
+	//Method to get a project by its ID.
 	public Project projectByID(String ID){
 		for(Project x : projectList)
 			if (x.checkUniqueID()==ID){
