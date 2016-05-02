@@ -82,7 +82,7 @@ public class Menu {
 		case "Manage Employee": manageEmployee(); break;
 		case "Assign To Project": assignToProject(); break;
 		case "Assign To Activity": assignToActivity(); break;
-		case "Set Workhours For Activities For Week": setWorkhousForActivityForWeek(); break;
+		case "Set Work Hours For Activities For Week": setWorkhousForActivityForWeek(); break;
 		case "Get Activities for Week": getActivitiesForWeek(); break;
 		case "Remove Employee": removeEmployee(); break;
 		case "Manage Project": manageProject(); break;
@@ -91,14 +91,28 @@ public class Menu {
 	
 		default: sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
 		}
+		parent.show();
+	}
+	
+	private void manageProject(){
+		sys.ui.print("Enter ID of project to manage:", sys.ui.style[6]);
+		String ID = sys.ui.next().toUpperCase();
+		Project p = sys.projectByID(ID);
+		if(p == null){
+			sys.ui.clear();
+			sys.ui.print("Error: Project with ID \"" + ID + "\" does not exist.", sys.ui.style[3]);
+		}
+		else{
+			Menu manageProject = sys.menus.get(6);
+			sys.currentMenu = manageProject;
+			manageProject.currentProject = p;
+			manageProject.show();
+		}
 	}
 
 	/*
 	 *  EMPLOYEE MENUES
 	 */
-	
-	
-
 	private void addEmployee(){
 		sys.ui.print("Enter initials of new employee:", sys.ui.style[6]);
 		String initials = sys.ui.next().toUpperCase();
@@ -109,6 +123,7 @@ public class Menu {
 				sys.ui.print("Successfully added employee \"" + initials + "\" to the system.", sys.ui.style[2]);
 			}
 			else{
+				sys.ui.clear();
 				sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
 			}
 			
@@ -131,22 +146,6 @@ public class Menu {
 			sys.currentMenu = manageEmployee;
 			manageEmployee.currentEmployee = e;
 			manageEmployee.show();
-		}
-	}
-	
-	private void manageProject(){
-		sys.ui.print("Enter ID of project to manage:", sys.ui.style[6]);
-		String ID = sys.ui.next().toUpperCase();
-		Project p = sys.projectByID(ID);
-		if(p == null){
-			sys.ui.clear();
-			sys.ui.print("Error: Project with ID \"" + ID + "\" does not exist.", sys.ui.style[3]);
-		}
-		else{
-			Menu manageProject = sys.menus.get(6);
-			sys.currentMenu = manageProject;
-			manageProject.currentProject = p;
-			manageProject.show();
 		}
 	}
 	
@@ -264,7 +263,22 @@ public class Menu {
 	}
 	
 	private void getActivitiesForWeek(){
-		
+		int i = -1;
+		while(true){
+			try{
+				sys.ui.print("Enter week");
+				i = Integer.parseInt(sys.ui.next());
+				if(!(i > 0 && i <= 53)){
+					throw new NumberFormatException();
+				}
+				else{
+					break;
+				}
+			} catch(NumberFormatException e){
+				sys.ui.print("Error: Invalid week.", sys.ui.style[3]);
+			}
+		}
+		Week w = sys.getDateServer().getWeek(i);
 	}
 	
 	private void removeEmployee(){
