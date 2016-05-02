@@ -87,6 +87,7 @@ public class Menu {
 		case "Remove Employee": removeEmployee(); break;
 		case "Manage Project": manageProject(); break;
 		case "Set Font Size": sys.ui.setFontSize(); break;
+		case "Show Logs": ShowFuckingLogs(); break;
 		default: break;
 		}
 	}
@@ -279,10 +280,13 @@ public class Menu {
 		ArrayList<Activity> a_list = currentEmployee.getWeeklyActivities(w);
 		ArrayList<String> list = new ArrayList<String>();
 		for(Activity a : a_list){
-			String s = a.type + " : " + currentEmployee.getWorkHours(a, w)+" hours";
-			list.add(s);
+			String s;
+			try {
+				s = a.type + " : " + currentEmployee.getWorkHours(a, w)+" hours";
+				list.add(s);
+			} catch (IllegalOperationException e) { continue;}
 		}
-		NicklasDisplayMedSideSkift(list);
+		sys.ui.listDisplay(list.toArray(new String[list.size()]), "Logs And Shit", 10);
 	}
 	
 	private void removeEmployee(){
@@ -307,6 +311,14 @@ public class Menu {
 	/*
 	 * END OF EMPLOYEE MENUES
 	 */
+	
+	public void ShowFuckingLogs() {
+		String[] s = new String[44];
+		for (int i = 0; i < s.length; i++) {
+			s[i] = Integer.toString(i);
+		}
+		sys.ui.listDisplay(s, "Logs And Shit", 10);
+	}
 	
 	/*
 	 * ACTVITY MENUES

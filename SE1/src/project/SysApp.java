@@ -77,14 +77,14 @@ public class SysApp {
 		menus.add(new Menu(this, "Manage Activity"));
 		menus.add(new Menu(this, "Manage Activity", menuActMng.toArray(new Menu[menuActMng.size()]), true, true));
 		menus.add(new Menu(this, "Get All Activities"));
-		menus.add(new Menu(this, "Show Logs"));	// 11
+		menus.add(new Menu(this, "Show Logs"));	// 12
 		menus.add(new Menu(this, "Set Font Size"));
 		Menu[] m = new Menu[] {
 				new Menu(this, "Employees", new Menu[] {menus.get(0), menus.get(1), menus.get(3)}, true, true),
 				new Menu(this, "Projects", new Menu[] {menus.get(4), menus.get(5), menus.get(7)}, true, true),
 				new Menu(this, "Activities", new Menu[] {menus.get(8), menus.get(9), menus.get(10)}, true, true),
-				new Menu(this, "System", new Menu[] {menus.get(6)}, true, true ),
-				new Menu(this, "Settings", new Menu[] {menus.get(7)}, true, true),
+				new Menu(this, "System", new Menu[] {menus.get(12)}, true, true ),
+				new Menu(this, "Settings", new Menu[] {menus.get(13)}, true, true),
 				new Menu(this, "Help"),
 				new Menu(this, "Exit"),
 		};

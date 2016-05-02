@@ -136,6 +136,29 @@ public class UserInterface {
 			}
 		}
 	}
+
+	public void listDisplay(String[] l, String header, int size) {
+		int i = 0,j = 0, k;
+		while (i < l.length) {
+			j = 0;
+			if (i+size > l.length) { k = l.length; }
+			else { k = i+size; }
+			print(header + "  (" + (int)(k) + " / " + (int)(l.length) + ")", style[4]);
+			while (j < size && i < l.length) {
+				print(l[i]);
+				i++;
+				j++;
+			}
+			if (i == l.length) { break; }
+			print("Press enter to proceed to next page in list.", style[6]);
+			next();
+			clear();
+		}
+		print("Press enter to return from list view.", style[6]);
+		next();
+		clear();
+		sys.currentMenu.parent.show();
+	}
 	
 	public void help() {
 		clear();
