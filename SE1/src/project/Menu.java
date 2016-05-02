@@ -191,7 +191,7 @@ public class Menu {
 		}
 		else{
 			//Menu manageEmployee = sys.menus.get("MANAGE EMPLOYEE MENU!")
-			Menu manageEmployee = sys.mainmenu;
+			Menu manageEmployee = sys.menus.get(2);
 			manageEmployee.currentEmployee = e;
 			manageEmployee.show();
 		}
