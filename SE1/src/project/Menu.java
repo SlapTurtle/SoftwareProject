@@ -86,14 +86,72 @@ public class Menu {
 		case "Get Activities for Week": getActivitiesForWeek(); break;
 		case "Remove Employee": removeEmployee(); break;
 		case "Manage Project": manageProject(); break;
-		
-		/*case "Manage Project": break;
-		case "Add Activity": break;
-		case "Show Logs": break;*/
-		default: sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
-		}
-		parent.show();
-	}
+		case "Set Font Size": sys.ui.setFontSize(); break;
+		case "Add Activity":
+			String name = null;
+			Boolean b;
+			int i;
+			
+			b = false;
+			while(!b){
+				sys.ui.print("Enter name of new Activity:", sys.ui.style[6]);
+				name = sys.ui.next();
+				/*  does name meet the criteria ?
+				b = (name == acceptable);
+				if(!b) {
+					{sys.ui.print("Error: Invalid name. Please try again:", sys.ui.style[3]);
+			 	}
+			 	*/
+				b = true;
+			}
+			
+			i = -1;
+			b = false;
+			while(!b){
+				try{
+					sys.ui.print("Enter starting week of Activity \"" + name + "\"", sys.ui.style[6]);
+					i = Integer.parseInt(sys.ui.next());
+					b = i > 0 && i <= 53;
+					if(!b){
+						throw new NumberFormatException();
+					}
+				} catch(NumberFormatException e){
+					sys.ui.invalidInput();
+				}
+			}
+			Week start = sys.getDateServer().getWeek(i);
+			
+			i = -1;
+			b = false;
+			while(!b){
+				try{
+					sys.ui.print("Enter ending week of Activity \"" + name + "\"", sys.ui.style[6]);
+					i = Integer.parseInt(sys.ui.next());
+					b = i > 0 && i <= 53 && start.compareTo(sys.getDateServer().getWeek(i)) <= 0;
+					if(!b){
+						throw new NumberFormatException();
+					}
+				} catch(NumberFormatException e){
+					sys.ui.invalidInput();
+				}
+			}
+			Week end = sys.getDateServer().getWeek(i);
+			
+			Activity A = new Activity(String.valueOf(sys.getIDCount()), start, end);
+			A.type = name; //A.setType(name);
+			if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + A.type + "\" to the system?")){
+				if(sys.addActicity(A)){
+					sys.ui.clear();
+					sys.ui.print("Successfully added Activity \"" + name + "\" to the system.", sys.ui.style[2]);
+				}
+				else{
+					sys.ui.invalidInput();
+				}
+			}
+			else{
+				sys.ui.cancel();
+			}
+			break;
 	
 	private void manageProject(){
 		sys.ui.print("Enter ID of project to manage:", sys.ui.style[6]);
@@ -102,6 +160,9 @@ public class Menu {
 		if(p == null){
 			sys.ui.clear();
 			sys.ui.print("Error: Project with ID \"" + ID + "\" does not exist.", sys.ui.style[3]);
+		default:
+			sys.ui.clear();
+			sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
 		}
 		else{
 			Menu manageProject = sys.menus.get(6);
@@ -109,6 +170,8 @@ public class Menu {
 			manageProject.currentProject = p;
 			manageProject.show();
 		}
+
+		parent.show();
 	}
 
 	/*
@@ -131,6 +194,7 @@ public class Menu {
 	}
 	
 	private void manageEmployee(){
+		sys.currentMenu = this;
 		sys.ui.print("Enter initials of employee to manage:", sys.ui.style[6]);
 		String initials = sys.ui.next().toUpperCase();
 		Employee e = sys.employeeByInitials(initials);
@@ -143,6 +207,24 @@ public class Menu {
 			sys.currentMenu = manageEmployee;
 			manageEmployee.currentEmployee = e;
 			manageEmployee.show();
+		}
+	}
+	
+
+	private void manageProject(){
+		sys.currentMenu = this;
+		sys.ui.print("Enter ID of project to manage:", sys.ui.style[6]);
+		String ID = sys.ui.next().toUpperCase();
+		Project p = sys.projectByID(ID);
+		if(p == null){
+			sys.ui.clear();
+			sys.ui.print("Error: Project with ID \"" + ID + "\" does not exist.", sys.ui.style[3]);
+		}
+		else{
+			Menu manageProject = sys.menus.get(6);
+			sys.currentMenu = manageProject;
+			manageProject.currentProject = p;
+			manageProject.show();
 		}
 	}
 	

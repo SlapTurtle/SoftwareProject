@@ -37,10 +37,6 @@ public class SysApp {
 				ui.print("Error: No Actions are allowed until after login is performed", ui.style[3]);
 			}
 		}
-		menus.add(new Menu(this, "Manage Employee"));	//0
-		menus.add(new Menu(this, "Add Employee")); 		//1
-		menus.add(new Menu(this, "Remove Employee"));	//2
-		
 		menuEmpMng.add(new Menu(this, "Assign to Project"));
 		menuEmpMng.add(new Menu(this, "Assign to Activity"));
 		menuEmpMng.add(new Menu(this, "Set Work Hours for Activity By Week"));
@@ -59,30 +55,38 @@ public class SysApp {
 		menuPrjMng.add(new Menu(this, "Get Total Project Budget Price"));
 		menuPrjMng.add(new Menu(this, "Get Activeness of Activity"));
 		
+		menuActMng.add(new Menu(this, "Set Activity Name"));
+		menuActMng.add(new Menu(this, "Add Employee to Activity"));
+		menuActMng.add(new Menu(this, "Set Start Date Of Activity"));
+		menuActMng.add(new Menu(this, "Set End Date of Activity"));
+		menuActMng.add(new Menu(this, "Add Activity to Project"));
+		menuActMng.add(new Menu(this, "Get All Employees on Activity"));
+		menuActMng.add(new Menu(this, "Get Hours Spent on Activity"));
+		menuActMng.add(new Menu(this, "Set Time Budget"));
+		menuActMng.add(new Menu(this, "Remove Activity"));
 		
-		menus.add(new Menu(this, "Add Employee")); 		//0
-		menus.add(new Menu(this, "Manage Employee"));	//1
-		menus.add(new Menu(this, "Manage Employee", menuEmpMng.toArray(new Menu[menuEmpMng.size()]), true, true));	//1
-		menus.add(new Menu(this, "Get All Employees"));	//2
-		menus.add(new Menu(this, "Add Project"));		//3
 		menus.add(new Menu(this, "Manage Project"));
 		menus.add(new Menu(this, "Manage Project", menuPrjMng.toArray(new Menu[menuPrjMng.size()]), true, true));
 		menus.add(new Menu(this, "Get All Projects"));
-		menus.add(new Menu(this, "Manage Project"));	//4
-		menus.add(new Menu(this, "Add Activity"));		//5
-		menus.add(new Menu(this, "Show Logs"));			//6
-		menus.add(new Menu(this, "Set Font Size"));		//7
-		
+		menus.add(new Menu(this, "Add Activity")); // 8
+		menus.add(new Menu(this, "Manage Activity"));
+		menus.add(new Menu(this, "Manage Activity", menuActMng.toArray(new Menu[menuActMng.size()]), true, true));
+		menus.add(new Menu(this, "Get All Activities"));
+		menus.add(new Menu(this, "Show Logs"));	// 11
+		menus.add(new Menu(this, "Set Font Size"));
 		Menu[] m = new Menu[] {
-				new Menu(this, "Employees", new Menu[] {menus.get(0), menus.get(1), menus.get(2)}, true, true),
+				new Menu(this, "Employees", new Menu[] {menus.get(0), menus.get(1), menus.get(3)}, true, true),
 				new Menu(this, "Projects", new Menu[] {menus.get(4), menus.get(5), menus.get(7)}, true, true),
-				new Menu(this, "Activities", new Menu[] {menus.get(5)}, true, true),
+				new Menu(this, "Activities", new Menu[] {menus.get(8), menus.get(9), menus.get(10)}, true, true),
 				new Menu(this, "System", new Menu[] {menus.get(6)}, true, true ),
 				new Menu(this, "Settings", new Menu[] {menus.get(7)}, true, true),
 				new Menu(this, "Help"),
 				new Menu(this, "Exit"),
 		};
 		mainmenu = new Menu(this, "Main Menu", m, true, false);
+		menus.get(2).parent = m[0];
+		menus.get(6).parent = m[1];
+		menus.get(10).parent = m[2];
 		while(true)
 		try {
 			mainmenu.show();
@@ -96,24 +100,6 @@ public class SysApp {
 		
 	}
 	
-	/*public static void main(String[] args) {
-		/*if(systemLog.exists()){
-			try {
-				createNewFile();
-				writeToLog("File Created");
-			} catch (IOException e) {
-				//ERROR in creating new File
-				e.printStackTrace();
-			}
-		}*/
-		/*
-		Employee e = new Employee("BRIAN");
-		addEmployee("BRIAN");
-		while (true) {
-			ui.print("Attempting to log in as \"" + ui.next() + "\".");
-			ui.print("Error: No employee with such initials. Please try again:", ui.style[3]);
-		}
-	}*/
 
 	// ---- Getter and Setter Methods are only used for testing ----
 	public List<Employee> getEmployeeList() {
