@@ -89,71 +89,7 @@ public class Menu {
 		
 		case "Set Font Size": sys.ui.setFontSize(); break;
 		
-		case "Add Activity":
-			String name = null;
-			Boolean b;
-			int i;
-			
-			b = false;
-			while(!b){
-				sys.ui.print("Enter name of new Activity:");
-				name = sys.ui.next();
-				/*  does name meet the criteria ?
-				b = (name == acceptable);
-				if(!b) {
-					{sys.ui.print("Error: Invalid name. Please try again:", sys.ui.style[3]);
-			 	}
-			 	*/
-				b = true;
-			}
-			
-			i = -1;
-			b = false;
-			while(!b){
-				try{
-					sys.ui.print("Enter starting week of Activity \"" + name + "\"");
-					i = Integer.parseInt(sys.ui.next());
-					b = i > 0 && i <= 53;
-					if(!b){
-						throw new NumberFormatException();
-					}
-				} catch(NumberFormatException e){
-					sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
-				}
-			}
-			Week start = sys.getDateServer().getWeek(i);
-			
-			i = -1;
-			b = false;
-			while(!b){
-				try{
-					sys.ui.print("Enter ending week of Activity \"" + name + "\"");
-					i = Integer.parseInt(sys.ui.next());
-					b = i > 0 && i <= 53 && start.compareTo(sys.getDateServer().getWeek(i)) <= 0;
-					if(!b){
-						throw new NumberFormatException();
-					}
-				} catch(NumberFormatException e){
-					sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
-				}
-			}
-			Week end = sys.getDateServer().getWeek(i);
-			
-			Activity A = new Activity(String.valueOf(sys.getIDCount()), start, end);
-			A.type = name; //A.setType(name);
-			if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + A.type + "\" to the system?")){
-				if(sys.addActicity(A)){
-					sys.ui.clear();
-					sys.ui.print("Successfully added Activity \"" + name + "\" to the system.", sys.ui.style[2]);
-				}
-				else{
-					sys.ui.print("Error: Invalid Activity. Please try again:", sys.ui.style[3]);
-				}
-			}
-			else{
-				sys.ui.cancel();
-			}
-			break;
+		case "Add Activity": addActivity();break;
 	
 		default: sys.ui.print("Error: Unidentified action performed.", sys.ui.style[3]); break;
 		}
@@ -163,6 +99,8 @@ public class Menu {
 	 *  EMPLOYEE MENUES
 	 */
 	
+	
+
 	private void addEmployee(){
 		sys.ui.print("Enter initials of new employee:");
 		String initials = sys.ui.next().toUpperCase();
@@ -234,7 +172,35 @@ public class Menu {
 	}
 	
 	private void setWorkhousForActivityforWeek(){
-		
+		//Gets Activity
+		sys.ui.print("Enter Name or ID of Activity:");
+		String act = sys.ui.next().toUpperCase();
+		Activity a = sys.activityByID(act);
+		if(a == null){
+			a = sys.activityByName(act);
+		}
+		if(a == null){
+			sys.ui.clear();
+			sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
+		}
+		else{
+			//Gets week
+			int i = -1;
+			boolean b = false;
+			while(!b){
+				try{
+					sys.ui.print("Enter week within Activity \"" + a.type + "\"");
+					i = Integer.parseInt(sys.ui.next());
+					b = i > 0 && i <= 53;
+					if(!b){
+						throw new NumberFormatException();
+					}
+				} catch(NumberFormatException e){
+					sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
+				}
+			}
+			Week w = sys.getDateServer().getWeek(i);
+		}
 	}
 	
 	private void getActivitiesForWeek(){
@@ -246,7 +212,76 @@ public class Menu {
 	}
 	
 	/*
-	 * END OG EMPLOYEE MENUES
+	 * END OF EMPLOYEE MENUES
 	 */
 
+	
+	/*
+	 * ACTVITY MENUES
+	 */
+	private void addActivity() {
+		String name = null;
+		Boolean b;
+		int i;
+		
+		b = false;
+		while(!b){
+			sys.ui.print("Enter name of new Activity:");
+			name = sys.ui.next();
+			/*  does name meet the criteria ?
+			b = (name == acceptable);
+			if(!b) {
+				{sys.ui.print("Error: Invalid name. Please try again:", sys.ui.style[3]);
+		 	}
+		 	*/
+			b = true;
+		}
+		
+		i = -1;
+		b = false;
+		while(!b){
+			try{
+				sys.ui.print("Enter starting week of Activity \"" + name + "\"");
+				i = Integer.parseInt(sys.ui.next());
+				b = i > 0 && i <= 53;
+				if(!b){
+					throw new NumberFormatException();
+				}
+			} catch(NumberFormatException e){
+				sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
+			}
+		}
+		Week start = sys.getDateServer().getWeek(i);
+		
+		i = -1;
+		b = false;
+		while(!b){
+			try{
+				sys.ui.print("Enter ending week of Activity \"" + name + "\"");
+				i = Integer.parseInt(sys.ui.next());
+				b = i > 0 && i <= 53 && start.compareTo(sys.getDateServer().getWeek(i)) <= 0;
+				if(!b){
+					throw new NumberFormatException();
+				}
+			} catch(NumberFormatException e){
+				sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
+			}
+		}
+		Week end = sys.getDateServer().getWeek(i);
+		
+		Activity A = new Activity(String.valueOf(sys.getIDCount()), start, end);
+		A.type = name;
+		if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + A.type + "\" to the system?")){
+			if(sys.addActicity(A)){
+				sys.ui.clear();
+				sys.ui.print("Successfully added Activity \"" + name + "\" to the system.", sys.ui.style[2]);
+			}
+			else{
+				sys.ui.print("Error: Invalid Activity. Please try again:", sys.ui.style[3]);
+			}
+		}
+		else{
+			sys.ui.cancel();
+		}
+	}
 }
