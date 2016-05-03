@@ -297,8 +297,12 @@ public class SysApp {
 		return null;
 	}
 
-	public Activity activityByName(String act) {
-		// TODO Auto-generated method stub
+	public Activity activityByName(String name) {
+		for(Activity a : activityList){
+			if(a.type.equals(name)){
+				return a;
+			}
+		}
 		return null;
 	}
 	

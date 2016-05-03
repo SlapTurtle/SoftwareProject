@@ -354,12 +354,8 @@ public class Menu {
 	 */
 	private void addActivity() {
 		String name = null;
-		Boolean b;
-		int i;
-		
-		b = false;
-		while(!b){
-			sys.ui.print("Enter name of new Activity:");
+		while(true){
+			sys.ui.print("Enter name of new Activity:", sys.ui.style[6]);
 			name = sys.ui.next();
 			/*  does name meet the criteria ?
 			b = (name == acceptable);
@@ -367,43 +363,17 @@ public class Menu {
 				{sys.ui.print("Error: Invalid name. Please try again:", sys.ui.style[3]);
 		 	}
 		 	*/
-			b = true;
+			break;
 		}
-		i = -1;
-		b = false;
-		while(!b){
-			try{
-				sys.ui.print("Enter starting week of Activity \"" + name + "\"");
-				i = Integer.parseInt(sys.ui.next());
-				b = i > 0 && i <= 53;
-				if(!b){
-					throw new NumberFormatException();
-				}
-			} catch(NumberFormatException e){
-				sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
-			}
-		}
+		int i = getUserInputInt(1, 53, "Enter starting week of Activity \"" + name + "\"", "Invalid week");
 		Week start = sys.getDateServer().getWeek(i);
 		
-		i = -1;
-		b = false;
-		while(!b){
-			try{
-				sys.ui.print("Enter ending week of Activity \"" + name + "\"");
-				i = Integer.parseInt(sys.ui.next());
-				b = i > 0 && i <= 53 && start.compareTo(sys.getDateServer().getWeek(i)) <= 0;
-				if(!b){
-					throw new NumberFormatException();
-				}
-			} catch(NumberFormatException e){
-				sys.ui.print("Error: Invalid week. Please try again:", sys.ui.style[3]);
-			}
-		}
-		Week end = sys.getDateServer().getWeek(i);
+		int j = getUserInputInt(i, 53, "Enter ending week of Activity \"" + name + "\"", "Invalid week");
+		Week end = sys.getDateServer().getWeek(j);
 		
-		Activity A = new Activity(sys, name, start, end);
-		if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + A.type + "\" to the system?")){
-			if(sys.addActicity(A)){
+		Activity a = new Activity(sys, name, start, end);
+		if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + name + "\" to the system?")){
+			if(sys.addActicity(a)){
 				sys.ui.clear();
 				sys.ui.print("Successfully added Activity \"" + name + "\" to the system.", sys.ui.style[2]);
 			}
@@ -427,7 +397,7 @@ public class Menu {
 			sys.ui.print("Error: Activity \"" + name + "\" does not exist.", sys.ui.style[3]);
 		}
 		else{
-			Menu manageEmployee = sys.menus.get(2);
+			Menu manageEmployee = sys.menus.get(10);
 			sys.currentMenu = manageEmployee;
 			manageEmployee.currentActivity = a;
 			manageEmployee.header = "Manage Activity \""+a.type+"\"";
@@ -517,8 +487,12 @@ public class Menu {
 	}
 
 	private void getAllProjects() {
-		// TODO Auto-generated method stub
-		
+		int sz = sys.getProjectList().size();
+		String[] s = new String[sz];
+		for (int i = 0; i < sz; i++) {
+			s[i] = sys.getProjectList().get(i).type;
+		}
+		sys.ui.listDisplay(s, "Registered Activities", 10);
 	}
 	
 	/*

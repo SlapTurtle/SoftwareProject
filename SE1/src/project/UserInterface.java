@@ -24,8 +24,8 @@ public class UserInterface {
 		new MessageStyle(Font.PLAIN, Color.BLACK, Color.GREEN.brighter()), // Green notification
 		new MessageStyle(Font.PLAIN, Color.WHITE, Color.RED), // Error message
 		new MessageStyle(Font.BOLD, Color.WHITE, Color.BLUE.darker()), // Header
-		new MessageStyle(Font.PLAIN, Color.BLACK, Color.yellow.brighter()), // Prompt
-		new MessageStyle(Font.BOLD, Color.BLACK, Color.WHITE)
+		new MessageStyle(Font.PLAIN, Color.BLACK, Color.yellow.brighter()), // confirmations
+		new MessageStyle(Font.BOLD, Color.BLACK, Color.WHITE) //promt
 	};
 	public String latestInput = "";
 	public final Object lock = new Object();

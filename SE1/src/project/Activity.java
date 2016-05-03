@@ -21,7 +21,7 @@ public class Activity {
 	
 	public Activity(SysApp sysApp, String name, Week startWeek, Week endWeek) {
 		this.sysApp = sysApp;
-		this.name = name;
+		this.type = name.toUpperCase();
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
 		this.activityID = setUniqueID();
