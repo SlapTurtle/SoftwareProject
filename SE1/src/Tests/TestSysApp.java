@@ -59,6 +59,18 @@ public class TestSysApp extends TestBasis{
 		Activity a = sysApp.activityByName("01xxx");
 		assertTrue(a==a1);
 		
+		// test that get available employees works
+		
+		a1.assignEmployee(e1);
+		a1.assignEmployee(e2);
+		
+		sysApp.addEmployee(e1);
+		sysApp.addEmployee(e2);
+		sysApp.addEmployee(e3);
+		
+		assertTrue(sysApp.getEmployeeList().contains(e1));
+		assertFalse(sysApp.getAvailableEmployees(a1).contains(e1));
+	}
 		
 		//System log, test?
 		
