@@ -356,7 +356,7 @@ public class Menu {
 		String name = null;
 		while(true){
 			sys.ui.print("Enter name of new Activity:", sys.ui.style[6]);
-			name = sys.ui.next();
+			name = sys.ui.next().toUpperCase();
 			/*  does name meet the criteria ?
 			b = (name == acceptable);
 			if(!b) {
@@ -418,7 +418,6 @@ public class Menu {
 	/*
 	 * ACTIVITY SUB-MENUS
 	 */
-
 	private void setActivityName() {
 		// TODO Auto-generated method stub
 		
@@ -546,7 +545,6 @@ public class Menu {
 	/*
 	 * OTHER MENUES
 	 */
-	
 	public void ShowFuckingLogs() {
 		String[] s = new String[44];
 		for (int i = 0; i < s.length; i++) {
