@@ -233,18 +233,32 @@ public class SysApp {
 		return this.employeeList.add(employee);
 	}
 	
-	public boolean addProject(String string){
-		return true;
-		//return this.projectList.add(string);
-	}
+	public boolean addProject(Project p){
+		if(projectList.contains(p) || p == null){
+			return false;
+		}else{
+		return this.projectList.add(p);
+	}}
 	
 	public boolean addActicity(Activity ID){
+		if(activityList.contains(ID) || ID == null){
+			return false;
+		}else{
 		return this.activityList.add(ID);
+		}
 	}
 	
-	public ArrayList<String> getAvailableEmployees(Activity activity){
-		//TO-DO
-		return null;
+	public List<Employee> getAvailableEmployees(Activity activity) throws IllegalOperationException{
+		List<Employee> available = new ArrayList<Employee>();
+		Calendar cal = this.dateServer.getToday();
+		Week w = new Week(cal.get(Calendar.YEAR),cal.get(Calendar.WEEK_OF_YEAR));
+		available =	this.employeeList;
+		for( Employee x : employeeList){
+			if (activity.employeelist.contains(x) || x.getNumberOfWeeklyActivities(w) >= 20){
+				available.remove(x);
+			}
+		}	
+		return available;
 	} 
 	 
 	private boolean writeToLog(String entry) throws IOException {
