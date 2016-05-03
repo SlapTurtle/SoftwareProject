@@ -74,30 +74,64 @@ public class Menu {
 	}
 	
 	public void runMethod() {
-		//String initials;
 		switch (header) {
-		case "Exit": System.exit(0); return;
-		case "Help": sys.ui.help(); break;
-		// Employee
+		// Employee - Top-Menu
 		case "Add Employee": addEmployee(); break;
 		case "Manage Employee": manageEmployee(); break;
-		case "Remove Employee": removeEmployee(); break;
 		case "Get All Employees": getAllEmployees(); break;
-		// Project
+		// Employee Sub-Menu
 		case "Assign To Project": assignToProject(); break;
-		case "Manage Project": manageProject(); break;
-		// Activity
 		case "Assign To Activity": assignToActivity(); break;
-		case "Set Work Hours For Activities For Week": setWorkhousForActivityForWeek(); break;
+		case "Set Work Hours For Activity By Week": setWorkHoursForActivityForWeek(); break;
+		case "Get Work Hours For Activity By Week": getWorkHoursForActivitiesForWeek(); break;
+		case "Get Work Hours For Activity": getWorkHoursForActivity(); break;
+		case "Get Work Hours For Week": getWorkHoursForWeek(); break;
 		case "Get Activities for Week": getActivitiesForWeek(); break;
+		case "Remove Employee": removeEmployee(); break;
+		
+		// Project Top-Menu
+		case "Add Project": addProject(); break;
+		case "Manage Project": manageProject(); break;
+		case "Get All Projects": getAllProjects(); break;
+		// Project Sub-Menus
+		case "Add Employee to Project": addEmployeeToProject(); break;
+		case "Get All Employees on Project": getAllEmployeesOnProject(); break;
+		case "Add Project Activity": addActivityToProject(); break;
+		case "Get All Activities on Project": setRepportComment(); break;
+		case "Set Time Budget of Project": setTimeBudgetOfProject(); break;
+		case "Get Total Project Budget Price": getTotalProjectBudget(); break;
+		case "Get Activeness of Activity in Project": getProjectActiveness(); break;
+		case "Set Report Comment": setProjectReportComment(); break;
+		case "View Weekly Report": getWeeklyReport(); break;
+		case "Remove Project": removeProject(); break;
+		
+		// Activity Top-Menu
+		case "Add Activity": addActivity(); break;
+		case "Manage Activity": manageActivity(); break;
+		case "Get All Activities": getAllActivities(); break;
+		// Activity Sub-Menu
+		case "Set Activity Name": setActivityName(); break;
+		case "Add Employee to Activity": addEmployeeToProject(); break;
+		case "Set Start Date Of Activity": setStartDateOfActivity(); break;
+		case "Set End Date of Activity": setEndDateOfActivity(); break;
+		case "Add Activity to Project": addActivityToProject(); break;
+		case "Get All Employees on Activity": getEmployeeListForActivity(); break;
+		case "Get Hours Spent on Activity": getHoursSpentActivity(); break;
+		case "Set Time Budget": changeBudgetActivity(); break;
+		case "Remove Activity": removeActivity(); break;
+		
 		// Other
 		case "Set Font Size": sys.ui.setFontSize(); break;
 		case "Show Logs": ShowFuckingLogs(); break;
+		case "Exit": System.exit(0); return;
+		case "Help": sys.ui.help(); break;
+		
+		//Error?
 		default: break;
 		}
 		parent.show();
 	}
-	
+
 	/*
 	 *  EMPLOYEE MENUES
 	 */
@@ -115,6 +149,10 @@ public class Menu {
 				sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
 			}
 		}
+		else{
+			sys.ui.clear();
+			sys.ui.cancel();
+		}
 	}
 	
 	private void manageEmployee(){
@@ -130,28 +168,24 @@ public class Menu {
 			Menu manageEmployee = sys.menus.get(2);
 			sys.currentMenu = manageEmployee;
 			manageEmployee.currentEmployee = e;
+			manageEmployee.header = "Manage Employee \""+e.getInitials()+"\"";
+			sys.ui.clear();
 			manageEmployee.show();
 		}
 	}
 	
-
-	private void manageProject(){
-		sys.currentMenu = this;
-		sys.ui.print("Enter ID of project to manage:", sys.ui.style[6]);
-		String ID = sys.ui.next().toUpperCase();
-		Project p = sys.projectByID(ID);
-		if(p == null){
-			sys.ui.clear();
-			sys.ui.print("Error: Project with ID \"" + ID + "\" does not exist.", sys.ui.style[3]);
+	private void getAllEmployees() {
+		int sz = sys.getEmployeeList().size();
+		String[] s = new String[sz];
+		for (int i = 0; i < sz; i++) {
+			s[i] = sys.getEmployeeList().get(i).getInitials();
 		}
-		else{
-			Menu manageProject = sys.menus.get(6);
-			sys.currentMenu = manageProject;
-			manageProject.currentProject = p;
-			manageProject.show();
-		}
+		sys.ui.listDisplay(s, "Registered Employees", 10);
 	}
 	
+	/*
+	 * EMPLOYEE SUB-MENUS
+	 */
 	private void assignToProject(){
 		sys.ui.print("Enter Name or ID of Project:", sys.ui.style[6]);
 		String project = sys.ui.next().toUpperCase();
@@ -188,11 +222,11 @@ public class Menu {
 		}
 	}
 	
-	private void setWorkhousForActivityForWeek(){
+	private void setWorkHoursForActivityForWeek(){
 		//Gets Activity
 		Activity a;
 		while(true){
-			sys.ui.print("Enter Name or ID of Activity:");
+			sys.ui.print("Enter Name or ID of Activity:", sys.ui.style[6]);
 			String act = sys.ui.next().toUpperCase();
 			a = sys.activityByID(act);
 			if(a == null){
@@ -209,7 +243,7 @@ public class Menu {
 		int i = -1;
 		while(true){
 			try{
-				sys.ui.print("Enter week within Activity \"" + a.type + "\"");
+				sys.ui.print("Enter week within Activity \"" + a.type + "\"", sys.ui.style[6]);
 				i = Integer.parseInt(sys.ui.next());
 				if(!(i > 0 && i <= 53)){
 					throw new NumberFormatException();
@@ -226,7 +260,7 @@ public class Menu {
 		int j = -1;
 		while(true){
 			try{
-				sys.ui.print("Enter weekday (1-7)");
+				sys.ui.print("Enter weekday (1-7)", sys.ui.style[6]);
 				j = Integer.parseInt(sys.ui.next());
 				if(!(j > 0 && j <= 7)){
 					throw new NumberFormatException();
@@ -242,7 +276,7 @@ public class Menu {
 		double d = 0;
 		while(true){
 			try{
-				sys.ui.print("Enter amount of hours of work to to \"" + a.type + "\" in week "+w.getWeek());
+				sys.ui.print("Enter amount of hours of work to to \"" + a.type + "\" in week "+w.getWeek(), sys.ui.style[6]);
 				d = Double.parseDouble(sys.ui.next());
 				if(d <= 0.0){
 					throw new NumberFormatException();
@@ -266,6 +300,18 @@ public class Menu {
 		}
 	}
 	
+	private void getWorkHoursForActivitiesForWeek() {
+		// TODO Auto-generated method stub
+	}
+	
+	private void getWorkHoursForActivity() {
+		// TODO Auto-generated method stub
+	}
+	
+	private void getWorkHoursForWeek() {
+		// TODO Auto-generated method stub
+	}
+
 	private void getActivitiesForWeek(){
 		int i = -1;
 		while(true){
@@ -295,43 +341,20 @@ public class Menu {
 		sys.ui.listDisplay(list.toArray(new String[list.size()]), "Logs And Shit", 10);
 	}
 	
-	private void removeEmployee(){
-		sys.ui.print("Enter initials of employee to remove:");
-		String initials = sys.ui.next().toUpperCase();
-		Employee employee = new Employee(initials);
-		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + initials + "\" from the system?")) {
-			if(sys.getEmployeeList().remove(employee)){
+	private void removeEmployee() {
+		Employee e = parent.currentEmployee;
+		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + e.getInitials() + "\" from the system?")) {
+			if(sys.getEmployeeList().remove(e)){
 				sys.ui.clear();
-				sys.ui.print("Successfully removed employee \"" + initials + "\" from the system.", sys.ui.style[2]);
+				sys.ui.print("Successfully removed employee \"" + e.getInitials() + "\" from the system.", sys.ui.style[2]);
 			}
 			else{
-				sys.ui.print("Error: Employee with initials \"" + initials + "\" doesn't exists.", sys.ui.style[3]);
+				sys.ui.print("Error: Employee with initials \"" + e.getInitials() + "\" doesn't exists.", sys.ui.style[3]);
 			}
 		} else {
 			sys.ui.clear();
 			sys.ui.cancel();
 		}
-	}
-	
-	private void getAllEmployees() {
-		int sz = sys.getEmployeeList().size();
-		String[] s = new String[sz];
-		for (int i = 0; i < sz; i++) {
-			s[i] = sys.getEmployeeList().get(i).getInitials();
-		}
-		sys.ui.listDisplay(s, "Registered Employees", 10);
-	}
-	
-	/*
-	 * END OF EMPLOYEE MENUES
-	 */
-	
-	public void ShowFuckingLogs() {
-		String[] s = new String[44];
-		for (int i = 0; i < s.length; i++) {
-			s[i] = Integer.toString(i);
-		}
-		sys.ui.listDisplay(s, "Logs And Shit", 10);
 	}
 	
 	/*
@@ -400,5 +423,151 @@ public class Menu {
 			sys.ui.clear();
 			sys.ui.cancel();
 		}
+	}
+	
+	private void manageActivity() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void getAllActivities() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*
+	 * ACTIVITY SUB-MENUS
+	 */
+
+	private void setActivityName() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void setStartDateOfActivity() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void setEndDateOfActivity() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void addActivityToProject() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void getEmployeeListForActivity() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void getHoursSpentActivity() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void changeBudgetActivity() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void removeActivity() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*
+	 * PROJECT MENUS
+	 */
+	private void addProject() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void manageProject(){
+		sys.currentMenu = this;
+		sys.ui.print("Enter ID of project to manage:", sys.ui.style[6]);
+		String ID = sys.ui.next().toUpperCase();
+		Project p = sys.projectByID(ID);
+		if(p == null){
+			sys.ui.clear();
+			sys.ui.print("Error: Project with ID \"" + ID + "\" does not exist.", sys.ui.style[3]);
+		}
+		else{
+			Menu manageProject = sys.menus.get(6);
+			sys.currentMenu = manageProject;
+			manageProject.currentProject = p;
+			manageProject.header = "Manage Project \""+p.type+"\"";
+			sys.ui.clear();
+			manageProject.show();
+		}
+	}
+
+	private void getAllProjects() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*
+	 * PROJECT SUB-MENUS
+	 */
+	private void addEmployeeToProject() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void getAllEmployeesOnProject() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void setRepportComment() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void setTimeBudgetOfProject() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void getTotalProjectBudget() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void getProjectActiveness() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void setProjectReportComment() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void getWeeklyReport() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void removeProject() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*
+	 * OTHER MENUES
+	 */
+	
+	public void ShowFuckingLogs() {
+		String[] s = new String[44];
+		for (int i = 0; i < s.length; i++) {
+			s[i] = Integer.toString(i);
+		}
+		sys.ui.listDisplay(s, "Logs And Shit", 10);
 	}
 }

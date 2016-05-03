@@ -37,23 +37,24 @@ public class SysApp {
 			}
 		}
 		
-		menuEmpMng.add(new Menu(this, "Assign to Project"));
-		menuEmpMng.add(new Menu(this, "Assign to Activity"));
-		menuEmpMng.add(new Menu(this, "Set Work Hours for Activity By Week"));
-		menuEmpMng.add(new Menu(this, "Get Work Hours for Week"));
-		menuEmpMng.add(new Menu(this, "Get Work Hours for Activity By Week"));
-		menuEmpMng.add(new Menu(this, "Get Activities for Week"));
+		menuEmpMng.add(new Menu(this, "Assign To Project"));
+		menuEmpMng.add(new Menu(this, "Assign To Activity"));
+		menuEmpMng.add(new Menu(this, "Set Work Hours For Activity By Week"));
+		menuEmpMng.add(new Menu(this, "Get Work Hours For Activity By Week"));
+		menuEmpMng.add(new Menu(this, "Get Work Hours For Activity"));
+		menuEmpMng.add(new Menu(this, "Get Work Hours For Week"));
+		menuEmpMng.add(new Menu(this, "Get Activities For Week"));
 		menuEmpMng.add(new Menu(this, "Remove Employee"));
 		
 		menuPrjMng.add(new Menu(this, "Add Employee to Project"));
 		menuPrjMng.add(new Menu(this, "Get All Employees on Project"));
-		menuPrjMng.add(new Menu(this, "Add Activity to Project"));
+		menuPrjMng.add(new Menu(this, "Add Project Activity"));
 		menuPrjMng.add(new Menu(this, "Get All Activities on Project"));
-		menuPrjMng.add(new Menu(this, "Set Report Comment"));
-		menuPrjMng.add(new Menu(this, "View Weekly Report"));
 		menuPrjMng.add(new Menu(this, "Set Time Budget of Project"));
 		menuPrjMng.add(new Menu(this, "Get Total Project Budget Price"));
-		menuPrjMng.add(new Menu(this, "Get Activeness of Activity"));
+		menuPrjMng.add(new Menu(this, "Get Activeness of Activity in Project"));
+		menuPrjMng.add(new Menu(this, "Set Report Comment"));
+		menuPrjMng.add(new Menu(this, "View Weekly Report"));
 		menuPrjMng.add(new Menu(this, "Remove Project"));
 		
 		menuActMng.add(new Menu(this, "Set Activity Name"));
