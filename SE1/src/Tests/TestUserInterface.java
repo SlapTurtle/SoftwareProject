@@ -5,6 +5,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.lang.ProcessBuilder.Redirect;
+
 import org.junit.*;
 import project.*;
 
@@ -38,14 +40,16 @@ public class TestUserInterface extends TestBasis {
 		assertTrue(ui.console.size() == 0);
 		
 		//Tests if user inputs are properly passed along
-		String txt = "user input";
-		ui.input.obj.setText(txt);
-		ui.input.constructListener(new InputListener() {
-			@Override
-			public void inputSent(InputEvent e) {
-				ui.input.obj.setText("");
-			}
-		});
+		String[] txt = new String[] {"!clear", "text"};
+		int i = 0;
+		do {
+			ui.input.obj.setText(txt[i]);
+			ui.input.redirectInput();
+			if (i == 0) { assertTrue(ui.console.size() == 0); }
+			i++;
+		} while (i < 2);
+		assertTrue(ui.console.size() == 1);
+		//assertTrue(ui.latestInput.equals(txt[2]));
 		//assertTrue(ui.input.redirectInput());
 		//assertTrue(ui.input.obj.getText() == "");
 		//assertTrue(ui.console.size() == 1);
