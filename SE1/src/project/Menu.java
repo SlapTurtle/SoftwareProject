@@ -73,6 +73,26 @@ public class Menu {
 		}
 	}
 	
+	private int getUserInputInt(int low, int high, String prompt, String errorMessage){
+		int i = -1;
+		while(true){
+			try{
+				sys.ui.print(prompt, sys.ui.style[6]);
+				i = Integer.parseInt(sys.ui.next());
+				if(!(low==0 && high==0) && !(i >= low && i <= high)){
+					throw new NumberFormatException();
+				}
+				else{
+					break;
+				}
+			} catch(NumberFormatException e){
+				sys.ui.print("Error: "+errorMessage, sys.ui.style[3]);
+			}
+		}
+		return i;
+		
+	}
+	
 	public void runMethod() {
 		switch (header) {
 		// Employee - Top-Menu
@@ -240,38 +260,10 @@ public class Menu {
 			}
 		}
 		//Gets week
-		int i = -1;
-		while(true){
-			try{
-				sys.ui.print("Enter week within Activity \"" + a.type + "\"", sys.ui.style[6]);
-				i = Integer.parseInt(sys.ui.next());
-				if(!(i > 0 && i <= 53)){
-					throw new NumberFormatException();
-				}
-				else{
-					break;
-				}
-			} catch(NumberFormatException e){
-				sys.ui.print("Error: Invalid week.", sys.ui.style[3]);
-			}
-		}
+		int i = getUserInputInt(1, 53, "Enter Week within \""+a.type+"\"", "Invalid Week");
 		Week w = sys.getDateServer().getWeek(i);
 		//Gets weekday
-		int j = -1;
-		while(true){
-			try{
-				sys.ui.print("Enter weekday (1-7)", sys.ui.style[6]);
-				j = Integer.parseInt(sys.ui.next());
-				if(!(j > 0 && j <= 7)){
-					throw new NumberFormatException();
-				}
-				else{
-					break;
-				}
-			} catch(NumberFormatException e){
-				sys.ui.print("Error: Invalid weekday.", sys.ui.style[3]);
-			}
-		}
+		int j = getUserInputInt(1,7, "Enter weekday (1-7)","Invalid weekday.");
 		//Gets Hours
 		double d = 0;
 		while(true){
@@ -426,13 +418,31 @@ public class Menu {
 	}
 	
 	private void manageActivity() {
-		// TODO Auto-generated method stub
-		
+		sys.currentMenu = this;
+		sys.ui.print("Enter initials of Activities to manage:", sys.ui.style[6]);
+		String name = sys.ui.next().toUpperCase();
+		Activity a = sys.activityByName(name);
+		if(a == null){
+			sys.ui.clear();
+			sys.ui.print("Error: Activity \"" + name + "\" does not exist.", sys.ui.style[3]);
+		}
+		else{
+			Menu manageEmployee = sys.menus.get(2);
+			sys.currentMenu = manageEmployee;
+			manageEmployee.currentActivity = a;
+			manageEmployee.header = "Manage Activity \""+a.type+"\"";
+			sys.ui.clear();
+			manageEmployee.show();
+		}
 	}
 
 	private void getAllActivities() {
-		// TODO Auto-generated method stub
-		
+		int sz = sys.getActivityList().size();
+		String[] s = new String[sz];
+		for (int i = 0; i < sz; i++) {
+			s[i] = sys.getActivityList().get(i).type;
+		}
+		sys.ui.listDisplay(s, "Registered Activities", 10);
 	}
 	
 	/*

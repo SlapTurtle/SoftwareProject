@@ -84,7 +84,7 @@ public class SysApp {
 		Menu[] m = new Menu[] {
 				new Menu(this, "Employees", new Menu[] {menus.get(0), menus.get(1), menus.get(3)}, true, true),
 				new Menu(this, "Projects", new Menu[] {menus.get(4), menus.get(5), menus.get(7)}, true, true),
-				new Menu(this, "Activities", new Menu[] {menus.get(8), menus.get(9), menus.get(10)}, true, true),
+				new Menu(this, "Activities", new Menu[] {menus.get(8), menus.get(9), menus.get(11)}, true, true),
 				new Menu(this, "System", new Menu[] {menus.get(12)}, true, true ),
 				new Menu(this, "Settings", new Menu[] {menus.get(13)}, true, true),
 				new Menu(this, "Help"),
