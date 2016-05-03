@@ -108,6 +108,17 @@ public class Employee {
 		}
 		return list;
 	}
+	
+		public int getNumberOfWeeklyActivities(Week w){
+		
+			int count = 0;
+			for(Activity a : activityList){
+				if(a.startWeek.compareTo(w) <= 0 && a.endWeek.compareTo(w) >= 0){
+					count++;
+				}
+			}
+			return count;
+		}
 }
 
 
