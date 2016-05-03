@@ -4,6 +4,8 @@ import project.*;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Calendar;
 
 import org.junit.Test;
@@ -12,19 +14,22 @@ public class TestSysApp extends TestBasis{
 
 
 	@Test
-	public void SysApp() throws IllegalOperationException {
+	public void SysApp() throws IllegalOperationException, NoSuchMethodException, SecurityException, IOException {
 		//setup
 		setup();
+		
+		
 		
 		// Test that no employee is logged in
 		assertFalse(sysApp.loggedIn());
 		
+		
 		//Tests if addEmployee works
 		
-		assertTrue(sysApp.addEmployee("Jens"));
+		assertTrue(sysApp.addEmployee(e1));
 		
 		//Test if login now works
-		boolean login = sysApp.login("Jens");
+		boolean login = sysApp.login(e1);
 		assertTrue(login);
 		
 		//Testing if logoff works
@@ -32,12 +37,35 @@ public class TestSysApp extends TestBasis{
 		
 		assertFalse(sysApp.loggedIn());
 		
-		//Test add project random ID
+	
 		
-		//assertTrue(sysApp.addProject("143D92"));
+		// test if ad projekt works and if it is possible to add the same project twice
 		
-		//Test add activity random ID
+		assertTrue(sysApp.addProject(p1));
+		assertFalse(sysApp.addProject(p1));
 		
-		//assertTrue(sysApp.addActicity("143A33"));
+		// test if get projekt by name works
+		
+	//	Project p = sysApp.projectByName("ID1");       ------   The Test for porject by name
+	//	assertTrue(p==p1);
+		
+		//Test if add activity works and if you can add the same twice
+		
+		assertTrue(sysApp.addActicity(a1));
+		assertFalse(sysApp.addActicity(a1));
+		
+		//Test if get activity by name works
+		
+		Activity a = sysApp.activityByName("01xxx");
+		assertTrue(a==a1);
+		
+		
+		//System log, test?
+		
+		
+		//String s = "Hey this is a report";
+		//assertTrue(sysApp.setWeekReport(s));
+		//(sysApp.getSystemLog());
+		
 	}
 }
