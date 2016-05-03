@@ -57,6 +57,13 @@ public class Activity {
 		}
 	}
 	
+	public Week getEndWeek(){
+		return this.endWeek;
+	}
+	public Week getStartWeek(){
+		return this.startWeek;
+	}
+	
 	public boolean assignEmployee(Employee employee) {
 		
 		if (employee!=null && !employeelist.contains(employee)) {
