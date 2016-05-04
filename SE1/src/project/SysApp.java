@@ -28,6 +28,10 @@ public class SysApp {
 	public SysApp() {
 		ui = new UserInterface(this);
 		addEmployee("admin");
+		try {
+			addProject(new Project(this, "penis", new Week(0, 2), new Week(0, 4), new Week(0, 4)));
+		} catch (IllegalOperationException e1) {
+		}
 		ui.print("Welcome. Please enter your initials to proceed:", ui.style[6]);
 		while (!loggedIn()) {
 			try {

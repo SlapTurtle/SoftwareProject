@@ -555,7 +555,7 @@ public class Menu {
 			i = getUserInputInt(1, Integer.MAX_VALUE, "Enter timebudget in full hours on \"" + currentProject.getName() + "\"", "Invalid time value");
 		}
 		currentProject.timebudget = i;
-		sys.ui.cancel();
+		//sys.ui.cancel();
 		
 	}
 
