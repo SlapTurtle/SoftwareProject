@@ -296,9 +296,9 @@ public class SysApp {
 			}
 		return null;
 	}
-	public Employee employeeByInitials(String initi){
+	public Employee employeeByInitials(String initials){
 		for(Employee x : employeeList) {
-			if (x.getInitials()==(initi)){
+			if (x.getInitials().equals(initials)){
 				return x;
 			}
 		}
