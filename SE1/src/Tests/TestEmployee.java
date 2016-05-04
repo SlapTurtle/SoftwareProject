@@ -116,8 +116,8 @@ public class TestEmployee extends TestBasis{
 		assertFalse(addedHours2[8]);
 		
 		//Tests for getWorkHours
-		double d1 = e1.getWorkHours(a1, week3);
-		double d2 = e1.getWorkHours(a2, week3);
+		double d1 = e1.getWorkHours(a1, week3)[7];
+		double d2 = e1.getWorkHours(a2, week3)[7];
 		double actual1 = 8.0*7.0;
 		double actual2 = 4.0*7.0;
 		

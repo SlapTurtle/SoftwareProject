@@ -1,5 +1,6 @@
 package project;
 
+import java.util.ArrayList;
 import java.util.List;
 public class Activity {
 	
@@ -11,8 +12,8 @@ public class Activity {
 	private SysApp sysApp;
 	public Week startWeek; 
 	public Week endWeek;	
-	public List<Employee> employeelist;
-	public List<Project> projectlist;
+	public List<Employee> employeeList;
+	public List<Project> projectList;
 	public double hourBudget;
 	public double hoursSpent;
 	public String type;
@@ -21,10 +22,13 @@ public class Activity {
 	
 	public Activity(SysApp sysApp, String name, Week startWeek, Week endWeek) {
 		this.sysApp = sysApp;
+		this.activityID = setUniqueID();
 		this.type = name.toUpperCase();
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
-		this.activityID = setUniqueID();
+		this.employeeList = new ArrayList<Employee>();
+		this.projectList = new ArrayList<Project>();
+		
 	}
 	
 	//ID counter implemented in SysApp
@@ -66,8 +70,8 @@ public class Activity {
 	
 	public boolean assignEmployee(Employee employee) {
 		
-		if (employee!=null && !employeelist.contains(employee)) {
-			employeelist.add(employee);
+		if (employee!=null && !employeeList.contains(employee)) {
+			employeeList.add(employee);
 			return true;
 		}
 		return false;
@@ -76,8 +80,8 @@ public class Activity {
 	
 	public boolean assignProject(Project project) {
 
-		if (project!=null && !projectlist.contains(project)) {
-			projectlist.add(project);
+		if (project!=null && !projectList.contains(project)) {
+			projectList.add(project);
 			return true;
 		}
 		return false;
@@ -88,11 +92,11 @@ public class Activity {
 	}
 	
 	public List<Employee> getEmployeeOnAcitivy(){
-		return this.employeelist;
+		return this.employeeList;
 	}
 	
 	public List<Project> getProject(){
-		return this.projectlist;
+		return this.projectList;
 	}
 	
 	//If needed add more methods

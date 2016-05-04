@@ -26,23 +26,10 @@ public class SysApp {
 	public ArrayList<Menu> menuActMng = new ArrayList<Menu>();
 	
 	public SysApp() {
-		ui = new UserInterface(this);
-		addEmployee("admin");
-		try {
-			addProject(new Project(this, "penis", new Week(0, 2), new Week(0, 4), new Week(0, 4)));
-		} catch (IllegalOperationException e1) {
-		}
-		ui.print("Welcome. Please enter your initials to proceed:", ui.style[6]);
-		while (!loggedIn()) {
-			try {
-				loginUI(ui.next());
-			} catch (Exception e) {
-				ui.print("Error: Action denied. Please try again:", ui.style[3]);
-			}
-		}
-		
 		menuEmpMng.add(new Menu(this, "Assign To Project"));
+		menuEmpMng.add(new Menu(this, "Get All Assigned Projects"));
 		menuEmpMng.add(new Menu(this, "Assign To Activity"));
+		menuEmpMng.add(new Menu(this, "Get All Assigned Activities"));
 		menuEmpMng.add(new Menu(this, "Set Work Hours For Activity By Week"));
 		menuEmpMng.add(new Menu(this, "Get Work Hours For Activity By Week"));
 		menuEmpMng.add(new Menu(this, "Get Work Hours For Activity"));
@@ -92,18 +79,31 @@ public class SysApp {
 				new Menu(this, "System", new Menu[] {menus.get(12)}, true, true ),
 				new Menu(this, "Settings", new Menu[] {menus.get(13)}, true, true),
 				new Menu(this, "Help"),
+				new Menu(this, "Log Off"),
 				new Menu(this, "Exit"),
 		};
 		mainmenu = new Menu(this, "Main Menu", m, true, false);
 		menus.get(2).parent = m[0];
 		menus.get(6).parent = m[1];
 		menus.get(10).parent = m[2];
+		
+		
+		ui = new UserInterface(this);
+		addEmployee("admin");
+		ui.print("Welcome. Please enter your initials to proceed:", ui.style[6]);
+		while (!loggedIn()) {
+			try {
+				loginUI(ui.next());
+			} catch (Exception e) {
+				ui.print("Error: Action denied. Please try again:", ui.style[3]);
+			}
+		}
 		while(true)
 		try {
 			mainmenu.show();
 		} catch (Exception e) {
 			ui.clear();
-			ui.print("Error: Unexpected Error. You have been returned to the main menu.", ui.style[3]);
+			ui.print("Error: "+e.getMessage()+". You have been returned to the main menu.", ui.style[3]);
 		}
 	}
 	
@@ -258,7 +258,7 @@ public class SysApp {
 		Week w = new Week(cal.get(Calendar.YEAR),cal.get(Calendar.WEEK_OF_YEAR));
 		available =	this.employeeList;
 		for( Employee x : employeeList){
-			if (activity.employeelist.contains(x) || x.getNumberOfWeeklyActivities(w) >= 20){
+			if (activity.employeeList.contains(x) || x.getNumberOfWeeklyActivities(w) >= 20){
 				available.remove(x);
 			}
 		}	
@@ -313,8 +313,12 @@ public class SysApp {
 		return null;
 	}
 
-	public Activity activityByID(String act) {
-		// TODO Auto-generated method stub
+	public Activity activityByID(String ID) {
+		for(Activity a : activityList){
+			if(a.checkUniqueID().equals(ID)){
+				return a;
+			}
+		}
 		return null;
 	}
 
@@ -325,6 +329,20 @@ public class SysApp {
 			}
 		}
 		return null;
+	}
+
+	public boolean removeEmployee(Employee e) {
+		if(employeeList.size() > 1){
+			for(Project p : e.projectList){
+				p.employeeList.remove(e);
+			}
+			for(Activity a : e.activityList){
+				a.employeeList.remove(e);
+			}
+			employeeList.remove(e);
+			return true;
+		}
+		return false;
 	}
 	
 }

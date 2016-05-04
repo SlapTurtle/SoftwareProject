@@ -77,7 +77,7 @@ public class Menu {
 		int i = -1;
 		while(true){
 			try{
-				sys.ui.print(prompt, sys.ui.style[6]);
+				sys.ui.print(prompt+" ("+low+"-"+high+")", sys.ui.style[6]);
 				i = Integer.parseInt(sys.ui.next());
 				if(!(low==0 && high==0) && !(i >= low && i <= high)){
 					throw new NumberFormatException();
@@ -101,12 +101,14 @@ public class Menu {
 		case "Get All Employees": getAllEmployees(); break;
 		// Employee Sub-Menu
 		case "Assign To Project": assignToProject(); break;
+		case "Get All Assigned Projects": getProjectListEmployee(); break;
 		case "Assign To Activity": assignToActivity(); break;
+		case "Get All Assigned Activities": getActivityListEmployee(); break;
 		case "Set Work Hours For Activity By Week": setWorkHoursForActivityForWeek(); break;
 		case "Get Work Hours For Activity By Week": getWorkHoursForActivitiesForWeek(); break;
 		case "Get Work Hours For Activity": getWorkHoursForActivity(); break;
 		case "Get Work Hours For Week": getWorkHoursForWeek(); break;
-		case "Get Activities for Week": getActivitiesForWeek(); break;
+		case "Get Activities For Week": getActivitiesForWeek(); break;
 		case "Remove Employee": removeEmployee(); break;
 		
 		// Project Top-Menu
@@ -144,6 +146,7 @@ public class Menu {
 		case "Set Font Size": sys.ui.setFontSize(); break;
 		case "Show Logs": ShowFuckingLogs(); break;
 		case "Exit": System.exit(0); return;
+		case "Log Off": logOff(); return;
 		case "Help": sys.ui.help(); break;
 		
 		//Error?
@@ -207,6 +210,7 @@ public class Menu {
 	 * EMPLOYEE SUB-MENUS
 	 */
 	private void assignToProject(){
+		Employee e = parent.currentEmployee;
 		sys.ui.print("Enter Name or ID of Project:", sys.ui.style[6]);
 		String project = sys.ui.next().toUpperCase();
 		Project p = sys.projectByID(project);
@@ -218,13 +222,31 @@ public class Menu {
 			sys.ui.print("Error: Project with ID or Name \"" + project + "\" dosen't exist.", sys.ui.style[3]);
 		}
 		else{
-			p.addEmployee(currentEmployee);
-			currentEmployee.assignProject(p);
-			sys.ui.print("Successfully added \"" + currentEmployee.getInitials() + "\" to \""+ project +"\"", sys.ui.style[2]);
+			p.addEmployee(e);
+			e.assignProject(p);
+			sys.ui.clear();
+			sys.ui.print("Successfully added \"" + e.getInitials() + "\" to \""+ project +"\"", sys.ui.style[2]);
+		}
+	}
+	
+	private void getProjectListEmployee() {
+		Employee e = parent.currentEmployee;
+		ArrayList<Project> list = e.projectList;
+		if(list.size() > 0){
+			String[] str = new String[list.size()];
+			for(Project p: list){
+				str[list.indexOf(p)] = p.name; 
+			}
+			sys.ui.listDisplay(str, "All Registered Projects", 10);
+		}
+		else{
+			sys.ui.clear();
+			sys.ui.print("\"" + e.getInitials() + "\" not assigned to any Projects", sys.ui.style[2]);
 		}
 	}
 	
 	private void assignToActivity(){
+		Employee e = parent.currentEmployee;
 		sys.ui.print("Enter Name or ID of Activity:", sys.ui.style[6]);
 		String act = sys.ui.next().toUpperCase();
 		Activity a = sys.activityByID(act);
@@ -236,13 +258,37 @@ public class Menu {
 			sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
 		}
 		else{
-			a.assignEmployee(currentEmployee);
-			currentEmployee.assignActivity(a);
-			sys.ui.print("Successfully added \"" + currentEmployee.getInitials() + "\" to \""+ act +"\"", sys.ui.style[2]);
+			if(a.assignEmployee(e)){
+				e.assignActivity(a);
+				sys.ui.clear();
+				sys.ui.print("Successfully added \"" + e.getInitials() + "\" to \""+ act +"\"", sys.ui.style[2]);
+			}
+			else{
+				sys.ui.clear();
+				sys.ui.print("\"" + e.getInitials() + "\" is already assigned to \""+ act +"\"", sys.ui.style[3]);
+			}
+		}
+	}
+	
+	private void getActivityListEmployee() {
+		Employee e = parent.currentEmployee;
+		ArrayList<Activity> list = e.activityList;
+		if(list.size() > 0){
+			String[] str = new String[list.size()];
+			for(Activity a : list){
+				str[list.indexOf(a)] = a.type; 
+			}
+			sys.ui.clear();
+			sys.ui.listDisplay(str, "All Registered Activities", 10);
+		}
+		else{
+			sys.ui.clear();
+			sys.ui.print("\"" + e.getInitials() + "\" not assigned to any activities", sys.ui.style[2]);
 		}
 	}
 	
 	private void setWorkHoursForActivityForWeek(){
+		Employee emp = parent.currentEmployee;
 		//Gets Activity
 		Activity a;
 		while(true){
@@ -255,15 +301,18 @@ public class Menu {
 			if(a == null){
 				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
 			}
+			else if(!emp.activityList.contains(a)){
+				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assignet to Activity \"" + act + "\"", sys.ui.style[3]);
+			}
 			else{
 				break;
 			}
 		}
 		//Gets week
-		int i = getUserInputInt(1, 53, "Enter Week within \""+a.type+"\"", "Invalid Week");
+		int i = getUserInputInt(a.getStartWeek().getWeek(), a.getEndWeek().getWeek(), "Enter Week within \""+a.type+"\"", "Invalid Week");
 		Week w = sys.getDateServer().getWeek(i);
 		//Gets weekday
-		int j = getUserInputInt(1,7, "Enter weekday (1-7)","Invalid weekday.");
+		int j = getUserInputInt(1,7, "Enter weekday","Invalid weekday.");
 		//Gets Hours
 		double d = 0;
 		while(true){
@@ -282,7 +331,7 @@ public class Menu {
 		}
 		//Puts it all together
 		if(sys.ui.yesNoQuestion("Are you sure you want to add "+d+" hours to \""+a.type+"\" on weekday "+j+" of week "+w.getWeek()+"?")){
-			currentEmployee.setHours(a, d, w, j);
+			emp.setHours(a, d, w, j);
 			sys.ui.clear();
 			sys.ui.print("Successfully added "+d+" hours to \""+a.type+"\" on weekday "+j+" of week "+w.getWeek(), sys.ui.style[2]);
 		}
@@ -293,55 +342,144 @@ public class Menu {
 	}
 	
 	private void getWorkHoursForActivitiesForWeek() {
-		// TODO Auto-generated method stub
+		Employee emp = parent.currentEmployee;
+		//Gets Activity
+		Activity a;
+		while(true){
+			sys.ui.print("Enter Name or ID of Activity:", sys.ui.style[6]);
+			String act = sys.ui.next().toUpperCase();
+			a = sys.activityByID(act);
+			if(a == null){
+				a = sys.activityByName(act);
+			}
+			if(a == null){
+				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
+			}
+			else if(!emp.activityList.contains(a)){
+				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assignet to Activity \"" + act + "\"", sys.ui.style[3]);
+			}
+			else{
+				break;
+			}
+		}
+		//Gets week
+		int j = getUserInputInt(a.getStartWeek().getWeek(), a.getEndWeek().getWeek(), "Enter Week within \""+a.type+"\"", "Invalid Week");
+		Week w = sys.getDateServer().getWeek(j);
+		//output
+		String[] str = new String[8];
+		try {
+			double[] d = emp.getWorkHours(a, w);
+			for(int i = 0; i<7; i++){
+				str[i] = "Weekday "+(i+1)+": "+d[i];
+			}
+			str[7] = "Total for week: "+d[7];
+			sys.ui.clear();
+			sys.ui.listDisplay(str, "Work hours of \""+a.type+"\" in week "+j, 9);
+		} catch (IllegalOperationException e) {
+			//should never happen
+		}
 	}
 	
 	private void getWorkHoursForActivity() {
-		// TODO Auto-generated method stub
+		Employee emp = parent.currentEmployee;
+		//Gets Activity
+		Activity a;
+		while(true){
+			sys.ui.print("Enter Name or ID of Activity:", sys.ui.style[6]);
+			String act = sys.ui.next().toUpperCase();
+			a = sys.activityByID(act);
+			if(a == null){
+				a = sys.activityByName(act);
+			}
+			if(a == null){
+				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
+			}
+			else if(!emp.activityList.contains(a)){
+				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assignet to Activity \"" + act + "\"", sys.ui.style[3]);
+			}
+			else{
+				break;
+			}
+		}
+		//output
+		int k = a.getStartWeek().weekDifference(a.getEndWeek())+1;
+		String[] str = new String[9*k];
+		double[] temp;
+		double total = 0.0;
+		for(int i = 0; i<k; i++){
+			Week w = sys.getDateServer().getWeek(a.getStartWeek().getWeek()+i);
+			str[i*9] = "Week "+w.getWeek();
+			try {
+				temp = emp.getWorkHours(a, w);
+				for(int j = 0; j<7; j++){
+					str[(i*9) + (j+1)] = "Weekday "+(j+1)+": "+temp[j];
+				}
+				total += temp[7];
+				str[i*9+8] = "Total for week: " + temp[7];
+			} catch (IllegalOperationException e) {
+				//Should never happen
+			}
+		}
+		sys.ui.clear();
+		sys.ui.listDisplay(str, "\""+a.type+"\", Total Hours: "+total, 9);
 	}
 	
 	private void getWorkHoursForWeek() {
-		// TODO Auto-generated method stub
+		Employee emp = parent.currentEmployee;
+		int in = getUserInputInt(1,53, "Enter week.", "Invalid week.");
+		Week w = sys.getDateServer().getWeek(in);
+		ArrayList<Activity> a_list = emp.getWeeklyActivities(w);
+		//output
+		int k = a_list.size();
+		String[] str = new String[9*k];
+		double[] temp;
+		double total = 0.0;
+		for(int i = 0; i<k; i++){
+			Activity a = a_list.remove(0);
+			str[i*9] = "Activity \""+a.type+"\"";
+			try {
+				temp = emp.getWorkHours(a, w);
+				for(int j = 0; j<7; j++){
+					str[(i*9) + (j+1)] = "Weekday "+(j+1)+": "+temp[j];
+				}
+				total += temp[7];
+				str[i*9+8] = "Total for Activity: " + temp[7];
+			} catch (IllegalOperationException e) {
+				//Should never happen
+			}
+		}
+		sys.ui.clear();
+		sys.ui.listDisplay(str, "Hour for week "+w.getWeek()+", Total Hours: "+total, 9);
 	}
 
 	private void getActivitiesForWeek(){
-		int i = -1;
-		while(true){
-			try{
-				sys.ui.print("Enter week");
-				i = Integer.parseInt(sys.ui.next());
-				if(!(i > 0 && i <= 53)){
-					throw new NumberFormatException();
-				}
-				else{
-					break;
-				}
-			} catch(NumberFormatException e){
-				sys.ui.print("Error: Invalid week.", sys.ui.style[3]);
-			}
+		Employee emp = parent.currentEmployee;
+		int j = getUserInputInt(1,53, "Enter week.", "Invalid week.");
+		Week w = sys.getDateServer().getWeek(j);
+		ArrayList<Activity> list = emp.getWeeklyActivities(w);
+		String[] str = new String[list.size()];
+		for(int i=0; i<str.length; i++){
+			str[i] = list.remove(0).type;
 		}
-		Week w = sys.getDateServer().getWeek(i);
-		ArrayList<Activity> a_list = currentEmployee.getWeeklyActivities(w);
-		ArrayList<String> list = new ArrayList<String>();
-		for(Activity a : a_list){
-			String s;
-			try {
-				s = a.type + " : " + currentEmployee.getWorkHours(a, w)+" hours";
-				list.add(s);
-			} catch (IllegalOperationException e) { continue;}
-		}
-		sys.ui.listDisplay(list.toArray(new String[list.size()]), "Logs And Shit", 10);
+		sys.ui.clear();
+		sys.ui.listDisplay(str, "Activies for week "+j, 10);
 	}
 	
 	private void removeEmployee() {
 		Employee e = parent.currentEmployee;
 		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + e.getInitials() + "\" from the system?")) {
-			if(sys.getEmployeeList().remove(e)){
+			if(sys.getCurrentUser() == e){
+				sys.ui.print("Error: Cannot Remove Yourself", sys.ui.style[3]);
+			}
+			else if(sys.removeEmployee(e)){
 				sys.ui.clear();
 				sys.ui.print("Successfully removed employee \"" + e.getInitials() + "\" from the system.", sys.ui.style[2]);
+				parent.parent.show();
+				return;
 			}
-			else{
-				sys.ui.print("Error: Employee with initials \"" + e.getInitials() + "\" doesn't exists.", sys.ui.style[3]);
+			else {
+				sys.ui.clear();
+				sys.ui.print("Error: Cannot remove only Employee in system", sys.ui.style[3]);
 			}
 		} else {
 			sys.ui.clear();
@@ -595,11 +733,26 @@ public class Menu {
 	/*
 	 * OTHER MENUES
 	 */
+	
 	public void ShowFuckingLogs() {
 		String[] s = new String[44];
 		for (int i = 0; i < s.length; i++) {
 			s[i] = Integer.toString(i);
 		}
 		sys.ui.listDisplay(s, "Logs And Shit", 10);
+	}
+	
+	public void logOff() {
+		sys.ui.clear();
+		sys.logoff();
+		sys.ui.print("Log Off Succesfull. Goodbye", sys.ui.style[4]);
+		sys.ui.print("Welcome. Please enter your initials to proceed:", sys.ui.style[2]);
+		while (!sys.loggedIn()) {
+			try {
+				sys.loginUI(sys.ui.next());
+			} catch (Exception e) {
+				sys.ui.print("Error: Action denied. Please try again:", sys.ui.style[3]);
+			}
+		}
 	}
 }

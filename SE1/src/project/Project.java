@@ -94,7 +94,7 @@ public class Project {
 	 
 	}
 	public double getActivityDiversion(Employee e, Activity a, Week w) throws IllegalOperationException{
-		return e.getWorkHours(a, w);
+		return e.getWorkHours(a, w)[7];
 		 
 	}
 	//Positive integer values adds to budget, negative removes.

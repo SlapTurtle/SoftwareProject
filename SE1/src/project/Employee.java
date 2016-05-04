@@ -64,8 +64,7 @@ public class Employee {
 		ArrayList<Activity> list = getWeeklyActivities(w);
 		for(Activity a : list){
 			try {
-				double d;
-				d = getWorkHours(a,w);
+				double d = getWorkHours(a,w)[7];
 				count = d;
 			} catch (IllegalOperationException e) {}
 			/* Possibly print work hours for every activity */
@@ -78,25 +77,21 @@ public class Employee {
 		return count;
 	}
 	
-	public double getWorkHours(Activity a, Week w) throws IllegalOperationException {
-		double count = 0;
+	public double[] getWorkHours(Activity a, Week w) throws IllegalOperationException {
+		double[] hourList = new double[8];
 		if(a.startWeek.compareTo(w) <= 0 && a.endWeek.compareTo(w) >= 0){
 			double[] list = workHourList.get(activityList.indexOf(a));
 			int currentweek = a.startWeek.weekDifference(a.endWeek) - a.endWeek.weekDifference(w);
-			for(int i = (currentweek)*7; i<(currentweek)*7 + 7; i++){
-				/* Possibly print all hours per day of week */
-				/*
-				String s = ((i%7)+1)+" : "+list[i]; 
-				sysApp.ui.print(s, sysApp.ui.style[2]);
-				//System.out.println(s);
-				*/
-				count += list[i];
+			for(int i = 0; i<7; i++){
+				double d = list[(currentweek)*7 + i]; 
+				hourList[7] += d;
+				hourList[i] = d; 
 			}
 		}
 		else{
 			throw new IllegalOperationException("Week "+w.getWeek()+" is not within "+a.type, this.getClass());
 		}
-		return count;
+		return hourList;
 	}
 	
 	public ArrayList<Activity> getWeeklyActivities(Week w) {
