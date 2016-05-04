@@ -53,11 +53,7 @@ public class Menu {
 		boolean b = false;
 		String str;
 		while (!b) {
-			try {
-				str = sys.ui.next().toLowerCase();
-			} catch (Exception e) {
-				str = e.getMessage();
-			}
+			str = sys.ui.next().toLowerCase();
 			if (returnOption && (str.equals("return") || str.equals(Integer.toString(m.length+1)))) {
 				sys.ui.clear();
 				parent.show();
@@ -71,47 +67,42 @@ public class Menu {
 					break;
 				}
 			}
-			if (!b) { sys.ui.invalidInput(); }
+			if (!b) { sys.ui.print("Error: Invalid choice of menu", sys.ui.style[3]); }
 		}
 	}
 	
 	private int getUserInputInt(int low, int high, String prompt, String errorMessage){
-		int i = -1;
 		while(true){
 			try{
 				sys.ui.print(prompt+" ("+low+"-"+high+")", sys.ui.style[6]);
-				i = Integer.parseInt(sys.ui.next());
+				int i = Integer.parseInt(sys.ui.next());
 				if(!(low==0 && high==0) && !(i >= low && i <= high)){
 					throw new NumberFormatException();
 				}
 				else{
-					break;
+					return i;
 				}
 			} catch(NumberFormatException e){
 				sys.ui.print("Error: "+errorMessage, sys.ui.style[3]);
 			}
 		}
-		return i;
-		
 	}
 	
 	private double getUserInputDouble(String prompt, String errorMessage){
-		double d = 0;
 		while(true){
 			try{
 				sys.ui.print(prompt, sys.ui.style[6]);
-				d = Double.parseDouble(sys.ui.next());
+				double d = Double.parseDouble(sys.ui.next());
 				if(d <= 0){
 					throw new NumberFormatException();
 				}
 				else{
-					break;
+					return d;
 				}
 			} catch(NumberFormatException e){
 				sys.ui.print("Error: "+errorMessage, sys.ui.style[3]);
 			}
 		}
-		return d;
 	}
 	
 	public void runMethod() {
@@ -257,7 +248,7 @@ public class Menu {
 	
 	private void getProjectListEmployee() {
 		Employee e = parent.currentEmployee;
-		ArrayList<Project> list = e.projectList;
+		List<Project> list = e.getProjectList();
 		if(list.size() > 0){
 			String[] str = new String[list.size()];
 			for(Project p: list){
@@ -298,7 +289,7 @@ public class Menu {
 	
 	private void getActivityListEmployee() {
 		Employee e = parent.currentEmployee;
-		ArrayList<Activity> list = e.activityList;
+		List<Activity> list = e.getActivityList();
 		if(list.size() > 0){
 			String[] str = new String[list.size()];
 			for(Activity a : list){
@@ -327,7 +318,7 @@ public class Menu {
 			if(a == null){
 				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
 			}
-			else if(!emp.activityList.contains(a)){
+			else if(!emp.getActivityList().contains(a)){
 				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assigned to Activity \"" + act + "\"", sys.ui.style[3]);
 			}
 			else{
@@ -367,7 +358,7 @@ public class Menu {
 			if(a == null){
 				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
 			}
-			else if(!emp.activityList.contains(a)){
+			else if(!emp.getActivityList().contains(a)){
 				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assigned to Activity \"" + act + "\"", sys.ui.style[3]);
 			}
 			else{
@@ -406,7 +397,7 @@ public class Menu {
 			if(a == null){
 				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
 			}
-			else if(!emp.activityList.contains(a)){
+			else if(!emp.getActivityList().contains(a)){
 				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assigned to Activity \"" + act + "\"", sys.ui.style[3]);
 			}
 			else{
@@ -773,7 +764,7 @@ public class Menu {
 		String[] str = new String[k];
 		for(int i=0; i<k; i++){
 			Employee e = a.getEmployeeList().get(i);
-			str[i] = e.getInitials()+": "+e.workHourList.get(e.activityList.indexOf(a))[7];
+			str[i] = e.getInitials()+": "+e.getWorkHourList().get(e.getActivityList().indexOf(a))[7];
 		}
 		sys.ui.clear();
 		sys.ui.listDisplay(str, "Total Hours Spent by Employees on \""+a.getType()+"\"", 10);
@@ -834,6 +825,8 @@ public class Menu {
 			sys.ui.cancel();
 		}
 	}
+		
+	
 	
 	private void manageProject(){
 		sys.currentMenu = this;
@@ -869,8 +862,11 @@ public class Menu {
 	private void addEmployeeToProject() {
 		sys.ui.print("Enter initials of employee:", sys.ui.style[6]);
 		String initials = sys.ui.next().toUpperCase();
-		currentProject.addEmployee(sys.employeeByInitials(initials));
-		sys.ui.print("Employee with initials:" + initials + " added to " + currentProject.getName());
+		parent.currentProject.addEmployee(sys.employeeByInitials(initials));
+		sys.employeeByInitials(initials).assignProject(parent.currentProject);
+		sys.ui.print("Employee with initials:" + initials + " added to " + parent.currentProject.getName());
+		sys.ui.clear();
+		
 	}
 
 	private void getAllEmployeesOnProject() {
@@ -884,24 +880,25 @@ public class Menu {
 	
 
 	private void setReportComment() {//What should it do?
-		
+		sys.ui.print("Not implemented yet");
+		sys.ui.clear();
 	}
 
 	private void setTimeBudgetOfProject() {
 		Integer i = null;
 		while(i == null){
-			i = getUserInputInt(1, Integer.MAX_VALUE, "Enter timebudget in full hours on \"" + currentProject.getName() + "\"", "Invalid time value");
+			i = getUserInputInt(1, Integer.MAX_VALUE, "Enter timebudget in full hours on \"" + parent.currentProject.getName() + "\"", "Invalid time value");
 		}
-		currentProject.timebudget = i;
-		//sys.ui.cancel();
+		parent.currentProject.timebudget = i;
+		sys.ui.clear();
+		sys.ui.print("Time budget set to " + parent.currentProject.timebudget + " hours");
 		
+	
 	}
 
 	private void getTotalProjectBudget() {
-		sys.ui.print("Budget for " + currentProject.getName() + "is " + currentProject.getTotalProjectBudget() + "\n");
-		sys.ui.print("Timebudget for " + currentProject.getName() + "is " + currentProject.timebudget);
-
-		sys.ui.clear();
+		sys.ui.print("Budget for " + parent.currentProject.getName() + "is " + parent.currentProject.getTotalProjectBudget() + "\n");
+		sys.ui.print("Timebudget for " + parent.currentProject.getName() + "is " + parent.currentProject.timebudget);
 	}
 
 	private void getProjectActiveness() {//
@@ -909,24 +906,48 @@ public class Menu {
 		
 	}
 
-	private void setProjectReportComment() {//TODO Fix
+	private void setProjectReportComment() {
 		sys.ui.clear();
-		int i = getUserInputInt(1, 53, "Enter week for report comment  \"\"", "Invalid week");
+		int i = getUserInputInt(1, 53, "Enter week for report comment  \" "+ parent.currentProject.name +" \"", "Invalid week");
 		Week w = sys.getDateServer().getWeek(i);
 		sys.ui.print("Enter report comment", sys.ui.style[6]);
-		String s =(String) sys.ui.next();
-		currentProject.setReportComment(s, w);
-		sys.ui.print("Comment for week " + w.getWeek() + " is set to: \" " + s + "\"");
+		String s = sys.ui.next();
+		parent.currentProject.setReportComment(s, w);
+		sys.ui.clear();
+		sys.ui.print("Comment for week " + w.getWeek() + " is set to: \"" + s + "\"", sys.ui.style[2]);
 		
 	}
 
 	private void getWeeklyReport() {
-		// TODO Auto-generated method stub
-		
+		int i = getUserInputInt(1, 53, "Enter week for report comment", "Invalid week");
+		Week w = sys.getDateServer().getWeek(i);
+		if(!w.equals(null)){
+		sys.ui.print("Report for week " + w.getWeek() + " is: " +parent.currentProject.getWeeklyReport(w),sys.ui.style[2]);
+		}
+		else{
+			sys.ui.clear();
+			sys.ui.print("No report for choosen week",sys.ui.style[6]);
+		}
 	}
 
 	private void removeProject() {
-		// TODO Auto-generated method stub
+		Activity a = parent.currentActivity;
+		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + a.getType() + "\" from the system?")) {
+			if(sys.removeActivity(a)){
+				sys.ui.clear();
+				sys.ui.print("Successfully removed Activity \"" + a.getType() + "\" from the system.", sys.ui.style[2]);
+				parent.parent.show();
+				return;
+			}
+			else {
+				sys.ui.clear();
+				sys.ui.print("Error: Cannot remove only Employee in system", sys.ui.style[3]);
+			}
+		}
+		else {
+			sys.ui.clear();
+			sys.ui.cancel();
+		}
 		
 	}
 	
