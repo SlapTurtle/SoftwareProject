@@ -117,7 +117,7 @@ public class Menu {
 		case "Add Employee to Project": addEmployeeToProject(); break;
 		case "Get All Employees on Project": getAllEmployeesOnProject(); break;
 		case "Add Project Activity": addActivityToProject(); break;
-		case "Get All Activities on Project": setRepportComment(); break;
+		case "Get All Activities on Project": setReportComment(); break;
 		case "Set Time Budget of Project": setTimeBudgetOfProject(); break;
 		case "Get Total Project Budget Price": getTotalProjectBudget(); break;
 		case "Get Activeness of Activity in Project": getProjectActiveness(); break;
@@ -462,24 +462,53 @@ public class Menu {
 	 * PROJECT MENUS
 	 */
 	private void addProject() {
-		// TODO Auto-generated method stub
+		String name = null;
+		while(true){
+			sys.ui.print("Enter name of new Project:", sys.ui.style[6]);
+			name = sys.ui.next().toUpperCase();
+			break;
+		}
+		int i = getUserInputInt(1, 53, "Enter starting week of Project \"" + name + "\"", "Invalid week");
+		Week start = sys.getDateServer().getWeek(i);
 		
+		int j = getUserInputInt(i, 53, "Enter ending week of Project \"" + name + "\"", "Invalid week");
+		Week end = sys.getDateServer().getWeek(j);
+		
+		int k = getUserInputInt(i, 53, "Enter deadline week of Project \"" + name + "\"", "Invalid week");
+		Week dL = sys.getDateServer().getWeek(k);
+		
+		Project p = new Project(sys, name, start, end, end);
+		if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + name + "\" to the system?")){
+			if(sys.addProject(p)){
+				sys.ui.clear();
+				sys.ui.print("Successfully added Project \"" + name + "\" to the system.", sys.ui.style[2]);
+			}
+			else{
+				sys.ui.print("Error: Invalid Project. Please try again:", sys.ui.style[3]);
+			}
+		}
+		else{
+			sys.ui.clear();
+			sys.ui.cancel();
+		}
 	}
+		
+	
 	
 	private void manageProject(){
 		sys.currentMenu = this;
 		sys.ui.print("Enter ID of project to manage:", sys.ui.style[6]);
-		String ID = sys.ui.next().toUpperCase();
-		Project p = sys.projectByID(ID);
+		String name = sys.ui.next().toUpperCase();
+		Project p = sys.projectByName(name);
 		if(p == null){
 			sys.ui.clear();
-			sys.ui.print("Error: Project with ID \"" + ID + "\" does not exist.", sys.ui.style[3]);
+			sys.ui.print("Error: Project with ID \"" + name + "\" does not exist.", sys.ui.style[3]);
 		}
 		else{
 			Menu manageProject = sys.menus.get(6);
 			sys.currentMenu = manageProject;
 			manageProject.currentProject = p;
-			manageProject.header = "Manage Project \""+p.type+"\"";
+			manageProject.header = "Manage Project \""+p.getName()+"\"";
 			sys.ui.clear();
 			manageProject.show();
 		}
@@ -489,7 +518,7 @@ public class Menu {
 		int sz = sys.getProjectList().size();
 		String[] s = new String[sz];
 		for (int i = 0; i < sz; i++) {
-			s[i] = sys.getProjectList().get(i).type;
+			s[i] = sys.getProjectList().get(i).getName();
 		}
 		sys.ui.listDisplay(s, "Registered Activities", 10);
 	}
@@ -498,37 +527,58 @@ public class Menu {
 	 * PROJECT SUB-MENUS
 	 */
 	private void addEmployeeToProject() {
-		// TODO Auto-generated method stub
+		sys.ui.print("Enter initials of employee:", sys.ui.style[6]);
+		String initials = sys.ui.next().toUpperCase();
+		currentProject.addEmployee(sys.employeeByInitials(initials));
+		sys.ui.print("Employee with initials:" + initials + " added to " + currentProject.getName());
+		
 		
 	}
 
 	private void getAllEmployeesOnProject() {
-		// TODO Auto-generated method stub
-		
+		int sz = sys.getEmployeeList().size();
+		String[] s = new String[sz];
+		for (int i = 0; i < sz; i++) {
+			s[i] = sys.getEmployeeList().get(i).getInitials();
+		}
+		sys.ui.listDisplay(s, "Registered Employees", 10);
 	}
+	
 
-	private void setRepportComment() {
-		// TODO Auto-generated method stub
+	private void setReportComment() {//What should it do?
 		
 	}
 
 	private void setTimeBudgetOfProject() {
-		// TODO Auto-generated method stub
+		Integer i = null;
+		while(i == null){
+			i = getUserInputInt(1, Integer.MAX_VALUE, "Enter timebudget in full hours on \"" + currentProject.getName() + "\"", "Invalid time value");
+		}
+		currentProject.timebudget = i;
+		sys.ui.cancel();
 		
 	}
 
 	private void getTotalProjectBudget() {
-		// TODO Auto-generated method stub
+		sys.ui.print("Budget for " + currentProject.getName() + "is " + currentProject.getTotalProjectBudget() + "\n");
+		sys.ui.print("Timebudget for " + currentProject.getName() + "is " + currentProject.timebudget);
+
+		sys.ui.clear();
+	}
+
+	private void getProjectActiveness() {//
+		
 		
 	}
 
-	private void getProjectActiveness() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void setProjectReportComment() {
-		// TODO Auto-generated method stub
+	private void setProjectReportComment() {//TODO Fix
+		sys.ui.clear();
+		int i = getUserInputInt(1, 53, "Enter week for report comment  \"\"", "Invalid week");
+		Week w = sys.getDateServer().getWeek(i);
+		sys.ui.print("Enter report comment", sys.ui.style[6]);
+		String s =(String) sys.ui.next();
+		currentProject.setReportComment(s, w);
+		sys.ui.print("Comment for week " + w.getWeek() + " is set to: \" " + s + "\"");
 		
 	}
 

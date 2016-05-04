@@ -6,7 +6,7 @@ import java.util.List;
 public class Project {
 	
 	//Parameters
-	private String name;
+	public String name;
 	private String projectID;
 	private SysApp sysApp;
 	public Week startWeek;
@@ -18,10 +18,10 @@ public class Project {
 	public Employee projectManager;
 	public List<Activity> activityList;
 	public List<double[]> timeSpentList;
-	public String type;
 	public double budget;
 	public HashMap<Week, String> reports = new HashMap<Week, String>();
 	public String reportComment;
+	public int timebudget;
 	
 	
 	
@@ -36,6 +36,7 @@ public class Project {
 		this.activityList = new ArrayList<Activity>();
 		this.budget = 0;
 		this.projectManager = null;
+		this.timebudget = 0;
 	}
 
 	public boolean assignManager(Employee employee){
