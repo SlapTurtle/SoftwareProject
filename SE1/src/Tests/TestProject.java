@@ -12,36 +12,53 @@ import project.Week;
 public class TestProject extends TestBasis{
 	
 	@Test 
-	public void Project() throws Exception{ //TODO Handle Exception on Week
+	public void Project() throws Exception{ //Uses the cases setup through the TestBasis class.
 		//Test add project
-		Project makeCastle = new Project(sysApp, "Build a Castle", new Week(2017, 5), new Week(2017, 6), new Week(2017, 7));
-		Project makeFort = new Project(sysApp, "Build a Castle", new Week(2017, 5), new Week(2017, 6), new Week(2017, 7));
-		assertTrue(makeCastle.budget==0); //Checks that project is created and that budget is set to 0.
+
+		assertEquals(p1.getName(), "Project1"); //Checks that project is created and that budget is set to 0.
 		
-		//Test addEmployee - UseCase 4
-		Employee timHansson = new Employee("TIHAN");
-		makeCastle.addEmployee(timHansson);
-		assertTrue(makeCastle.findEmployee(timHansson));
+		//Test addEmployee
+		Employee e1 = new Employee("EMPL1"); //Tests that employees can be added, and that dublicates are not created.
+		assertTrue(p1.addEmployee(e1));
+		assertTrue(p1.addEmployee(e2));
+		assertFalse(p1.addEmployee(e2));
+		
 		
 		//Test addActiviy
-		//Activity gatherStones();
+		assertTrue(p1.addActivity(a1));
+		assertTrue(p1.addActivity(a2));
+		assertFalse(p1.addActivity(a2));
+		
 		
 		//Test UniqueID
-		System.out.println(makeCastle.checkUniqueID());
-		assertEquals(makeCastle.checkUniqueID(),"ID4"); //3 project created earlier
-		assertEquals(makeFort.checkUniqueID(),"ID5");   //4 project created earlier
+		assertEquals(p1.checkUniqueID(),"ID1"); 
+		assertEquals(p2.checkUniqueID(),"ID2");
+
+		//Test Weekly report
+		p1.setReportComment("Comment for week1", week1);
+		p1.setReportComment("Comment for week2", week2);
+		assertTrue(p1.getWeeklyReport(week1).equals("Comment for week1"));
+		assertFalse(p1.getWeeklyReport(week2).equals("Comment for week1"));
 		
 		
-		//Assign project manager - Case 5
-		//Brian is added to the project - after logging in he assigns Tim to project manager on the Make Castle Project.
-		Employee brianAnderson = new Employee("BRIAN");
-		makeCastle.addEmployee(sysApp.employeeByInitials("BRIAN"));
-		sysApp.login(sysApp.employeeByInitials("BRIAN")); 
-		makeCastle.assignManager(timHansson);
+		//Test Budget
+		p1.manageExpense(1000.5);
+		assertTrue(p1.getTotalProjectBudget()==1000.5);
+		p1.manageExpense(-50);
+		assertTrue(p1.getTotalProjectBudget()==1000.5-50);
+		
+		
+		
+		//Assign project manager
+		/*sysApp.login(sysApp.employeeByInitials("EMPL1"));
+		//p1.assignManager(e1);
+		System.out.println(p1.assignManager(sysApp.employeeByInitials("EMPL1")));
+		System.out.println(p1.projectManager.getInitials());
+		assertTrue(p1.projectManager.getInitials().equals(e1.getInitials()));
 		//Tests that the right employee became project manager
-		assertFalse(makeCastle.projectManagers.get(0).equals(brianAnderson));
-		assertTrue(makeCastle.projectManagers.get(0).equals(timHansson));
-		
+		//assertFalse(makeCastle.projectManagers.get(0).equals(brianAnderson));
+		//assertTrue(makeCastle.projectManagers.get(0).equals(timHansson));
+		*/
 		
 		
 		
@@ -62,21 +79,4 @@ public class TestProject extends TestBasis{
 	}
 */
 	
-
-	@Test
-	public void testID(){
-		
-	}
-	
-	@Test
-	public void testInit(){
-		assertTrue(true);
-		Integer x = 1;
-		
-		assertTrue(x.equals((Integer) 1));
-	}
-	@Test
-	public void testFalse(){
-		assertTrue(true);
-	}
 }

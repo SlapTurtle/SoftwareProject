@@ -1,11 +1,12 @@
 package project;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 public class Project {
 	
 	//Parameters
-	private String name;
+	public String name;
 	private String projectID;
 	private SysApp sysApp;
 	public Week startWeek;
@@ -14,11 +15,14 @@ public class Project {
 	
 	//methods
 	public List<Employee> employeeList;
-	public List<Employee> projectManagers;
+	public Employee projectManager;
 	public List<Activity> activityList;
 	public List<double[]> timeSpentList;
-	public String type;
-	public int budget;
+	public double budget;
+	public HashMap<Week, String> reports = new HashMap<Week, String>();
+	public String reportComment;
+	public int timebudget;
+	
 	
 	
 	public Project(SysApp sys, String name, Week sW,Week eW,Week dL){
@@ -30,15 +34,14 @@ public class Project {
 		this.projectID = setUniqueID();
 		this.employeeList = new ArrayList<Employee>();
 		this.activityList = new ArrayList<Activity>();
-		this.projectManagers = new ArrayList<Employee>();
 		this.budget = 0;
+		this.projectManager = null;
+		this.timebudget = 0;
 	}
 
 	public boolean assignManager(Employee employee){
-		if(projectManagers.size()==0){
-			projectManagers.add(employee);
-			// error if PM is already assigned
-			// ArrayList is used to be able to configure program to handle more project managers
+		if(projectManager==null){
+			this.projectManager=employee;
 			return true;
 		}
 		return false;
@@ -63,6 +66,7 @@ public class Project {
 		return employeeList.contains(x);
 		
 	}
+	
 	//ID counter implemented in SysApp
 	private String setUniqueID() {
 		String newID = "ID" + sysApp.getPcount();
@@ -73,28 +77,30 @@ public class Project {
 		return this.projectID;
 	}
 	
+	public String getName(){
+		return this.name;
+	}
 	
-	public boolean setReportComment(Week w){
-		
-		return false;
-	
-	 }
-
-	public boolean getWeeklyReport(Week w){
-		return true;}
+	public void setReportComment(String comment,Week w){
+		this.reports.put(w, comment);
+	}
+ 
+	public String getWeeklyReport(Week w){
+		return this.reports.get(w);
+	}
 	 
-	 public boolean getTotalProjectBudget(){
-		return true;
+	public double getTotalProjectBudget(){
+		return this.budget;
 	 
-	 }
-	 public boolean getActivityDiversion(Activity a, Week w){
-		return false;
+	}
+	public double getActivityDiversion(Employee e, Activity a, Week w) throws IllegalOperationException{
+		return e.getWorkHours(a, w);
 		 
-	 }
-	 //Positive integer values adds to budget, negative removes.
-	 public void manageExpense(int value){
+	}
+	//Positive integer values adds to budget, negative removes.
+	public void manageExpense(double value){
 		 this.budget = this.budget + value;
-	 }
+	}
 	 
 	 
 	

@@ -287,14 +287,14 @@ public class SysApp {
 	//Method to get a project by its ID.
 	public Project projectByID(String ID){
 		for(Project x : projectList)
-			if (x.checkUniqueID()==ID){
+			if (x.checkUniqueID().equals(ID)){
 				return x;
 			}
 		return null;
 	}
 	public Employee employeeByInitials(String initi){
 		for(Employee x : employeeList) {
-			if (x.getInitials().equals(initi)){
+			if (x.getInitials()==(initi)){
 				return x;
 			}
 		}
@@ -302,7 +302,10 @@ public class SysApp {
 	}
 
 	public Project projectByName(String project) {
-		// TODO Auto-generated method stub
+		for(Project x : projectList)
+			if (x.getName().equals(project)){
+				return x;
+			}
 		return null;
 	}
 
