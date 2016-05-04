@@ -252,7 +252,7 @@ public class Menu {
 		if(list.size() > 0){
 			String[] str = new String[list.size()];
 			for(Project p: list){
-				str[list.indexOf(p)] = p.name; 
+				str[list.indexOf(p)] = p.getName(); 
 			}
 			sys.ui.listDisplay(str, "All Registered Projects", 10);
 		}
@@ -293,7 +293,7 @@ public class Menu {
 		if(list.size() > 0){
 			String[] str = new String[list.size()];
 			for(Activity a : list){
-				str[list.indexOf(a)] = a.type; 
+				str[list.indexOf(a)] = a.getType(); 
 			}
 			sys.ui.clear();
 			sys.ui.listDisplay(str, "All Registered Activities", 10);
@@ -326,17 +326,17 @@ public class Menu {
 			}
 		}
 		//Gets week
-		int i = getUserInputInt(a.getStartWeek().getWeek(), a.getEndWeek().getWeek(), "Enter Week within \""+a.type+"\"", "Invalid Week");
+		int i = getUserInputInt(a.getStartWeek().getWeek(), a.getEndWeek().getWeek(), "Enter Week within \""+a.getType()+"\"", "Invalid Week");
 		Week w = sys.getDateServer().getWeek(i);
 		//Gets weekday
 		int j = getUserInputInt(1,7, "Enter weekday","Invalid weekday.");
 		//Gets Hours
-		double d = getUserInputDouble("Enter amount of hours of work to to \"" + a.type + "\" in week "+w.getWeek(), "Error: Invalid amount.");
+		double d = getUserInputDouble("Enter amount of hours of work to to \"" + a.getType() + "\" in week "+w.getWeek(), "Error: Invalid amount.");
 		//Puts it all together
-		if(sys.ui.yesNoQuestion("Are you sure you want to add "+d+" hours to \""+a.type+"\" on weekday "+j+" of week "+w.getWeek()+"?")){
+		if(sys.ui.yesNoQuestion("Are you sure you want to add "+d+" hours to \""+a.getType()+"\" on weekday "+j+" of week "+w.getWeek()+"?")){
 			emp.setHours(a, d, w, j);
 			sys.ui.clear();
-			sys.ui.print("Successfully added "+d+" hours to \""+a.type+"\" on weekday "+j+" of week "+w.getWeek(), sys.ui.style[2]);
+			sys.ui.print("Successfully added "+d+" hours to \""+a.getType()+"\" on weekday "+j+" of week "+w.getWeek(), sys.ui.style[2]);
 		}
 		else{
 			sys.ui.clear();
@@ -366,7 +366,7 @@ public class Menu {
 			}
 		}
 		//Gets week
-		int j = getUserInputInt(a.getStartWeek().getWeek(), a.getEndWeek().getWeek(), "Enter Week within \""+a.type+"\"", "Invalid Week");
+		int j = getUserInputInt(a.getStartWeek().getWeek(), a.getEndWeek().getWeek(), "Enter Week within \""+a.getType()+"\"", "Invalid Week");
 		Week w = sys.getDateServer().getWeek(j);
 		//output
 		String[] str = new String[8];
@@ -377,7 +377,7 @@ public class Menu {
 			}
 			str[7] = "Total for week: "+d[7];
 			sys.ui.clear();
-			sys.ui.listDisplay(str, "Work hours of \""+a.type+"\" in week "+j, 9);
+			sys.ui.listDisplay(str, "Work hours of \""+a.getType()+"\" in week "+j, 9);
 		} catch (IllegalOperationException e) {
 			//should never happen
 		}
@@ -424,7 +424,7 @@ public class Menu {
 			}
 		}
 		sys.ui.clear();
-		sys.ui.listDisplay(str, "\""+a.type+"\", Total Hours: "+total, 9);
+		sys.ui.listDisplay(str, "\""+a.getType()+"\", Total Hours: "+total, 9);
 	}
 	
 	private void getWorkHoursForWeek() {
@@ -439,7 +439,7 @@ public class Menu {
 		double total = 0.0;
 		for(int i = 0; i<k; i++){
 			Activity a = a_list.get(i);
-			str[i*9] = "Activity \""+a.type+"\"";
+			str[i*9] = "Activity \""+a.getType()+"\"";
 			try {
 				temp = emp.getWorkHours(a, w);
 				for(int j = 0; j<7; j++){
@@ -462,7 +462,7 @@ public class Menu {
 		ArrayList<Activity> list = emp.getWeeklyActivities(w);
 		String[] str = new String[list.size()];
 		for(int i=0; i<str.length; i++){
-			str[i] = list.get(i).type;
+			str[i] = list.get(i).getType();
 		}
 		sys.ui.clear();
 		sys.ui.listDisplay(str, "Activies for week "+j, 10);
@@ -541,7 +541,7 @@ public class Menu {
 			Menu manageEmployee = sys.menus.get(10);
 			sys.currentMenu = manageEmployee;
 			manageEmployee.currentActivity = a;
-			manageEmployee.header = "Manage Activity \""+a.type+"\"";
+			manageEmployee.header = "Manage Activity \""+a.getType()+"\"";
 			sys.ui.clear();
 			manageEmployee.show();
 		}
@@ -551,7 +551,7 @@ public class Menu {
 		int sz = sys.getActivityList().size();
 		String[] s = new String[sz];
 		for (int i = 0; i < sz; i++) {
-			s[i] = sys.getActivityList().get(i).type;
+			s[i] = sys.getActivityList().get(i).getType();
 		}
 		sys.ui.listDisplay(s, "Registered Activities", 10);
 	}
@@ -575,7 +575,7 @@ public class Menu {
 		}
 		if(sys.ui.yesNoQuestion("Are you sure you change \"" + a.getType() + "\"'s name to \"" + name + "\"?")){
 			a.setType(name);
-			parent.header = "Manage Activity \""+a.type+"\"";
+			parent.header = "Manage Activity \""+a.getType()+"\"";
 			System.out.println(a == parent.currentActivity);
 			System.out.println(a.getType().equals(parent.currentActivity.getType()));
 			sys.ui.clear();
@@ -694,24 +694,38 @@ public class Menu {
 		Activity a = parent.currentActivity;
 		int j = getUserInputInt(a.getStartWeek().getWeek(), 53, "Enter new ending week", "Invalid Week");
 		Week w = sys.getDateServer().getWeek(j);
-		if(sys.ui.yesNoQuestion("Are you sure you want to change ending week of \""+a.getType()+"\" from "+a.getEndWeek().getWeek()+" to "+j+"?")){
-			a.setEndWeek(w);
-			sys.ui.clear();
-			sys.ui.print("Successfully changed ending week of \"" + a.getType() + "\" to \""+ j +"\"", sys.ui.style[2]);
+		int tY = sys.getDateServer().getToday().get(Calendar.YEAR);
+		int tW = sys.getDateServer().getToday().get(Calendar.WEEK_OF_YEAR);
+		Week now = null;
+		try {
+			now = new Week(tY, tW);
+		} catch (IllegalOperationException e) {
+			//should not happen
+		}
+		if(now.compareTo(a.getStartWeek()) >= 0){
+			if(sys.ui.yesNoQuestion("Are you sure you want to change ending week of \""+a.getType()+"\" from "+a.getEndWeek().getWeek()+" to "+j+"?")){
+				a.setEndWeek(w);
+				sys.ui.clear();
+				sys.ui.print("Successfully changed ending week of \"" + a.getType() + "\" to \""+ j +"\"", sys.ui.style[2]);
+			}
+			else{
+				sys.ui.clear();
+				sys.ui.cancel();
+			}
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.cancel();
+			sys.ui.print("Activity has already ending, and ending week cannot be changed", sys.ui.style[3]);
 		}
 	}
 	
 	private void changeBudgetActivity() {
 		Activity a = parent.currentActivity;
 		double d = getUserInputDouble("Enter new hour-budget","Invalid value");
-		if(sys.ui.yesNoQuestion("Are you sure you want to change hour-budget of \""+a.getType()+"\" from "+a.hourBudget+" to "+d+"?")){
+		if(sys.ui.yesNoQuestion("Are you sure you want to change hour-budget of \""+a.getType()+"\" from "+a.getHourBudget()+" to "+d+"?")){
 			a.setHourBudget(d);
 			sys.ui.clear();
-			sys.ui.print("Successfully changed hour-budget of \""+a.getType()+"\" from "+a.hourBudget+" to "+d, sys.ui.style[2]);
+			sys.ui.print("Successfully changed hour-budget of \""+a.getType()+"\" from "+a.getHourBudget()+" to "+d, sys.ui.style[2]);
 		}
 		else{
 			sys.ui.clear();
@@ -722,9 +736,9 @@ public class Menu {
 	private void getHoursSpentActivity() {
 		Activity a = parent.currentActivity;
 		String[] str = {
-				"Budget Hours: "+a.getHourBudget(),
-				"Hours Spent : "+a.getSpentBudget(),
-				"Budget Left : "+(a.getHourBudget()-a.getSpentBudget())
+				"Hours Availeble: "+a.getHourBudget(),
+				"Hours Spent    : "+a.getSpentBudget(),
+				"Hours Left     : "+(a.getHourBudget()-a.getSpentBudget())
 		};
 		sys.ui.clear();
 		sys.ui.listDisplay(str, "Budget Status for \""+a.getType()+"\"", str.length);
@@ -890,26 +904,36 @@ public class Menu {
 	}
 	
 
-	private void setReportComment() {//What should it do?
-		sys.ui.print("Not implemented yet");
+	private void setReportComment() {
+		//TODO
 		sys.ui.clear();
+		sys.ui.print("Not implemented yet");
 	}
 
 	private void setTimeBudgetOfProject() {
-		Integer i = null;
-		while(i == null){
-			i = getUserInputInt(1, Integer.MAX_VALUE, "Enter timebudget in full hours on \"" + parent.currentProject.getName() + "\"", "Invalid time value");
+		Project p = parent.currentProject;
+		double d = getUserInputDouble("Enter timebudget hours on \"" + p.getName() + "\"", "Invalid time value");
+		if(sys.ui.yesNoQuestion("Are you sure you want to change the budget of \""+p.getName()+"\" from "+p.getBudget()+" to "+d+"?")){
+			p.setBudget(d);
+			sys.ui.clear();
+			sys.ui.print("Time budget set to " + p.getBudget() + " hours");
 		}
-		parent.currentProject.timebudget = i;
-		sys.ui.clear();
-		sys.ui.print("Time budget set to " + parent.currentProject.timebudget + " hours");
-		
-	
+		else {
+			sys.ui.clear();
+			sys.ui.cancel();
+		}
 	}
 
 	private void getTotalProjectBudget() {
-		sys.ui.print("Budget for " + parent.currentProject.getName() + "is " + parent.currentProject.getTotalProjectBudget() + "\n");
-		sys.ui.print("Timebudget for " + parent.currentProject.getName() + "is " + parent.currentProject.timebudget);
+		Project p = parent.currentProject;
+		double d = p.getSpentBudget();
+		String[] str = {
+				"Hours Avialable: "+p.getBudget(),
+				"Hours Spent    : "+d,
+				"Hours Left     : "+(p.getBudget()-d),
+		};
+		sys.ui.clear();
+		sys.ui.listDisplay(str, "Budget Status for \""+p.getName()+"\"", str.length);
 	}
 
 	private void getProjectActiveness() {//
@@ -919,7 +943,7 @@ public class Menu {
 
 	private void setProjectReportComment() {
 		sys.ui.clear();
-		int i = getUserInputInt(1, 53, "Enter week for report comment  \" "+ parent.currentProject.name +" \"", "Invalid week");
+		int i = getUserInputInt(1, 53, "Enter week for report comment  \" "+ parent.currentProject.getName() +" \"", "Invalid week");
 		Week w = sys.getDateServer().getWeek(i);
 		sys.ui.print("Enter report comment", sys.ui.style[6]);
 		String s = sys.ui.next();

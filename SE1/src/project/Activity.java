@@ -6,13 +6,13 @@ public class Activity {
 	
 	private SysApp sysApp;
 	private String activityID;
-	public String type;
-	public Week startWeek; 
-	public Week endWeek;	
-	public List<Employee> employeeList;
-	public List<Project> projectList;
-	public double hourBudget;
-	public double hoursSpent;
+	private String type;
+	private Week startWeek; 
+	private Week endWeek;	
+	private List<Employee> employeeList;
+	private List<Project> projectList;
+	private double hourBudget;
+	private double hoursSpent;
 	
 	
 	// -------- Sets the activity ID and planed work weeks ----

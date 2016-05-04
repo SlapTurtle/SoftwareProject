@@ -34,6 +34,7 @@ public class TestProject extends TestBasis{
 		assertEquals(p1.checkUniqueID(),"ID1"); 
 		assertEquals(p2.checkUniqueID(),"ID2");
 
+		
 		//Test Weekly report
 		p1.setReportComment("Comment for week1", week1);
 		p1.setReportComment("Comment for week2", week2);
@@ -42,12 +43,8 @@ public class TestProject extends TestBasis{
 		
 		
 		//Test Budget
-		p1.manageExpense(1000.5);
-		assertTrue(p1.getTotalProjectBudget()==1000.5);
-		p1.manageExpense(-50);
-		assertTrue(p1.getTotalProjectBudget()==1000.5-50);
-		
-		
+		p1.setBudget(100);
+		assertEquals(p1.getBudget(), 100, Double.MAX_VALUE);
 		
 		//Assign project manager
 		/*sysApp.login(sysApp.employeeByInitials("EMPL1"));

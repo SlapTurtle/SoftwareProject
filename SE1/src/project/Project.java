@@ -5,38 +5,30 @@ import java.util.HashMap;
 import java.util.List;
 public class Project {
 	
-	//Parameters
-	public String name;
+	private String name;
 	private String projectID;
 	private SysApp sysApp;
-	public Week startWeek;
-	public Week endWeek;
-	public Week deadline;
-	
-	//methods
-	public List<Employee> employeeList;
-	public Employee projectManager;
-	public List<Activity> activityList;
-	public List<double[]> timeSpentList;
-	public double budget;
-	public HashMap<Week, String> reports = new HashMap<Week, String>();
-	public String reportComment;
-	public int timebudget;
-	
-	
+	private Week startWeek;
+	private Week endWeek;
+	private Week deadline;
+	private List<Employee> employeeList;
+	private Employee projectManager;
+	private List<Activity> activityList;
+	private double budget;
+	private HashMap<Week, String> reports = new HashMap<Week, String>();
+	private String reportComment;
 	
 	public Project(SysApp sys, String name, Week sW,Week eW,Week dL){
 		this.sysApp = sys;
+		this.projectID = setUniqueID();
 		this.name = name.toUpperCase();
 		this.startWeek = sW;
 		this.endWeek = eW;
 		this.deadline = dL;
-		this.projectID = setUniqueID();
 		this.employeeList = new ArrayList<Employee>();
+		this.projectManager = null;
 		this.activityList = new ArrayList<Activity>();
 		this.budget = 0;
-		this.projectManager = null;
-		this.timebudget = 0;
 	}
 
 	public boolean assignManager(Employee employee){
@@ -48,23 +40,17 @@ public class Project {
 	}
 	
 	public boolean addEmployee(Employee employee){
-		if(!employeeList.contains(employee) && employee != null){
-		return employeeList.add(employee);
-		
+		if(employee != null && !employeeList.contains(employee)){
+			return employeeList.add(employee);
 		}
 		return false;
 	}
 	
 	public boolean addActivity(Activity activity){
-		if(!activityList.contains(activity) && activity != null){
+		if(activity != null && !activityList.contains(activity)){
 			return activityList.add(activity);
 		}
 		return false;
-	}
-	
-	public boolean findEmployee(Employee x){
-		return employeeList.contains(x);
-		
 	}
 	
 	//ID counter implemented in SysApp
@@ -89,17 +75,40 @@ public class Project {
 		return this.reports.get(w);
 	}
 	 
-	public double getTotalProjectBudget(){
+	public double getBudget(){
 		return this.budget;
-	 
 	}
+	
+	public double getSpentBudget(){
+		double d = 0.0;
+		for(Activity a : activityList){
+			for(Employee e : a.getEmployeeList()){
+				List<Double[]> list = (List<Double[]>) e.getWorkHourList().get(e.getActivityList().indexOf(a));
+				for(Double[] weeklyHours : list){
+					for(double hours : weeklyHours){
+						d += hours;
+					}
+				}
+			}
+		}
+		return d;
+	}
+	
 	public double getActivityDiversion(Employee e, Activity a, Week w) throws IllegalOperationException{
 		return e.getWorkHours(a, w)[7];
-		 
 	}
-	//Positive integer values adds to budget, negative removes.
-	public void manageExpense(double value){
-		 this.budget = this.budget + value;
+
+	
+	public void setBudget(double d) {
+		budget = d;
+	}
+
+	public List<Employee> getEmployeeList() {
+		return employeeList;
+	}
+
+	public List<Activity> getActivityList() {
+		return activityList;
 	}
 	 
 	 

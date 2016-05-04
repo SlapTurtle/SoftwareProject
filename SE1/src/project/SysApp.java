@@ -288,7 +288,7 @@ public class SysApp {
 	public List<Employee> getAvailableEmployees(Activity activity, Week week) throws IllegalOperationException{
 		List<Employee> available = new ArrayList<Employee>();
 		for(Employee e : employeeList){
-			if(!activity.employeeList.contains(e) && e.getWeeklyActivities(week).size() < 20){
+			if(!activity.getEmployeeList().contains(e) && e.getWeeklyActivities(week).size() < 20){
 				available.add(e);
 			}
 		}	
@@ -354,7 +354,7 @@ public class SysApp {
 
 	public Activity activityByName(String name) {
 		for(Activity a : activityList){
-			if(a.type.equals(name)){
+			if(a.getType().equals(name)){
 				return a;
 			}
 		}
@@ -364,10 +364,10 @@ public class SysApp {
 	public boolean removeEmployee(Employee e) {
 		if(employeeList.size() > 1){
 			for(Project p : e.getProjectList()){
-				p.employeeList.remove(e);
+				p.getEmployeeList().remove(e);
 			}
 			for(Activity a : e.getActivityList()){
-				a.employeeList.remove(e);
+				a.getEmployeeList().remove(e);
 			}
 			employeeList.remove(e);
 			return true;
@@ -377,7 +377,7 @@ public class SysApp {
 
 	public boolean removeActivity(Activity a) {
 		for(Project p : a.getProjectList()){
-			p.activityList.remove(a);
+			p.getActivityList().remove(a);
 		}
 		for(Employee e : a.getEmployeeList()){
 			e.getActivityList().remove(a);
@@ -387,10 +387,10 @@ public class SysApp {
 	}
 	
 	public boolean removeProject(Project p) {
-		for(Activity a : p.activityList){
-			a.projectList.remove(p);
+		for(Activity a : p.getActivityList()){
+			a.getProjectList().remove(p);
 		}
-		for(Employee e : p.employeeList){
+		for(Employee e : p.getEmployeeList()){
 			e.getActivityList().remove(p);
 		}
 		activityList.remove(p);

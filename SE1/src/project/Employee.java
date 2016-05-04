@@ -91,9 +91,9 @@ public class Employee {
 		if (	a != null && activityList.contains(a) && hours > 0.0 && 
 				w.getWeek() > 0 && w.getWeek() <= 53 &&
 				weekday > 0 && weekday <= 7 &&
-				a.startWeek.compareTo(w) <= 0 && a.endWeek.compareTo(w) >= 0)
+				a.getStartWeek().compareTo(w) <= 0 && a.getEndWeek().compareTo(w) >= 0)
 		{
-			int currentWeek = a.startWeek.weekDifference(a.endWeek) - a.endWeek.weekDifference(w);
+			int currentWeek = a.getStartWeek().weekDifference(a.getEndWeek()) - a.getEndWeek().weekDifference(w);
 			List<double[]> list = (List<double[]>) workHourList.get(activityList.indexOf(a));
 			double[] d = list.get(currentWeek);
 			a.spendHours(hours - d[weekday-1]);
@@ -117,9 +117,9 @@ public class Employee {
 	
 	public double[] getWorkHours(Activity a, Week w) throws IllegalOperationException {
 		double[] hourList = new double[8];
-		if(a.startWeek.compareTo(w) <= 0 && a.endWeek.compareTo(w) >= 0){
+		if(a.getStartWeek().compareTo(w) <= 0 && a.getEndWeek().compareTo(w) >= 0){
 			List<double[]> list = (List<double[]>) workHourList.get(activityList.indexOf(a));
-			int currentWeek = a.startWeek.weekDifference(a.endWeek) - a.endWeek.weekDifference(w);
+			int currentWeek = a.getStartWeek().weekDifference(a.getEndWeek()) - a.getEndWeek().weekDifference(w);
 			for(int i = 0; i<7; i++){
 				double d = list.get(currentWeek)[i]; 
 				hourList[7] += d;
@@ -127,7 +127,7 @@ public class Employee {
 			}
 		}
 		else{
-			throw new IllegalOperationException("Week "+w.getWeek()+" is not within "+a.type, this.getClass());
+			throw new IllegalOperationException("Week "+w.getWeek()+" is not within "+a.getType(), this.getClass());
 		}
 		return hourList;
 	}
@@ -135,7 +135,7 @@ public class Employee {
 	public ArrayList<Activity> getWeeklyActivities(Week w) {
 		ArrayList<Activity> list = new ArrayList<Activity>();
 		for(Activity a : activityList){
-			if(a.startWeek.compareTo(w) <= 0 && a.endWeek.compareTo(w) >= 0){
+			if(a.getStartWeek().compareTo(w) <= 0 && a.getEndWeek().compareTo(w) >= 0){
 				list.add(a);
 			}
 		}
