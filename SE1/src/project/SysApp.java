@@ -125,9 +125,7 @@ public class SysApp {
 		catch(Exception e){
 			System.exit(0);
 		}
-		/**
-		 * END OF TEST!!!!
-		 */
+		/***/
 
 		ui = new UserInterface(this);
 		ui.print("Welcome. Please enter your initials to proceed:", ui.style[6]);

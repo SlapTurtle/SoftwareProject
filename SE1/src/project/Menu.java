@@ -38,7 +38,7 @@ public class Menu {
 		sys.currentMenu = this;
 		if (method == true) { runMethod(); return; }
 		if (m == null) { return; }
-		if (!(header == null) && !(header.equals(""))) { sys.ui.print(header, sys.ui.style[4]); }
+		if (!(header == null) && !(header.equals(""))) { sys.ui.print(header, UserInterface.style[4]); }
 		if (showHeader == true) {
 			for (int i = 0; i < m.length; i++) {
 				sys.ui.print(i+1 + "   " + m[i].header);
@@ -67,14 +67,14 @@ public class Menu {
 					break;
 				}
 			}
-			if (!b) { sys.ui.print("Error: Invalid choice of menu", sys.ui.style[3]); }
+			if (!b) { sys.ui.print("Error: Invalid choice of menu", UserInterface.style[3]); }
 		}
 	}
 	
 	private int getUserInputInt(int low, int high, String prompt, String errorMessage){
 		while(true){
 			try{
-				sys.ui.print(prompt+" ("+low+"-"+high+")", sys.ui.style[6]);
+				sys.ui.print(prompt+" ("+low+"-"+high+")", UserInterface.style[6]);
 				int i = Integer.parseInt(sys.ui.next());
 				if(!(low==0 && high==0) && !(i >= low && i <= high)){
 					throw new NumberFormatException();
@@ -83,7 +83,7 @@ public class Menu {
 					return i;
 				}
 			} catch(NumberFormatException e){
-				sys.ui.print("Error: "+errorMessage, sys.ui.style[3]);
+				sys.ui.print("Error: "+errorMessage, UserInterface.style[3]);
 			}
 		}
 	}
@@ -91,7 +91,7 @@ public class Menu {
 	private double getUserInputDouble(String prompt, String errorMessage){
 		while(true){
 			try{
-				sys.ui.print(prompt, sys.ui.style[6]);
+				sys.ui.print(prompt, UserInterface.style[6]);
 				double d = Double.parseDouble(sys.ui.next());
 				if(d <= 0){
 					throw new NumberFormatException();
@@ -100,7 +100,7 @@ public class Menu {
 					return d;
 				}
 			} catch(NumberFormatException e){
-				sys.ui.print("Error: "+errorMessage, sys.ui.style[3]);
+				sys.ui.print("Error: "+errorMessage, UserInterface.style[3]);
 			}
 		}
 	}
@@ -179,17 +179,17 @@ public class Menu {
 	 *  EMPLOYEE MENUES
 	 */
 	private void addEmployee(){
-		sys.ui.print("Enter initials of new employee:", sys.ui.style[6]);
+		sys.ui.print("Enter initials of new employee:", UserInterface.style[6]);
 		String initials = sys.ui.next().toUpperCase();
 		Employee employee = new Employee(initials);
 		if (sys.ui.yesNoQuestion("Are you sure you want to add \"" + initials + "\" to the system?")) {
 			if(sys.addEmployee(employee)){
 				sys.ui.clear();
-				sys.ui.print("Successfully added employee \"" + initials + "\" to the system.", sys.ui.style[2]);
+				sys.ui.print("Successfully added employee \"" + initials + "\" to the system.", UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
-				sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", sys.ui.style[3]);
+				sys.ui.print("Error: Employee with initials \"" + initials + "\" already exists.", UserInterface.style[3]);
 			}
 		}
 		else{
@@ -200,12 +200,12 @@ public class Menu {
 	
 	private void manageEmployee(){
 		sys.currentMenu = this;
-		sys.ui.print("Enter initials of employee to manage:", sys.ui.style[6]);
+		sys.ui.print("Enter initials of employee to manage:", UserInterface.style[6]);
 		String initials = sys.ui.next().toUpperCase();
 		Employee e = sys.employeeByInitials(initials);
 		if(e == null){
 			sys.ui.clear();
-			sys.ui.print("Error: Employee with initials \"" + initials + "\" does not exist.", sys.ui.style[3]);
+			sys.ui.print("Error: Employee with initials \"" + initials + "\" does not exist.", UserInterface.style[3]);
 		}
 		else{
 			Menu manageEmployee = sys.menus.get(2);
@@ -231,7 +231,7 @@ public class Menu {
 	 */
 	private void assignToProject(){
 		Employee e = parent.currentEmployee;
-		sys.ui.print("Enter Name or ID of Project:", sys.ui.style[6]);
+		sys.ui.print("Enter Name or ID of Project:", UserInterface.style[6]);
 		String project = sys.ui.next().toUpperCase();
 		Project p = sys.projectByID(project);
 		if(p == null){
@@ -239,13 +239,13 @@ public class Menu {
 		}
 		if(p == null){
 			sys.ui.clear();
-			sys.ui.print("Error: Project with ID or Name \"" + project + "\" dosen't exist.", sys.ui.style[3]);
+			sys.ui.print("Error: Project with ID or Name \"" + project + "\" dosen't exist.", UserInterface.style[3]);
 		}
 		else{
 			p.addEmployee(e);
 			e.assignProject(p);
 			sys.ui.clear();
-			sys.ui.print("Successfully added \"" + e.getInitials() + "\" to \""+ project +"\"", sys.ui.style[2]);
+			sys.ui.print("Successfully added \"" + e.getInitials() + "\" to \""+ project +"\"", UserInterface.style[2]);
 		}
 	}
 	
@@ -261,13 +261,13 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("\"" + e.getInitials() + "\" not assigned to any Projects", sys.ui.style[3]);
+			sys.ui.print("\"" + e.getInitials() + "\" not assigned to any Projects", UserInterface.style[3]);
 		}
 	}
 	
 	private void assignToActivity(){
 		Employee e = parent.currentEmployee;
-		sys.ui.print("Enter Name or ID of Activity:", sys.ui.style[6]);
+		sys.ui.print("Enter Name or ID of Activity:", UserInterface.style[6]);
 		String act = sys.ui.next().toUpperCase();
 		Activity a = sys.activityByID(act);
 		if(a == null){
@@ -275,17 +275,17 @@ public class Menu {
 		}
 		if(a == null){
 			sys.ui.clear();
-			sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
+			sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", UserInterface.style[3]);
 		}
 		else{
 			if(a.assignEmployee(e)){
 				e.assignActivity(a);
 				sys.ui.clear();
-				sys.ui.print("Successfully added \"" + e.getInitials() + "\" to \""+ act +"\"", sys.ui.style[2]);
+				sys.ui.print("Successfully added \"" + e.getInitials() + "\" to \""+ act +"\"", UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
-				sys.ui.print("\"" + e.getInitials() + "\" is already assigned to \""+ act +"\"", sys.ui.style[3]);
+				sys.ui.print("\"" + e.getInitials() + "\" is already assigned to \""+ act +"\"", UserInterface.style[3]);
 			}
 		}
 	}
@@ -303,7 +303,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("\"" + e.getInitials() + "\" not assigned to any activities", sys.ui.style[3]);
+			sys.ui.print("\"" + e.getInitials() + "\" not assigned to any activities", UserInterface.style[3]);
 		}
 	}
 	
@@ -312,17 +312,17 @@ public class Menu {
 		//Gets Activity
 		Activity a;
 		while(true){
-			sys.ui.print("Enter Name or ID of Activity:", sys.ui.style[6]);
+			sys.ui.print("Enter Name or ID of Activity:", UserInterface.style[6]);
 			String act = sys.ui.next().toUpperCase();
 			a = sys.activityByID(act);
 			if(a == null){
 				a = sys.activityByName(act);
 			}
 			if(a == null){
-				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
+				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", UserInterface.style[3]);
 			}
 			else if(!emp.getActivityList().contains(a)){
-				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assigned to Activity \"" + act + "\"", sys.ui.style[3]);
+				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assigned to Activity \"" + act + "\"", UserInterface.style[3]);
 			}
 			else{
 				break;
@@ -339,7 +339,7 @@ public class Menu {
 		if(sys.ui.yesNoQuestion("Are you sure you want to add "+d+" hours to \""+a.getType()+"\" on weekday "+j+" of week "+w.getWeek()+"?")){
 			emp.setHours(a, d, w, j);
 			sys.ui.clear();
-			sys.ui.print("Successfully added "+d+" hours to \""+a.getType()+"\" on weekday "+j+" of week "+w.getWeek(), sys.ui.style[2]);
+			sys.ui.print("Successfully added "+d+" hours to \""+a.getType()+"\" on weekday "+j+" of week "+w.getWeek(), UserInterface.style[2]);
 		}
 		else{
 			sys.ui.clear();
@@ -352,17 +352,17 @@ public class Menu {
 		//Gets Activity
 		Activity a;
 		while(true){
-			sys.ui.print("Enter Name or ID of Activity:", sys.ui.style[6]);
+			sys.ui.print("Enter Name or ID of Activity:", UserInterface.style[6]);
 			String act = sys.ui.next().toUpperCase();
 			a = sys.activityByID(act);
 			if(a == null){
 				a = sys.activityByName(act);
 			}
 			if(a == null){
-				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
+				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", UserInterface.style[3]);
 			}
 			else if(!emp.getActivityList().contains(a)){
-				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assigned to Activity \"" + act + "\"", sys.ui.style[3]);
+				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assigned to Activity \"" + act + "\"", UserInterface.style[3]);
 			}
 			else{
 				break;
@@ -391,17 +391,17 @@ public class Menu {
 		//Gets Activity
 		Activity a;
 		while(true){
-			sys.ui.print("Enter Name or ID of Activity:", sys.ui.style[6]);
+			sys.ui.print("Enter Name or ID of Activity:", UserInterface.style[6]);
 			String act = sys.ui.next().toUpperCase();
 			a = sys.activityByID(act);
 			if(a == null){
 				a = sys.activityByName(act);
 			}
 			if(a == null){
-				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
+				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", UserInterface.style[3]);
 			}
 			else if(!emp.getActivityList().contains(a)){
-				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assigned to Activity \"" + act + "\"", sys.ui.style[3]);
+				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assigned to Activity \"" + act + "\"", UserInterface.style[3]);
 			}
 			else{
 				break;
@@ -475,17 +475,17 @@ public class Menu {
 		Employee e = parent.currentEmployee;
 		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + e.getInitials() + "\" from the system?")) {
 			if(sys.getCurrentUser() == e){
-				sys.ui.print("Error: Cannot Remove Yourself", sys.ui.style[3]);
+				sys.ui.print("Error: Cannot Remove Yourself", UserInterface.style[3]);
 			}
 			else if(sys.removeEmployee(e)){
 				sys.ui.clear();
-				sys.ui.print("Successfully removed employee \"" + e.getInitials() + "\" from the system.", sys.ui.style[2]);
+				sys.ui.print("Successfully removed employee \"" + e.getInitials() + "\" from the system.", UserInterface.style[2]);
 				parent.parent.show();
 				return;
 			}
 			else {
 				sys.ui.clear();
-				sys.ui.print("Error: Cannot remove only Employee in system", sys.ui.style[3]);
+				sys.ui.print("Error: Cannot remove only Employee in system", UserInterface.style[3]);
 			}
 		} else {
 			sys.ui.clear();
@@ -499,12 +499,12 @@ public class Menu {
 	private void addActivity() {
 		String name = null;
 		while(true){
-			sys.ui.print("Enter name of new Activity:", sys.ui.style[6]);
+			sys.ui.print("Enter name of new Activity:", UserInterface.style[6]);
 			name = sys.ui.next().toUpperCase();
 			/*  does name meet the criteria ?
 			b = (name == acceptable);
 			if(!b) {
-				{sys.ui.print("Error: Invalid name. Please try again:", sys.ui.style[3]);
+				{sys.ui.print("Error: Invalid name. Please try again:", UserInterface.style[3]);
 		 	}
 		 	*/
 			break;
@@ -519,10 +519,10 @@ public class Menu {
 		if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + name + "\" to the system?")){
 			if(sys.addActivity(a)){
 				sys.ui.clear();
-				sys.ui.print("Successfully added Activity \"" + name + "\" to the system.", sys.ui.style[2]);
+				sys.ui.print("Successfully added Activity \"" + name + "\" to the system.", UserInterface.style[2]);
 			}
 			else{
-				sys.ui.print("Error: Invalid Activity. Please try again:", sys.ui.style[3]);
+				sys.ui.print("Error: Invalid Activity. Please try again:", UserInterface.style[3]);
 			}
 		}
 		else{
@@ -533,12 +533,12 @@ public class Menu {
 	
 	private void manageActivity() {
 		sys.currentMenu = this;
-		sys.ui.print("Enter initials of Activities to manage:", sys.ui.style[6]);
+		sys.ui.print("Enter initials of Activities to manage:", UserInterface.style[6]);
 		String name = sys.ui.next().toUpperCase();
 		Activity a = sys.activityByName(name);
 		if(a == null){
 			sys.ui.clear();
-			sys.ui.print("Error: Activity \"" + name + "\" does not exist.", sys.ui.style[3]);
+			sys.ui.print("Error: Activity \"" + name + "\" does not exist.", UserInterface.style[3]);
 		}
 		else{
 			Menu manageEmployee = sys.menus.get(10);
@@ -566,12 +566,12 @@ public class Menu {
 		Activity a = parent.currentActivity;
 		String name = null;
 		while(true){
-			sys.ui.print("Enter new name", sys.ui.style[6]);
+			sys.ui.print("Enter new name", UserInterface.style[6]);
 			name = sys.ui.next().toUpperCase();
 			/*  does name meet the criteria ?
 			b = (name == acceptable);
 			if(!b) {
-				{sys.ui.print("Error: Invalid name. Please try again:", sys.ui.style[3]);
+				{sys.ui.print("Error: Invalid name. Please try again:", UserInterface.style[3]);
 		 	}
 		 	*/
 			break;
@@ -582,7 +582,7 @@ public class Menu {
 			System.out.println(a == parent.currentActivity);
 			System.out.println(a.getType().equals(parent.currentActivity.getType()));
 			sys.ui.clear();
-			sys.ui.print("Successfully changed activity name to  \"" + name +"\"", sys.ui.style[2]);
+			sys.ui.print("Successfully changed activity name to  \"" + name +"\"", UserInterface.style[2]);
 		}
 		else{
 			sys.ui.clear();
@@ -592,22 +592,22 @@ public class Menu {
 	
 	private void addEmployeeToActivity() {
 		Activity a = parent.currentActivity;
-		sys.ui.print("Enter initials of Employee:", sys.ui.style[6]);
+		sys.ui.print("Enter initials of Employee:", UserInterface.style[6]);
 		String emp = sys.ui.next().toUpperCase();
 		Employee e = sys.employeeByInitials(emp);
 		if(e == null){
 			sys.ui.clear();
-			sys.ui.print("Error: Employee with initials \"" + emp + "\" dosen't exist.", sys.ui.style[3]);
+			sys.ui.print("Error: Employee with initials \"" + emp + "\" dosen't exist.", UserInterface.style[3]);
 		}
 		else{
 			if(a.assignEmployee(e)){
 				e.assignActivity(a);
 				sys.ui.clear();
-				sys.ui.print("Successfully added \"" + e.getInitials() + "\" to \""+ a.getType() +"\"", sys.ui.style[2]);
+				sys.ui.print("Successfully added \"" + e.getInitials() + "\" to \""+ a.getType() +"\"", UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
-				sys.ui.print("\"" + e.getInitials() + "\" is already assigned to \""+ a.getType() +"\"", sys.ui.style[3]);
+				sys.ui.print("\"" + e.getInitials() + "\" is already assigned to \""+ a.getType() +"\"", UserInterface.style[3]);
 			}
 		}
 	}
@@ -624,13 +624,13 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("No Employees assigned to \"" + a.getType() + "\"", sys.ui.style[3]);
+			sys.ui.print("No Employees assigned to \"" + a.getType() + "\"", UserInterface.style[3]);
 		}
 	}
 	
 	private void addActivityToProject() {
 		Activity a = parent.currentActivity;
-		sys.ui.print("Enter Name or ID of Project:", sys.ui.style[6]);
+		sys.ui.print("Enter Name or ID of Project:", UserInterface.style[6]);
 		String project = sys.ui.next().toUpperCase();
 		Project p = sys.projectByID(project);
 		if(p == null){
@@ -638,13 +638,13 @@ public class Menu {
 		}
 		if(p == null){
 			sys.ui.clear();
-			sys.ui.print("Error: Project with ID or Name \"" + project + "\" dosen't exist.", sys.ui.style[3]);
+			sys.ui.print("Error: Project with ID or Name \"" + project + "\" dosen't exist.", UserInterface.style[3]);
 		}
 		else{
 			p.addActivity(a);
 			a.assignProject(p);
 			sys.ui.clear();
-			sys.ui.print("Successfully added \"" + a.getType() + "\" to \""+ project +"\"", sys.ui.style[2]);
+			sys.ui.print("Successfully added \"" + a.getType() + "\" to \""+ project +"\"", UserInterface.style[2]);
 		}
 	}
 	
@@ -660,7 +660,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("\"" + a.getType() + "\" not assigned to any Projects", sys.ui.style[3]);
+			sys.ui.print("\"" + a.getType() + "\" not assigned to any Projects", UserInterface.style[3]);
 		}
 	}	
 	
@@ -680,7 +680,7 @@ public class Menu {
 			if(sys.ui.yesNoQuestion("Are you sure you want to change starting week of \""+a.getType()+"\" from "+a.getStartWeek().getWeek()+" to "+j+"?")){
 				a.setStartWeek(w);
 				sys.ui.clear();
-				sys.ui.print("Successfully change starting week of \"" + a.getType() + "\" to \""+ j +"\"", sys.ui.style[2]);
+				sys.ui.print("Successfully change starting week of \"" + a.getType() + "\" to \""+ j +"\"", UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
@@ -689,7 +689,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("Activity has already started, and starting week cannot be changed", sys.ui.style[3]);
+			sys.ui.print("Activity has already started, and starting week cannot be changed", UserInterface.style[3]);
 		}
 	}
 
@@ -709,7 +709,7 @@ public class Menu {
 			if(sys.ui.yesNoQuestion("Are you sure you want to change ending week of \""+a.getType()+"\" from "+a.getEndWeek().getWeek()+" to "+j+"?")){
 				a.setEndWeek(w);
 				sys.ui.clear();
-				sys.ui.print("Successfully changed ending week of \"" + a.getType() + "\" to \""+ j +"\"", sys.ui.style[2]);
+				sys.ui.print("Successfully changed ending week of \"" + a.getType() + "\" to \""+ j +"\"", UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
@@ -718,7 +718,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("Activity has already ending, and ending week cannot be changed", sys.ui.style[3]);
+			sys.ui.print("Activity has already ending, and ending week cannot be changed", UserInterface.style[3]);
 		}
 	}
 	
@@ -728,7 +728,7 @@ public class Menu {
 		if(sys.ui.yesNoQuestion("Are you sure you want to change hour-budget of \""+a.getType()+"\" from "+a.getHourBudget()+" to "+d+"?")){
 			a.setHourBudget(d);
 			sys.ui.clear();
-			sys.ui.print("Successfully changed hour-budget of \""+a.getType()+"\" from "+a.getHourBudget()+" to "+d, sys.ui.style[2]);
+			sys.ui.print("Successfully changed hour-budget of \""+a.getType()+"\" from "+a.getHourBudget()+" to "+d, UserInterface.style[2]);
 		}
 		else{
 			sys.ui.clear();
@@ -804,7 +804,7 @@ public class Menu {
 		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + a.getType() + "\" from the system?")) {
 			sys.removeActivity(a);
 			sys.ui.clear();
-			sys.ui.print("Successfully removed Activity \"" + a.getType() + "\" from the system.", sys.ui.style[2]);
+			sys.ui.print("Successfully removed Activity \"" + a.getType() + "\" from the system.", UserInterface.style[2]);
 			parent.parent.show();
 			return;
 		}
@@ -820,7 +820,7 @@ public class Menu {
 	private void addProject() {
 		String name = null;
 		while(true){
-			sys.ui.print("Enter name of new Project:", sys.ui.style[6]);
+			sys.ui.print("Enter name of new Project:", UserInterface.style[6]);
 			name = sys.ui.next().toUpperCase();
 			break;
 		}
@@ -833,14 +833,14 @@ public class Menu {
 		int k = getUserInputInt(j, 53, "Enter deadline week of Project \"" + name + "\"", "Invalid week");
 		Week dL = sys.getDateServer().getWeek(k);
 		
-		Project p = new Project(sys, name, start, end, end);
+		Project p = new Project(sys, name, start, end, dL);
 		if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + name + "\" to the system?")){
 			if(sys.addProject(p)){
 				sys.ui.clear();
-				sys.ui.print("Successfully added Project \"" + name + "\" to the system.", sys.ui.style[2]);
+				sys.ui.print("Successfully added Project \"" + name + "\" to the system.", UserInterface.style[2]);
 			}
 			else{
-				sys.ui.print("Error: Invalid Project. Please try again:", sys.ui.style[3]);
+				sys.ui.print("Error: Invalid Project. Please try again:", UserInterface.style[3]);
 			}
 		}
 		else{
@@ -851,12 +851,12 @@ public class Menu {
 	
 	private void manageProject(){
 		sys.currentMenu = this;
-		sys.ui.print("Enter ID of project to manage:", sys.ui.style[6]);
+		sys.ui.print("Enter ID of project to manage:", UserInterface.style[6]);
 		String name = sys.ui.next().toUpperCase();
 		Project p = sys.projectByName(name);
 		if(p == null){
 			sys.ui.clear();
-			sys.ui.print("Error: Project with ID \"" + name + "\" does not exist.", sys.ui.style[3]);
+			sys.ui.print("Error: Project with ID \"" + name + "\" does not exist.", UserInterface.style[3]);
 		}
 		else{
 			Menu manageProject = sys.menus.get(6);
@@ -882,23 +882,23 @@ public class Menu {
 	 */
 	private void addEmployeeToProject() {
 		Project p = parent.currentProject;
-		sys.ui.print("Enter initials of employee:", sys.ui.style[6]);
+		sys.ui.print("Enter initials of employee:", UserInterface.style[6]);
 		String initials = sys.ui.next().toUpperCase();
 		Employee e = sys.employeeByInitials(initials);
 		if(e != null){
 			if(p.addEmployee(e)){
 				e.assignProject(p);
 				sys.ui.clear();
-				sys.ui.print("Employee with initials:" + initials + " added to " + p.getName(), sys.ui.style[2]);
+				sys.ui.print("Employee with initials:" + initials + " added to " + p.getName(), UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
-				sys.ui.print("\"" + e.getInitials() + "\" is already assigned to \""+ p.getName() +"\"", sys.ui.style[3]);
+				sys.ui.print("\"" + e.getInitials() + "\" is already assigned to \""+ p.getName() +"\"", UserInterface.style[3]);
 			}
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("Employee with \"" + initials + "\" doesn't exist.", sys.ui.style[3]);
+			sys.ui.print("Employee with \"" + initials + "\" doesn't exist.", UserInterface.style[3]);
 		}
 	}
 
@@ -915,14 +915,14 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("No Employees assigned to \"" + p.getName() + "\"", sys.ui.style[3]);
+			sys.ui.print("No Employees assigned to \"" + p.getName() + "\"", UserInterface.style[3]);
 		}
 		
 	}
 	
 	private void addProjectActivity() {
 		Project p = parent.currentProject;
-		sys.ui.print("Enter Name or ID of Activity:", sys.ui.style[6]);
+		sys.ui.print("Enter Name or ID of Activity:", UserInterface.style[6]);
 		String act = sys.ui.next().toUpperCase();
 		Activity a = sys.activityByID(act);
 		if(a == null){
@@ -930,17 +930,17 @@ public class Menu {
 		}
 		if(a == null){
 			sys.ui.clear();
-			sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
+			sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", UserInterface.style[3]);
 		}
 		else{
 			if(a.assignProject(p)){
 				p.addActivity(a);
 				sys.ui.clear();
-				sys.ui.print("Successfully added \"" + p.getName() + "\" to \""+ act +"\"", sys.ui.style[2]);
+				sys.ui.print("Successfully added \"" + p.getName() + "\" to \""+ act +"\"", UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
-				sys.ui.print("\"" + act + "\" is already assigned to \""+ p.getName() +"\"", sys.ui.style[3]);
+				sys.ui.print("\"" + act + "\" is already assigned to \""+ p.getName() +"\"", UserInterface.style[3]);
 			}
 		}
 	}
@@ -958,7 +958,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("No Activities assigned to \"" + p.getName() + "\"", sys.ui.style[3]);
+			sys.ui.print("No Activities assigned to \"" + p.getName() + "\"", UserInterface.style[3]);
 		}
 	}
 	
@@ -980,7 +980,7 @@ public class Menu {
 			if(sys.ui.yesNoQuestion("Are you sure you want to change starting week of \""+p.getName()+"\" from "+p.getEndWeek().getWeek()+" to "+i+"?")){
 				p.setStartWeek(w);
 				sys.ui.clear();
-				sys.ui.print("Staring week changed to "+i, sys.ui.style[2]);
+				sys.ui.print("Staring week changed to "+i, UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
@@ -989,7 +989,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("Project has already started, and starting week cannot be changed", sys.ui.style[3]);
+			sys.ui.print("Project has already started, and starting week cannot be changed", UserInterface.style[3]);
 		}
 	}
 
@@ -1009,7 +1009,7 @@ public class Menu {
 			if(sys.ui.yesNoQuestion("Are you sure you want to change ending week of \""+p.getName()+"\" from "+p.getEndWeek().getWeek()+" to "+i+"?")){
 				p.setEndWeek(w);
 				sys.ui.clear();
-				sys.ui.print("Staring week changed to "+i, sys.ui.style[2]);
+				sys.ui.print("Staring week changed to "+i, UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
@@ -1018,7 +1018,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("Project has already Ended, and ending week cannot be changed", sys.ui.style[3]);
+			sys.ui.print("Project has already Ended, and ending week cannot be changed", UserInterface.style[3]);
 		}
 		
 	}
@@ -1039,7 +1039,7 @@ public class Menu {
 			if(sys.ui.yesNoQuestion("Are you sure you want to change deadline week of \""+p.getName()+"\" from "+p.getEndWeek().getWeek()+" to "+i+"?")){
 				p.setDeadline(w);
 				sys.ui.clear();
-				sys.ui.print("Deadline week changed to "+i, sys.ui.style[2]);
+				sys.ui.print("Deadline week changed to "+i, UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
@@ -1048,7 +1048,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("Project has already ended, and deadline week cannot be changed", sys.ui.style[3]);
+			sys.ui.print("Project has already ended, and deadline week cannot be changed", UserInterface.style[3]);
 		}
 	}
 
@@ -1058,7 +1058,7 @@ public class Menu {
 		if(sys.ui.yesNoQuestion("Are you sure you want to change the budget of \""+p.getName()+"\" from "+p.getBudget()+" to "+d+"?")){
 			p.setBudget(d);
 			sys.ui.clear();
-			sys.ui.print("Budget changed to " + p.getBudget() + " hours", sys.ui.style[2]);
+			sys.ui.print("Budget changed to " + p.getBudget() + " hours", UserInterface.style[2]);
 		}
 		else {
 			sys.ui.clear();
@@ -1091,7 +1091,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("Project has no assigned Activities", sys.ui.style[3]);
+			sys.ui.print("Project has no assigned Activities", UserInterface.style[3]);
 		}
 	}
 
@@ -1099,22 +1099,22 @@ public class Menu {
 		sys.ui.clear();
 		int i = getUserInputInt(1, 53, "Enter week for report comment  \" "+ parent.currentProject.getName() +" \"", "Invalid week");
 		Week w = sys.getDateServer().getWeek(i);
-		sys.ui.print("Enter report comment", sys.ui.style[6]);
+		sys.ui.print("Enter report comment", UserInterface.style[6]);
 		String s = sys.ui.next();
 		parent.currentProject.setReportComment(s, w);
 		sys.ui.clear();
-		sys.ui.print("Comment for week " + w.getWeek() + " is set to: \"" + s + "\"", sys.ui.style[2]);
+		sys.ui.print("Comment for week " + w.getWeek() + " is set to: \"" + s + "\"", UserInterface.style[2]);
 	}
 
 	private void getWeeklyReport() {
 		int i = getUserInputInt(1, 53, "Enter week for report comment", "Invalid week");
 		Week w = sys.getDateServer().getWeek(i);
 		if(!w.equals(null)){
-		sys.ui.print("Report for week " + w.getWeek() + " is: " +parent.currentProject.getWeeklyReport(w),sys.ui.style[2]);
+		sys.ui.print("Report for week " + w.getWeek() + " is: " +parent.currentProject.getWeeklyReport(w),UserInterface.style[2]);
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("No report for choosen week",sys.ui.style[6]);
+			sys.ui.print("No report for choosen week",UserInterface.style[6]);
 		}
 	}
 
@@ -1123,7 +1123,7 @@ public class Menu {
 		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + p.getName() + "\" from the system?")) {
 			sys.removeProject(p);
 			sys.ui.clear();
-			sys.ui.print("Successfully removed Project \"" + p.getName() + "\" from the system.", sys.ui.style[2]);
+			sys.ui.print("Successfully removed Project \"" + p.getName() + "\" from the system.", UserInterface.style[2]);
 			parent.parent.show();
 			return;
 		}
@@ -1137,7 +1137,6 @@ public class Menu {
 	/*
 	 * OTHER MENUES
 	 */
-	
 	public void ShowFuckingLogs() {
 		String[] s = new String[44];
 		for (int i = 0; i < s.length; i++) {
@@ -1148,19 +1147,19 @@ public class Menu {
 	
 	public void showDate() {
 		sys.ui.clear();
-		sys.ui.print(sys.getDateServer().stringToday(), sys.ui.style[2]);
+		sys.ui.print(sys.getDateServer().stringToday(), UserInterface.style[2]);
 	}
 	
 	public void logOff() {
 		sys.ui.clear();
 		sys.logoff();
-		sys.ui.print("Log Off Succesfull. Goodbye", sys.ui.style[4]);
-		sys.ui.print("Welcome. Please enter your initials to proceed:", sys.ui.style[2]);
+		sys.ui.print("Log Off Succesfull. Goodbye", UserInterface.style[4]);
+		sys.ui.print("Welcome. Please enter your initials to proceed:", UserInterface.style[2]);
 		while (!sys.loggedIn()) {
 			try {
 				sys.loginUI(sys.ui.next());
 			} catch (Exception e) {
-				sys.ui.print("Error: Action denied. Please try again:", sys.ui.style[3]);
+				sys.ui.print("Error: Action denied. Please try again:", UserInterface.style[3]);
 			}
 		}
 		sys.mainmenu.show();

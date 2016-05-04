@@ -15,8 +15,7 @@ public class Project {
 	private Employee projectManager;
 	private List<Activity> activityList;
 	private double budget;
-	private HashMap<Week, String> reports = new HashMap<Week, String>();
-	private String reportComment;
+	private HashMap<Integer, String> reports = new HashMap<Integer, String>();
 	
 	public Project(SysApp sys, String name, Week sW,Week eW,Week dL){
 		this.sysApp = sys;
@@ -52,6 +51,7 @@ public class Project {
 		}
 		return false;
 	}
+	
 	public boolean removeActivity(Activity activity){
 		if(activityList.contains(activity)){
 			activityList.remove(activity);
@@ -60,7 +60,6 @@ public class Project {
 			return false;
 	}
 	
-	//ID counter implemented in SysApp
 	private String setUniqueID() {
 		return "ID" + sysApp.getPcount();
 	}
@@ -98,11 +97,11 @@ public class Project {
 	}
 
 	public void setReportComment(String comment,Week w){
-		this.reports.put(w, comment);
+		this.reports.put(w.getWeek(), comment);
 	}
  
 	public String getWeeklyReport(Week w){
-		return this.reports.get(w);
+		return this.reports.get(w.getWeek());
 	}
 	 
 	public double getBudget(){
@@ -130,12 +129,6 @@ public class Project {
 		return d;
 	}
 	
-	/*
-	public double getActivityDiversion(Employee e, Activity a, Week w) throws IllegalOperationException{
-		return e.getWorkHours(a, w)[7];
-	}
-	*/
-	
 	public void setBudget(double d) {
 		budget = d;
 	}
@@ -147,8 +140,4 @@ public class Project {
 	public List<Activity> getActivityList() {
 		return activityList;
 	}
-	 
-	 
-	
-
 }

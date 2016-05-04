@@ -24,11 +24,16 @@ public class DateServer {
 	}
 	
 	public Calendar getToday() {
+		/**
+		 * TEST
+		 */
 		Calendar cal = new GregorianCalendar();
 		cal.set(Calendar.YEAR, 2016); 			//set Year
-		cal.set(Calendar.WEEK_OF_YEAR, 1); 	//Set Week
+		cal.set(Calendar.WEEK_OF_YEAR, 1); 		//Set Week
 		
 		return cal;
+		/***/
+		
 		//return GregorianCalendar.getInstance();
 	}
 	
