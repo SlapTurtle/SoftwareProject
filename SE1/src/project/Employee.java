@@ -63,22 +63,20 @@ public class Employee {
 	public void updateActivityWeeks(Activity a, int newSize){
 		List<double[]> list = (List<double[]>) (workHourList.get(activityList.indexOf(a)));
 		int size = list.size();
-		if(size != newSize){
+		System.out.println("cur size: "+size);
+		System.out.println("new size: "+newSize);
+		while(size != newSize){
 			if(size > newSize){
-				while(size != newSize){
-					if(size > newSize){
-						size--;
-						list.remove(size);
-					}
-					else{
-						double[] hours = new double[7];
-						for(int j = 0; j < 7; j++){
-							hours[j] = 0.0;
-						}
-						list.add(size, hours);
-						size++;
-					}
+				size--;
+				list.remove(size);
+			}
+			else{
+				double[] hours = new double[7];
+				for(int j = 0; j < 7; j++){
+					hours[j] = 0.0;
 				}
+				list.add(size, hours);
+				size++;
 			}
 		}
 	}

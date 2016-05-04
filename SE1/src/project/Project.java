@@ -72,6 +72,10 @@ public class Project {
 		return this.name;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public Week getStartWeek() {
 		return startWeek;
 	}

@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class SysApp {
@@ -40,6 +39,7 @@ public class SysApp {
 		menuEmpMng.add(new Menu(this, "Get Activities For Week"));
 		menuEmpMng.add(new Menu(this, "Remove Employee"));
 		
+		menuPrjMng.add(new Menu(this, "Set Project Name"));
 		menuPrjMng.add(new Menu(this, "Add Employee to Project"));
 		menuPrjMng.add(new Menu(this, "Get All Employees on Project"));
 		menuPrjMng.add(new Menu(this, "Add Project Activity"));
@@ -128,20 +128,14 @@ public class SysApp {
 		/***/
 
 		ui = new UserInterface(this);
-		ui.print("Welcome. Please enter your initials to proceed:", ui.style[6]);
-		while (!loggedIn()) {
-			try {
-				loginUI(ui.next());
-			} catch (Exception e) {
-				ui.print("Error: Action denied. Please try again:", ui.style[3]);
-			}
-		}
+		mainmenu.logOff("New Instance Initiated.");
+		
 		while(true)
 		try {
 			mainmenu.show();
 		} catch (Exception e) {
 			ui.clear();
-			ui.print("Error: "+e.getMessage()+". You have been returned to the main menu.", ui.style[3]);
+			ui.print("Error: "+e.getMessage()+". You have been returned to the main menu.", UserInterface.style[3]);
 		}
 	}
 	
@@ -204,23 +198,6 @@ public class SysApp {
 		if(this.currentUser != null){
 			return true;
 		}
-		return false;
-	}
-	
-	public boolean loginUI(String initials){
-		if (!loggedIn()){
-			for(Employee e : this.employeeList){
-				if(e.getInitials().equals(initials.toUpperCase())){
-					ui.clear();
-					ui.print("Successfully logged in as \"" + initials.toUpperCase() + "\".", ui.style[2]);
-					this.currentUser = e;
-					return true;
-				}
-			}
-			ui.print("Error: No employee with initials \"" + initials.toUpperCase() + "\". Please try again:", ui.style[3]);
-			return false;
-		}
-		ui.print("Error: An employee is already logged in.", ui.style[3]);
 		return false;
 	}
 	
