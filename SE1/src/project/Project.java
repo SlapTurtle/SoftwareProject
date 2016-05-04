@@ -22,21 +22,21 @@ public class Project {
 		this.sysApp = sys;
 		this.projectID = setUniqueID();
 		this.name = name.toUpperCase();
-		this.setStartWeek(sW);
-		this.setEndWeek(eW);
-		this.setDeadline(dL);
+		this.startWeek = sW;
+		this.endWeek = eW;
+		this.deadline = dL;
 		this.employeeList = new ArrayList<Employee>();
 		this.projectManager = null;
 		this.activityList = new ArrayList<Activity>();
 		this.budget = 0;
 	}
 
-	public boolean assignManager(Employee employee){
-		if(projectManager==null){
-			this.projectManager=employee;
-			return true;
-		}
-		return false;
+	public void assignManager(Employee employee){
+		projectManager = employee;
+	}
+	
+	public Employee getManager(){
+		return this.projectManager;
 	}
 	
 	public boolean addEmployee(Employee employee){
@@ -55,8 +55,7 @@ public class Project {
 	
 	//ID counter implemented in SysApp
 	private String setUniqueID() {
-		String newID = "ID" + sysApp.getPcount();
-		return newID;
+		return "ID" + sysApp.getPcount();
 	}
 	
 	public String checkUniqueID() {
@@ -103,24 +102,32 @@ public class Project {
 		return this.budget;
 	}
 	
-	public double getSpentBudget(){
-		double d = 0.0;
-		for(Activity a : activityList){
+	public double[] getSpentBudget(){
+		int size = activityList.size();
+		double[] d = new double[size+1];
+		d[0] = 0.0;
+		for(int i=1; i<size+1; i++){
+			Activity a = activityList.get(i-1);
+			double count = 0.0;
 			for(Employee e : a.getEmployeeList()){
-				List<Double[]> list = (List<Double[]>) e.getWorkHourList().get(e.getActivityList().indexOf(a));
-				for(Double[] weeklyHours : list){
+				List<double[]> list = (List<double[]>) e.getWorkHourList().get(e.getActivityList().indexOf(a));
+				for(double[] weeklyHours : list){
 					for(double hours : weeklyHours){
-						d += hours;
+						count += hours;
+						d[0] += hours; 
 					}
 				}
 			}
+			d[i] = count;
 		}
 		return d;
 	}
 	
+	/*
 	public double getActivityDiversion(Employee e, Activity a, Week w) throws IllegalOperationException{
 		return e.getWorkHours(a, w)[7];
 	}
+	*/
 	
 	public void setBudget(double d) {
 		budget = d;

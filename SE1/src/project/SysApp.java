@@ -51,6 +51,7 @@ public class SysApp {
 		menuPrjMng.add(new Menu(this, "Get Total Project Budget Price"));
 		menuPrjMng.add(new Menu(this, "Get Activeness of Activity in Project"));
 		menuPrjMng.add(new Menu(this, "Set Report Comment"));
+		menuPrjMng.add(new Menu(this, "Get Weekly Report"));
 		menuPrjMng.add(new Menu(this, "Remove Project"));
 		
 		menuActMng.add(new Menu(this, "Set Activity Name"));

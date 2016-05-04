@@ -139,6 +139,7 @@ public class Menu {
 		case "Get Total Project Budget Price": getTotalProjectBudget(); break;
 		case "Get Activeness of Activity in Project": getProjectActiveness(); break;
 		case "Set Report Comment": setProjectReportComment(); break;
+		case "Get Weekly Report": getWeeklyReport(); break;
 		case "Remove Project": removeProject(); break;
 		
 		// Activity Top-Menu
@@ -1067,7 +1068,7 @@ public class Menu {
 
 	private void getTotalProjectBudget() {
 		Project p = parent.currentProject;
-		double d = p.getSpentBudget();
+		double d = p.getSpentBudget()[0];
 		String[] str = {
 				"Hours Avialable: "+p.getBudget(),
 				"Hours Spent    : "+d,
@@ -1078,7 +1079,20 @@ public class Menu {
 	}
 	
 	private void getProjectActiveness() {
-		
+		Project p = parent.currentProject;
+		if(p.getActivityList().size() > 0){
+			double[] list = p.getSpentBudget();
+			String[] str = new String[list.length-1];
+			for(int i=0; i<str.length; i++){
+				str[i] = p.getActivityList().get(i).getType()+": "+list[i+1]+" hours.";
+			}
+			sys.ui.clear();
+			sys.ui.listDisplay(str, "Activeness for \""+p.getName()+"\"", str.length);
+		}
+		else{
+			sys.ui.clear();
+			sys.ui.print("Project has no assigned Activities", sys.ui.style[3]);
+		}
 	}
 
 	private void setProjectReportComment() {
