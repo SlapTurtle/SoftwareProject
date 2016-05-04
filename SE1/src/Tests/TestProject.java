@@ -15,7 +15,7 @@ public class TestProject extends TestBasis{
 	public void Project() throws Exception{ //Uses the cases setup through the TestBasis class.
 		//Test add project
 
-		assertEquals(p1.getName(), "Project1"); //Checks that project is created and that budget is set to 0.
+		assertEquals(p1.getName(), "PROJECT1"); //Checks that project is created and that budget is set to 0.
 		
 		//Test addEmployee
 		Employee e1 = new Employee("EMPL1"); //Tests that employees can be added, and that dublicates are not created.
@@ -30,7 +30,14 @@ public class TestProject extends TestBasis{
 		assertFalse(p1.addActivity(a2));
 		
 		
+		//Test removeActivity
+		assertTrue(p1.removeActivity(a2));
+		assertFalse(p1.getActivityList().contains(a2));
+		assertFalse(p1.removeActivity(a2));
+		
+		
 		//Test UniqueID
+		//Set ID is used in the constructor and is thus not tested here
 		assertEquals(p1.checkUniqueID(),"ID1"); 
 		assertEquals(p2.checkUniqueID(),"ID2");
 
@@ -45,20 +52,12 @@ public class TestProject extends TestBasis{
 		//Test Budget
 		p1.setBudget(100);
 		assertEquals(p1.getBudget(), 100, Double.MAX_VALUE);
+
+		//Test get activity diversion
+		e1.assignActivity(a1);
+		e1.setHours(a1, 3.5 ,week1, 1);
 		
-		//Assign project manager
-		/*sysApp.login(sysApp.employeeByInitials("EMPL1"));
-		//p1.assignManager(e1);
-		System.out.println(p1.assignManager(sysApp.employeeByInitials("EMPL1")));
-		System.out.println(p1.projectManager.getInitials());
-		assertTrue(p1.projectManager.getInitials().equals(e1.getInitials()));
-		//Tests that the right employee became project manager
-		//assertFalse(makeCastle.projectManagers.get(0).equals(brianAnderson));
-		//assertTrue(makeCastle.projectManagers.get(0).equals(timHansson));
-		*/
-		
-		
-		
+
 		
 		
 	}

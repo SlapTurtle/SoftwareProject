@@ -52,6 +52,13 @@ public class Project {
 		}
 		return false;
 	}
+	public boolean removeActivity(Activity activity){
+		if(activityList.contains(activity)){
+			activityList.remove(activity);
+			return true;
+		}
+			return false;
+	}
 	
 	//ID counter implemented in SysApp
 	private String setUniqueID() {
