@@ -27,7 +27,7 @@ public class Project {
 	
 	public Project(SysApp sys, String name, Week sW,Week eW,Week dL){
 		this.sysApp = sys;
-		this.name = name;
+		this.name = name.toUpperCase();
 		this.startWeek = sW;
 		this.endWeek = eW;
 		this.deadline = dL;

@@ -50,12 +50,15 @@ public class SysApp {
 		
 		menuActMng.add(new Menu(this, "Set Activity Name"));
 		menuActMng.add(new Menu(this, "Add Employee to Activity"));
+		menuActMng.add(new Menu(this, "Get All Employees on Activity"));
+		menuActMng.add(new Menu(this, "Add Activity to Project"));
+		menuActMng.add(new Menu(this, "Get Assigned Projects"));
 		menuActMng.add(new Menu(this, "Set Start Date Of Activity"));
 		menuActMng.add(new Menu(this, "Set End Date of Activity"));
-		menuActMng.add(new Menu(this, "Add Activity to Project"));
-		menuActMng.add(new Menu(this, "Get All Employees on Activity"));
-		menuActMng.add(new Menu(this, "Get Hours Spent on Activity"));
 		menuActMng.add(new Menu(this, "Set Time Budget"));
+		menuActMng.add(new Menu(this, "Get Hours Spent on Activity"));
+		menuActMng.add(new Menu(this, "Get Activity Status By Week"));
+		menuActMng.add(new Menu(this, "Get Activity Status"));
 		menuActMng.add(new Menu(this, "Remove Activity"));
 		
 		menus.add(new Menu(this, "Add Employee")); // 0
@@ -71,13 +74,14 @@ public class SysApp {
 		menus.add(new Menu(this, "Manage Activity", menuActMng.toArray(new Menu[menuActMng.size()]), true, true));
 		menus.add(new Menu(this, "Get All Activities"));
 		menus.add(new Menu(this, "Show Logs"));	// 12
+		menus.add(new Menu(this, "Show Date"));
 		menus.add(new Menu(this, "Set Font Size"));
 		Menu[] m = new Menu[] {
 				new Menu(this, "Employees", new Menu[] {menus.get(0), menus.get(1), menus.get(3)}, true, true),
 				new Menu(this, "Projects", new Menu[] {menus.get(4), menus.get(5), menus.get(7)}, true, true),
 				new Menu(this, "Activities", new Menu[] {menus.get(8), menus.get(9), menus.get(11)}, true, true),
-				new Menu(this, "System", new Menu[] {menus.get(12)}, true, true ),
-				new Menu(this, "Settings", new Menu[] {menus.get(13)}, true, true),
+				new Menu(this, "System", new Menu[] {menus.get(12), menus.get(13)}, true, true ),
+				new Menu(this, "Settings", new Menu[] {menus.get(14)}, true, true),
 				new Menu(this, "Help"),
 				new Menu(this, "Log Off"),
 				new Menu(this, "Exit"),
@@ -87,9 +91,39 @@ public class SysApp {
 		menus.get(6).parent = m[1];
 		menus.get(10).parent = m[2];
 		
+		/**
+		 * TEST!!!!
+		 */
+		try{
+			//Dummy Project
+			Week week1 = new Week(2016, 1);
+			Week week2 = new Week(2016, 2);
+			Week week3 = new Week(2016, 3);
+			
+			Project p1 = new Project(this, "pro1", week1,week2,week3);
+			Project p2 = new Project(this, "pro2", week1,week2,week3);
+			addProject(p1);
+			addProject(p2);
+			
+			//Dummy Activities
+			Activity a1 = new Activity(this, "act1", week1, week2);
+			Activity a2 = new Activity(this, "act2", week2, week3);
+			addActivity(a1);
+			addActivity(a2);
+			
+			//Dummy Employees
+			addEmployee("emp1");
+			addEmployee("emp2");
+		}
+		catch(Exception e){
+			System.exit(0);
+		}
+		/**
+		 * END OF TEST!!!!
+		 */
 		
-		ui = new UserInterface(this);
 		addEmployee("admin");
+		ui = new UserInterface(this);
 		ui.print("Welcome. Please enter your initials to proceed:", ui.style[6]);
 		while (!loggedIn()) {
 			try {
@@ -244,7 +278,7 @@ public class SysApp {
 		return this.projectList.add(p);
 	}}
 	
-	public boolean addActicity(Activity ID){
+	public boolean addActivity(Activity ID){
 		if(activityList.contains(ID) || ID == null){
 			return false;
 		}else{
@@ -258,7 +292,7 @@ public class SysApp {
 		Week w = new Week(cal.get(Calendar.YEAR),cal.get(Calendar.WEEK_OF_YEAR));
 		available =	this.employeeList;
 		for( Employee x : employeeList){
-			if (activity.employeeList.contains(x) || x.getNumberOfWeeklyActivities(w) >= 20){
+			if (activity.employeeList.contains(x) || x.getWeeklyActivities(w).size() >= 20){
 				available.remove(x);
 			}
 		}	
@@ -315,7 +349,7 @@ public class SysApp {
 
 	public Activity activityByID(String ID) {
 		for(Activity a : activityList){
-			if(a.checkUniqueID().equals(ID)){
+			if(a.getUniqueID().equals(ID)){
 				return a;
 			}
 		}
@@ -343,6 +377,17 @@ public class SysApp {
 			return true;
 		}
 		return false;
+	}
+
+	public boolean removeActivity(Activity a) {
+		for(Project p : a.getProjectList()){
+			p.activityList.remove(a);
+		}
+		for(Employee e : a.getEmployeeList()){
+			e.activityList.remove(a);
+		}
+		activityList.remove(a);
+		return true;
 	}
 	
 }

@@ -24,4 +24,11 @@ public class DateServer {
 	public Calendar getToday() {
 		return GregorianCalendar.getInstance();
 	}
+	
+	public String stringToday(){
+		Calendar cal = getToday();
+		int year = cal.get(Calendar.YEAR);
+		int week = cal.get(Calendar.WEEK_OF_YEAR);
+		return "Year: "+year+" , Week: "+week;
+	}
 }

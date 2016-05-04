@@ -53,7 +53,9 @@ public class Employee {
 				a.startWeek.compareTo(w) <= 0 && a.endWeek.compareTo(w) >= 0)
 		{
 			int currentweek = a.startWeek.weekDifference(a.endWeek) - a.endWeek.weekDifference(w);
-			workHourList.get(activityList.indexOf(a))[(currentweek)*7+(weekday-1)] += hours;
+			double temp = workHourList.get(activityList.indexOf(a))[(currentweek)*7+(weekday-1)];
+			workHourList.get(activityList.indexOf(a))[(currentweek)*7+(weekday-1)] = hours;
+			a.spendHours(hours - temp);
 			return true;
 		}
 		return false;
@@ -103,17 +105,6 @@ public class Employee {
 		}
 		return list;
 	}
-	
-		public int getNumberOfWeeklyActivities(Week w){
-		
-			int count = 0;
-			for(Activity a : activityList){
-				if(a.startWeek.compareTo(w) <= 0 && a.endWeek.compareTo(w) >= 0){
-					count++;
-				}
-			}
-			return count;
-		}
 }
 
 

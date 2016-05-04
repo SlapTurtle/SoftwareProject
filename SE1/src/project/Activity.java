@@ -4,90 +4,113 @@ import java.util.ArrayList;
 import java.util.List;
 public class Activity {
 	
-	public Activity(String name){
-		
-	}
-	private String name;
-	private String activityID;
 	private SysApp sysApp;
+	private String activityID;
+	public String type;
 	public Week startWeek; 
 	public Week endWeek;	
 	public List<Employee> employeeList;
 	public List<Project> projectList;
 	public double hourBudget;
 	public double hoursSpent;
-	public String type;
+	
 	
 	// -------- Sets the activity ID and planed work weeks ----
 	
-	public Activity(SysApp sysApp, String name, Week startWeek, Week endWeek) {
+	public Activity(SysApp sysApp, String type, Week startWeek, Week endWeek) {
 		this.sysApp = sysApp;
 		this.activityID = setUniqueID();
-		this.type = name.toUpperCase();
+		this.type = type.toUpperCase();
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
 		this.employeeList = new ArrayList<Employee>();
 		this.projectList = new ArrayList<Project>();
-		
+		this.hourBudget = 0.0;
+		this.hoursSpent = 0.0;
+	}
+	
+	public String getUniqueID() {
+		return activityID;
 	}
 	
 	private String setUniqueID() {
-		String newID = "ID" + sysApp.getAcount();
-		return newID;
+		return "ID" + sysApp.getAcount();
 	}
 	
-	public String checkUniqueID() {
-		return this.activityID;
+	public String getType() {
+		return type;
 	}
 	
-	//Makes it possible to extend the end week.
-	public void setEndWeek(Week endweek){
-		if (endweek != this.startWeek && endweek != this.endWeek){
-			this.endWeek = endweek;
-		}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	public Week getEndWeek(){
-		return this.endWeek;
+		return endWeek;
+	}
+	
+	public void setEndWeek(Week w){
+		if (w.compareTo(startWeek) >= 0 && w.compareTo(endWeek) != 0) {
+			endWeek = w;
+		}
 	}
 	
 	public Week getStartWeek(){
 		return this.startWeek;
 	}
 	
+	public void setStartWeek(Week w){
+		if (w.compareTo(endWeek) <= 0 && w.compareTo(startWeek) != 0){
+			startWeek = w;
+		}
+	}
+	
+	public List<Employee> getEmployeeList(){
+		return employeeList;
+	}
+	
+	public List<Project> getProjectList(){
+		return projectList;
+	}
+	
+	public double getHourBudget(){
+		return hourBudget;
+	}
+	
+	public void setHourBudget(double d){
+		hourBudget = d;
+	}
+	
+	public double getSpentBudget(){
+		return hoursSpent;
+	}
+	
+	public void spendHours(double d){
+		hoursSpent += d;
+	}
+	
 	public boolean assignEmployee(Employee employee) {
-		
 		if (employee!=null && !employeeList.contains(employee)) {
-			employeeList.add(employee);
+			employeeList.add(0,employee);
 			return true;
 		}
 		return false;
 	}
 
 	public boolean assignProject(Project project) {
-
 		if (project!=null && !projectList.contains(project)) {
-			projectList.add(project);
+			projectList.add(0,project);
 			return true;
 		}
 		return false;
 	}
 
-	public double getEmployeeHours(Employee employee, Week weeknumber) {
-		return employee.getWeeklyHours(weeknumber);
+	public double getEmployeeHours(Employee emp, Week w) throws IllegalOperationException {
+		if(emp != null && employeeList.contains(emp)){
+			return emp.getWorkHours(this, w)[7];
+		}
+		else {
+			throw new IllegalOperationException("Employee not assigned to activity", this.getClass());
+		}
 	}
-	
-	public List<Employee> getEmployeeOnAcitivy(){
-		return this.employeeList;
-	}
-	
-	public List<Project> getProject(){
-		return this.projectList;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-	
-	//If needed add more methods
 }

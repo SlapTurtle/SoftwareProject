@@ -51,8 +51,8 @@ public class TestSysApp extends TestBasis{
 		
 		//Test if add activity works and if you can add the same twice
 		
-		assertTrue(sysApp.addActicity(a1));
-		assertFalse(sysApp.addActicity(a1));
+		assertTrue(sysApp.addActivity(a1));
+		assertFalse(sysApp.addActivity(a1));
 		
 		//Test if get activity by name works
 		
