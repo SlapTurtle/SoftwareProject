@@ -49,8 +49,7 @@ public class Project {
 	
 	public boolean addEmployee(Employee employee){
 		if(!employeeList.contains(employee) && employee != null){
-		return employeeList.add(employee);
-		
+			return employeeList.add(employee);
 		}
 		return false;
 	}
@@ -60,6 +59,13 @@ public class Project {
 			return activityList.add(activity);
 		}
 		return false;
+	}
+	public boolean removeActivity(Activity activity){
+		if(activityList.contains(activity)){
+			activityList.remove(activity);
+			return true;
+		}
+			return false;
 	}
 	
 	public boolean findEmployee(Employee x){
