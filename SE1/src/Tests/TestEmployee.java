@@ -39,40 +39,40 @@ public class TestEmployee extends TestBasis{
 	@Test
 	public void testAssignProject() throws IllegalOperationException{
 		
-		assertEquals(e1.projectList.size(), 0);
+		assertEquals(e1.getProjectList().size(), 0);
 		
 		assertTrue(e1.assignProject(p1));
-		assertEquals(e1.projectList.size(), 1);
+		assertEquals(e1.getProjectList().size(), 1);
 		
 		assertTrue(e1.assignProject(p2));
-		assertEquals(e1.projectList.size(), 2);
+		assertEquals(e1.getProjectList().size(), 2);
 		
 		assertTrue(e1.assignProject(p3));
-		assertEquals(e1.projectList.size(), 3);
+		assertEquals(e1.getProjectList().size(), 3);
 		
 		assertFalse(e1.assignProject(p1));
 		assertFalse(e1.assignProject(p2));
 		assertFalse(e1.assignProject(p3));
-		assertEquals(e1.projectList.size(), 3);
+		assertEquals(e1.getProjectList().size(), 3);
 	}
 	
 	@Test
 	public void testAssignActivity() throws IllegalOperationException{
-		assertEquals(e1.activityList.size(), 0);
+		assertEquals(e1.getActivityList().size(), 0);
 
 		assertTrue(e1.assignActivity(a1));
-		assertEquals(e1.activityList.size(), 1);
+		assertEquals(e1.getActivityList().size(), 1);
 		
 		assertTrue(e1.assignActivity(a2));
-		assertEquals(e1.activityList.size(), 2);
+		assertEquals(e1.getActivityList().size(), 2);
 		
 		assertTrue(e1.assignActivity(a3));
-		assertEquals(e1.activityList.size(), 3);
+		assertEquals(e1.getActivityList().size(), 3);
 		
 		assertFalse(e1.assignActivity(a1));
 		assertFalse(e1.assignActivity(a2));
 		assertFalse(e1.assignActivity(a2));
-		assertEquals(e1.activityList.size(), 3);
+		assertEquals(e1.getActivityList().size(), 3);
 	}
 	
 	@Test

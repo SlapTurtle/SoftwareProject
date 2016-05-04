@@ -763,8 +763,19 @@ public class Menu {
 		int k = a.getEmployeeList().size();
 		String[] str = new String[k];
 		for(int i=0; i<k; i++){
-			Employee e = a.getEmployeeList().get(i);
-			str[i] = e.getInitials()+": "+e.getWorkHourList().get(e.getActivityList().indexOf(a))[7];
+			Employee emp = a.getEmployeeList().get(i);
+			int weekcount = a.getStartWeek().weekDifference(a.getEndWeek());
+			double count = 0.0;
+			for(int j=0; j<weekcount; j++) {
+				try {
+					Week w = new Week(a.getStartWeek().getYear(), a.getStartWeek().getWeek()+j);
+					count += emp.getWorkHours(a, w)[7];
+				} catch (IllegalOperationException e) {
+					//should never happen
+				}
+				
+			}
+			str[i] = emp.getInitials()+": "+count;
 		}
 		sys.ui.clear();
 		sys.ui.listDisplay(str, "Total Hours Spent by Employees on \""+a.getType()+"\"", 10);

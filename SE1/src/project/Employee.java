@@ -1,20 +1,21 @@
 package project;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Employee {
 	
 	private SysApp sysApp;
 	private String initials;
-	public ArrayList<Project> projectList;
-	public ArrayList<Activity> activityList;
-	public ArrayList<double[]> workHourList;
+	private List<Project> projectList;
+	private List<Activity> activityList;
+	private List<Object> workHourList;
 	
 	public Employee(String initials){
 		this.initials = initials;
 		projectList = new ArrayList<Project>();
 		activityList = new ArrayList<Activity>();
-		workHourList = new ArrayList<double[]>();
+		workHourList = new ArrayList<Object>();
 	}
 	
 	public String getInitials() {
@@ -29,21 +30,61 @@ public class Employee {
 		return false;
 	}
 	
+	public List<Project> getProjectList(){
+		return projectList;
+	}
+	
 	public boolean assignActivity(Activity a) {
 		if (a != null && !activityList.contains(a)) {
 			activityList.add(0,a);
-			addWorkHourList(7 * (a.startWeek.weekDifference(a.endWeek)+1));
+			addWorkHourList(a);
 			return true;
 		}
 		return false;
 	}
 	
-	private void addWorkHourList(int size){
-		double[] hours = new double[size];
-		for(int i = 0; i < size; i++){
-			hours[i] = 0.0;
+	public List<Activity> getActivityList(){
+		return activityList;
+	}
+	
+	private void addWorkHourList(Activity a){
+		List<double[]> a_list = new ArrayList<double[]>();
+		int k = a.getStartWeek().weekDifference(a.getEndWeek());
+		for(int i=0; i<=k; i++){
+			double[] hours = new double[7];
+			for(int j = 0; j < 7; j++){
+				hours[j] = 0.0;
+			}
+			a_list.add(0,hours);
 		}
-		workHourList.add(0,hours);
+		workHourList.add(0,a_list);
+	}
+	
+	public void updateActivityWeeks(Activity a, int newSize){
+		List<double[]> list = (List<double[]>) (workHourList.get(activityList.indexOf(a)));
+		int size = list.size();
+		if(size != newSize){
+			if(size > newSize){
+				while(size != newSize){
+					if(size > newSize){
+						size--;
+						list.remove(size);
+					}
+					else{
+						double[] hours = new double[7];
+						for(int j = 0; j < 7; j++){
+							hours[j] = 0.0;
+						}
+						list.add(size, hours);
+						size++;
+					}
+				}
+			}
+		}
+	}
+	
+	public List<Object> getWorkHourList(){
+		return workHourList;
 	}
 	
 	public boolean setHours(Activity a, double hours, Week w, int weekday) {
@@ -52,10 +93,11 @@ public class Employee {
 				weekday > 0 && weekday <= 7 &&
 				a.startWeek.compareTo(w) <= 0 && a.endWeek.compareTo(w) >= 0)
 		{
-			int currentweek = a.startWeek.weekDifference(a.endWeek) - a.endWeek.weekDifference(w);
-			double temp = workHourList.get(activityList.indexOf(a))[(currentweek)*7+(weekday-1)];
-			workHourList.get(activityList.indexOf(a))[(currentweek)*7+(weekday-1)] = hours;
-			a.spendHours(hours - temp);
+			int currentWeek = a.startWeek.weekDifference(a.endWeek) - a.endWeek.weekDifference(w);
+			List<double[]> list = (List<double[]>) workHourList.get(activityList.indexOf(a));
+			double[] d = list.get(currentWeek);
+			a.spendHours(hours - d[weekday-1]);
+			d[weekday-1] = hours;
 			return true;
 		}
 		return false;
@@ -69,12 +111,6 @@ public class Employee {
 				double d = getWorkHours(a,w)[7];
 				count = d;
 			} catch (IllegalOperationException e) {}
-			/* Possibly print work hours for every activity */
-			/*
-			String s = a.type+" : "+d; 
-			sysApp.ui.print(s, sysApp.ui.style[2]);
-			//System.out.println(s);
-			*/
 		}
 		return count;
 	}
@@ -82,10 +118,10 @@ public class Employee {
 	public double[] getWorkHours(Activity a, Week w) throws IllegalOperationException {
 		double[] hourList = new double[8];
 		if(a.startWeek.compareTo(w) <= 0 && a.endWeek.compareTo(w) >= 0){
-			double[] list = workHourList.get(activityList.indexOf(a));
-			int currentweek = a.startWeek.weekDifference(a.endWeek) - a.endWeek.weekDifference(w);
+			List<double[]> list = (List<double[]>) workHourList.get(activityList.indexOf(a));
+			int currentWeek = a.startWeek.weekDifference(a.endWeek) - a.endWeek.weekDifference(w);
 			for(int i = 0; i<7; i++){
-				double d = list[(currentweek)*7 + i]; 
+				double d = list.get(currentWeek)[i]; 
 				hourList[7] += d;
 				hourList[i] = d; 
 			}

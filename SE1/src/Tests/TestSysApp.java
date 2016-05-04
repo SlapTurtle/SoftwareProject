@@ -69,7 +69,6 @@ public class TestSysApp extends TestBasis{
 		sysApp.addEmployee(e3);
 		
 		assertTrue(sysApp.getEmployeeList().contains(e1));
-		assertFalse(sysApp.getAvailableEmployees(a1).contains(e1));
 	}
 		
 		//System log, test?

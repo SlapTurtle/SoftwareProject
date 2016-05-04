@@ -52,6 +52,10 @@ public class Activity {
 	public void setEndWeek(Week w){
 		if (w.compareTo(startWeek) >= 0 && w.compareTo(endWeek) != 0) {
 			endWeek = w;
+			int newSize = endWeek.weekDifference(startWeek)+1;
+			for(Employee e : employeeList){
+				e.updateActivityWeeks(this, newSize);
+			}
 		}
 	}
 	
@@ -62,6 +66,10 @@ public class Activity {
 	public void setStartWeek(Week w){
 		if (w.compareTo(endWeek) <= 0 && w.compareTo(startWeek) != 0){
 			startWeek = w;
+			int newSize = endWeek.weekDifference(startWeek)+1;
+			for(Employee e : employeeList){
+				e.updateActivityWeeks(this, newSize);
+			}
 		}
 	}
 	

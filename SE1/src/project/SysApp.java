@@ -121,8 +121,7 @@ public class SysApp {
 		/**
 		 * END OF TEST!!!!
 		 */
-		
-		addEmployee("admin");
+
 		ui = new UserInterface(this);
 		ui.print("Welcome. Please enter your initials to proceed:", ui.style[6]);
 		while (!loggedIn()) {
@@ -286,14 +285,11 @@ public class SysApp {
 		}
 	}
 	
-	public List<Employee> getAvailableEmployees(Activity activity) throws IllegalOperationException{
+	public List<Employee> getAvailableEmployees(Activity activity, Week week) throws IllegalOperationException{
 		List<Employee> available = new ArrayList<Employee>();
-		Calendar cal = this.dateServer.getToday();
-		Week w = new Week(cal.get(Calendar.YEAR),cal.get(Calendar.WEEK_OF_YEAR));
-		available =	this.employeeList;
-		for( Employee x : employeeList){
-			if (activity.employeeList.contains(x) || x.getWeeklyActivities(w).size() >= 20){
-				available.remove(x);
+		for(Employee e : employeeList){
+			if(!activity.employeeList.contains(e) && e.getWeeklyActivities(week).size() < 20){
+				available.add(e);
 			}
 		}	
 		return available;
@@ -367,10 +363,10 @@ public class SysApp {
 
 	public boolean removeEmployee(Employee e) {
 		if(employeeList.size() > 1){
-			for(Project p : e.projectList){
+			for(Project p : e.getProjectList()){
 				p.employeeList.remove(e);
 			}
-			for(Activity a : e.activityList){
+			for(Activity a : e.getActivityList()){
 				a.employeeList.remove(e);
 			}
 			employeeList.remove(e);
@@ -384,10 +380,22 @@ public class SysApp {
 			p.activityList.remove(a);
 		}
 		for(Employee e : a.getEmployeeList()){
-			e.activityList.remove(a);
+			e.getActivityList().remove(a);
 		}
 		activityList.remove(a);
 		return true;
 	}
+	
+	public boolean removeProject(Project p) {
+		for(Activity a : p.activityList){
+			a.projectList.remove(p);
+		}
+		for(Employee e : p.employeeList){
+			e.getActivityList().remove(p);
+		}
+		activityList.remove(p);
+		return true;
+	}
+	
 	
 }
