@@ -1,5 +1,7 @@
 package project;
 
+import static org.mockito.Mockito.when;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -22,7 +24,12 @@ public class DateServer {
 	}
 	
 	public Calendar getToday() {
-		return GregorianCalendar.getInstance();
+		Calendar cal = new GregorianCalendar();
+		cal.set(Calendar.YEAR, 2016); 			//set Year
+		cal.set(Calendar.WEEK_OF_YEAR, 1); 	//Set Week
+		
+		return cal;
+		//return GregorianCalendar.getInstance();
 	}
 	
 	public String stringToday(){

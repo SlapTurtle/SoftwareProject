@@ -16,7 +16,6 @@ public class Activity {
 	
 	
 	// -------- Sets the activity ID and planed work weeks ----
-	
 	public Activity(SysApp sysApp, String type, Week startWeek, Week endWeek) {
 		this.sysApp = sysApp;
 		this.activityID = setUniqueID();

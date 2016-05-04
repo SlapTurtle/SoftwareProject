@@ -130,13 +130,15 @@ public class Menu {
 		// Project Sub-Menus
 		case "Add Employee to Project": addEmployeeToProject(); break;
 		case "Get All Employees on Project": getAllEmployeesOnProject(); break;
-		case "Add Project Activity": addActivityToProject(); break;
-		case "Get All Activities on Project": setReportComment(); break;
+		case "Add Project Activity": addProjectActivity(); break;
+		case "Get All Activities on Project": getAllActivitiesOnProject(); break;
+		case "Set Start Date of Project": setProjectStartDate(); break;
+		case "Set End Date of Project": setProjectEndDate(); break;
+		case "Set Deadline of Project": setPrjocetDeadline(); break;
 		case "Set Time Budget of Project": setTimeBudgetOfProject(); break;
 		case "Get Total Project Budget Price": getTotalProjectBudget(); break;
 		case "Get Activeness of Activity in Project": getProjectActiveness(); break;
 		case "Set Report Comment": setProjectReportComment(); break;
-		case "View Weekly Report": getWeeklyReport(); break;
 		case "Remove Project": removeProject(); break;
 		
 		// Activity Top-Menu
@@ -592,7 +594,7 @@ public class Menu {
 		sys.ui.print("Enter initials of Employee:", sys.ui.style[6]);
 		String emp = sys.ui.next().toUpperCase();
 		Employee e = sys.employeeByInitials(emp);
-		if(a == null){
+		if(e == null){
 			sys.ui.clear();
 			sys.ui.print("Error: Employee with initials \"" + emp + "\" dosen't exist.", sys.ui.style[3]);
 		}
@@ -671,7 +673,7 @@ public class Menu {
 		} catch (IllegalOperationException e) {
 			//should not happen
 		}
-		if(now.compareTo(a.getStartWeek()) >= 0){
+		if(now.compareTo(a.getStartWeek()) > 0){
 			int j = getUserInputInt(1, a.getEndWeek().getWeek(), "Enter new starting week", "Invalid Week");
 			Week w = sys.getDateServer().getWeek(j);
 			if(sys.ui.yesNoQuestion("Are you sure you want to change starting week of \""+a.getType()+"\" from "+a.getStartWeek().getWeek()+" to "+j+"?")){
@@ -799,16 +801,11 @@ public class Menu {
 	private void removeActivity() {
 		Activity a = parent.currentActivity;
 		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + a.getType() + "\" from the system?")) {
-			if(sys.removeActivity(a)){
-				sys.ui.clear();
-				sys.ui.print("Successfully removed Activity \"" + a.getType() + "\" from the system.", sys.ui.style[2]);
-				parent.parent.show();
-				return;
-			}
-			else {
-				sys.ui.clear();
-				sys.ui.print("Error: Cannot remove only Employee in system", sys.ui.style[3]);
-			}
+			sys.removeActivity(a);
+			sys.ui.clear();
+			sys.ui.print("Successfully removed Activity \"" + a.getType() + "\" from the system.", sys.ui.style[2]);
+			parent.parent.show();
+			return;
 		}
 		else {
 			sys.ui.clear();
@@ -832,7 +829,7 @@ public class Menu {
 		int j = getUserInputInt(i, 53, "Enter ending week of Project \"" + name + "\"", "Invalid week");
 		Week end = sys.getDateServer().getWeek(j);
 		
-		int k = getUserInputInt(i, 53, "Enter deadline week of Project \"" + name + "\"", "Invalid week");
+		int k = getUserInputInt(j, 53, "Enter deadline week of Project \"" + name + "\"", "Invalid week");
 		Week dL = sys.getDateServer().getWeek(k);
 		
 		Project p = new Project(sys, name, start, end, end);
@@ -850,8 +847,6 @@ public class Menu {
 			sys.ui.cancel();
 		}
 	}
-		
-	
 	
 	private void manageProject(){
 		sys.currentMenu = this;
@@ -878,36 +873,182 @@ public class Menu {
 		for (int i = 0; i < sz; i++) {
 			s[i] = sys.getProjectList().get(i).getName();
 		}
-		sys.ui.listDisplay(s, "Registered Activities", 10);
+		sys.ui.listDisplay(s, "Registered Projects", 10);
 	}
 	
 	/*
 	 * PROJECT SUB-MENUS
 	 */
 	private void addEmployeeToProject() {
+		Project p = parent.currentProject;
 		sys.ui.print("Enter initials of employee:", sys.ui.style[6]);
 		String initials = sys.ui.next().toUpperCase();
-		parent.currentProject.addEmployee(sys.employeeByInitials(initials));
-		sys.employeeByInitials(initials).assignProject(parent.currentProject);
-		sys.ui.print("Employee with initials:" + initials + " added to " + parent.currentProject.getName());
-		sys.ui.clear();
-		
+		Employee e = sys.employeeByInitials(initials);
+		if(e != null){
+			if(p.addEmployee(e)){
+				e.assignProject(p);
+				sys.ui.clear();
+				sys.ui.print("Employee with initials:" + initials + " added to " + p.getName(), sys.ui.style[2]);
+			}
+			else{
+				sys.ui.clear();
+				sys.ui.print("\"" + e.getInitials() + "\" is already assigned to \""+ p.getName() +"\"", sys.ui.style[3]);
+			}
+		}
+		else{
+			sys.ui.clear();
+			sys.ui.print("Employee with \"" + initials + "\" doesn't exist.", sys.ui.style[3]);
+		}
 	}
 
 	private void getAllEmployeesOnProject() {
-		int sz = sys.getEmployeeList().size();
-		String[] s = new String[sz];
-		for (int i = 0; i < sz; i++) {
-			s[i] = sys.getEmployeeList().get(i).getInitials();
+		Project p = parent.currentProject;
+		int sz = p.getEmployeeList().size();
+		if(sz > 0){
+			String[] s = new String[sz];
+			for (int i = 0; i < sz; i++) {
+				s[i] = p.getEmployeeList().get(i).getInitials();
+			}
+			sys.ui.clear();
+			sys.ui.listDisplay(s, "Registered Employees of \""+p.getName()+"\"", 10);
 		}
-		sys.ui.listDisplay(s, "Registered Employees", 10);
+		else{
+			sys.ui.clear();
+			sys.ui.print("No Employees assigned to \"" + p.getName() + "\"", sys.ui.style[3]);
+		}
+		
+	}
+	
+	private void addProjectActivity() {
+		Project p = parent.currentProject;
+		sys.ui.print("Enter Name or ID of Activity:", sys.ui.style[6]);
+		String act = sys.ui.next().toUpperCase();
+		Activity a = sys.activityByID(act);
+		if(a == null){
+			a = sys.activityByName(act);
+		}
+		if(a == null){
+			sys.ui.clear();
+			sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
+		}
+		else{
+			if(a.assignProject(p)){
+				p.addActivity(a);
+				sys.ui.clear();
+				sys.ui.print("Successfully added \"" + p.getName() + "\" to \""+ act +"\"", sys.ui.style[2]);
+			}
+			else{
+				sys.ui.clear();
+				sys.ui.print("\"" + act + "\" is already assigned to \""+ p.getName() +"\"", sys.ui.style[3]);
+			}
+		}
+	}
+	
+	private void getAllActivitiesOnProject(){
+		Project p = parent.currentProject;
+		int sz = p.getActivityList().size();
+		if(sz > 0){
+			String[] s = new String[sz];
+			for (int i = 0; i < sz; i++) {
+				s[i] = p.getActivityList().get(i).getType();
+			}
+			sys.ui.clear();
+			sys.ui.listDisplay(s, "Registered Activities of \""+p.getName()+"\"", 10);
+		}
+		else{
+			sys.ui.clear();
+			sys.ui.print("No Activities assigned to \"" + p.getName() + "\"", sys.ui.style[3]);
+		}
 	}
 	
 
-	private void setReportComment() {
-		//TODO
-		sys.ui.clear();
-		sys.ui.print("Not implemented yet");
+
+	private void setProjectStartDate() {
+		Project p = parent.currentProject;
+		int tY = sys.getDateServer().getToday().get(Calendar.YEAR);
+		int tW = sys.getDateServer().getToday().get(Calendar.WEEK_OF_YEAR);
+		Week now = null;
+		try {
+			now = new Week(tY, tW);
+		} catch (IllegalOperationException e) {
+			//should not happen
+		}
+		if(now.compareTo(p.getStartWeek()) < 0){
+			int i = getUserInputInt(1, p.getEndWeek().getWeek(), "Enter starting week of Project \"" + p.getName() + "\"", "Invalid week");
+			Week w = sys.getDateServer().getWeek(i);
+			if(sys.ui.yesNoQuestion("Are you sure you want to change starting week of \""+p.getName()+"\" from "+p.getEndWeek().getWeek()+" to "+i+"?")){
+				p.setStartWeek(w);
+				sys.ui.clear();
+				sys.ui.print("Staring week changed to "+i, sys.ui.style[2]);
+			}
+			else{
+				sys.ui.clear();
+				sys.ui.cancel();
+			}
+		}
+		else{
+			sys.ui.clear();
+			sys.ui.print("Project has already started, and starting week cannot be changed", sys.ui.style[3]);
+		}
+	}
+
+	private void setProjectEndDate() {
+		Project p = parent.currentProject;
+		int tY = sys.getDateServer().getToday().get(Calendar.YEAR);
+		int tW = sys.getDateServer().getToday().get(Calendar.WEEK_OF_YEAR);
+		Week now = null;
+		try {
+			now = new Week(tY, tW);
+		} catch (IllegalOperationException e) {
+			//should not happen
+		}
+		if(now.compareTo(p.getEndWeek()) < 0){
+			int i = getUserInputInt(p.getStartWeek().getWeek(), p.getDeadline().getWeek(), "Enter ending week of Project \"" + p.getName() + "\"", "Invalid week");
+			Week w = sys.getDateServer().getWeek(i);
+			if(sys.ui.yesNoQuestion("Are you sure you want to change ending week of \""+p.getName()+"\" from "+p.getEndWeek().getWeek()+" to "+i+"?")){
+				p.setEndWeek(w);
+				sys.ui.clear();
+				sys.ui.print("Staring week changed to "+i, sys.ui.style[2]);
+			}
+			else{
+				sys.ui.clear();
+				sys.ui.cancel();
+			}
+		}
+		else{
+			sys.ui.clear();
+			sys.ui.print("Project has already Ended, and ending week cannot be changed", sys.ui.style[3]);
+		}
+		
+	}
+
+	private void setPrjocetDeadline() {
+		Project p = parent.currentProject;
+		int tY = sys.getDateServer().getToday().get(Calendar.YEAR);
+		int tW = sys.getDateServer().getToday().get(Calendar.WEEK_OF_YEAR);
+		Week now = null;
+		try {
+			now = new Week(tY, tW);
+		} catch (IllegalOperationException e) {
+			//should not happen
+		}
+		if(now.compareTo(p.getDeadline()) < 0){
+			int i = getUserInputInt(p.getDeadline().getWeek(), 53, "Enter deadline week of Project \"" + p.getName() + "\"", "Invalid week");
+			Week w = sys.getDateServer().getWeek(i);
+			if(sys.ui.yesNoQuestion("Are you sure you want to change deadline week of \""+p.getName()+"\" from "+p.getEndWeek().getWeek()+" to "+i+"?")){
+				p.setDeadline(w);
+				sys.ui.clear();
+				sys.ui.print("Deadline week changed to "+i, sys.ui.style[2]);
+			}
+			else{
+				sys.ui.clear();
+				sys.ui.cancel();
+			}
+		}
+		else{
+			sys.ui.clear();
+			sys.ui.print("Project has already ended, and deadline week cannot be changed", sys.ui.style[3]);
+		}
 	}
 
 	private void setTimeBudgetOfProject() {
@@ -916,7 +1057,7 @@ public class Menu {
 		if(sys.ui.yesNoQuestion("Are you sure you want to change the budget of \""+p.getName()+"\" from "+p.getBudget()+" to "+d+"?")){
 			p.setBudget(d);
 			sys.ui.clear();
-			sys.ui.print("Time budget set to " + p.getBudget() + " hours");
+			sys.ui.print("Budget changed to " + p.getBudget() + " hours", sys.ui.style[2]);
 		}
 		else {
 			sys.ui.clear();
@@ -935,9 +1076,8 @@ public class Menu {
 		sys.ui.clear();
 		sys.ui.listDisplay(str, "Budget Status for \""+p.getName()+"\"", str.length);
 	}
-
-	private void getProjectActiveness() {//
-		
+	
+	private void getProjectActiveness() {
 		
 	}
 
@@ -950,7 +1090,6 @@ public class Menu {
 		parent.currentProject.setReportComment(s, w);
 		sys.ui.clear();
 		sys.ui.print("Comment for week " + w.getWeek() + " is set to: \"" + s + "\"", sys.ui.style[2]);
-		
 	}
 
 	private void getWeeklyReport() {
@@ -966,18 +1105,13 @@ public class Menu {
 	}
 
 	private void removeProject() {
-		Activity a = parent.currentActivity;
-		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + a.getType() + "\" from the system?")) {
-			if(sys.removeActivity(a)){
-				sys.ui.clear();
-				sys.ui.print("Successfully removed Activity \"" + a.getType() + "\" from the system.", sys.ui.style[2]);
-				parent.parent.show();
-				return;
-			}
-			else {
-				sys.ui.clear();
-				sys.ui.print("Error: Cannot remove only Employee in system", sys.ui.style[3]);
-			}
+		Project p = parent.currentProject;
+		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + p.getName() + "\" from the system?")) {
+			sys.removeProject(p);
+			sys.ui.clear();
+			sys.ui.print("Successfully removed Project \"" + p.getName() + "\" from the system.", sys.ui.style[2]);
+			parent.parent.show();
+			return;
 		}
 		else {
 			sys.ui.clear();

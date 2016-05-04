@@ -1,10 +1,13 @@
 package project;
 
+import static org.mockito.Mockito.when;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class SysApp {
@@ -41,11 +44,13 @@ public class SysApp {
 		menuPrjMng.add(new Menu(this, "Get All Employees on Project"));
 		menuPrjMng.add(new Menu(this, "Add Project Activity"));
 		menuPrjMng.add(new Menu(this, "Get All Activities on Project"));
+		menuPrjMng.add(new Menu(this, "Set Start Date of Project"));
+		menuPrjMng.add(new Menu(this, "Set End Date of Project"));
+		menuPrjMng.add(new Menu(this, "Set Deadline of Project"));
 		menuPrjMng.add(new Menu(this, "Set Time Budget of Project"));
 		menuPrjMng.add(new Menu(this, "Get Total Project Budget Price"));
 		menuPrjMng.add(new Menu(this, "Get Activeness of Activity in Project"));
 		menuPrjMng.add(new Menu(this, "Set Report Comment"));
-		menuPrjMng.add(new Menu(this, "View Weekly Report"));
 		menuPrjMng.add(new Menu(this, "Remove Project"));
 		
 		menuActMng.add(new Menu(this, "Set Activity Name"));
@@ -96,9 +101,9 @@ public class SysApp {
 		 */
 		try{
 			//Dummy Project
-			Week week1 = new Week(2016, 1);
-			Week week2 = new Week(2016, 2);
-			Week week3 = new Week(2016, 3);
+			Week week1 = new Week(2016, 2);
+			Week week2 = new Week(2016, 3);
+			Week week3 = new Week(2016, 4);
 			
 			Project p1 = new Project(this, "pro1", week1,week2,week3);
 			Project p2 = new Project(this, "pro2", week1,week2,week3);
@@ -114,6 +119,7 @@ public class SysApp {
 			//Dummy Employees
 			addEmployee("emp1");
 			addEmployee("emp2");
+
 		}
 		catch(Exception e){
 			System.exit(0);
@@ -327,9 +333,9 @@ public class SysApp {
 		return null;
 	}
 	public Employee employeeByInitials(String initials){
-		for(Employee x : employeeList) {
-			if (x.getInitials().equals(initials)){
-				return x;
+		for(Employee e : employeeList) {
+			if (e.getInitials().equals(initials)){
+				return e;
 			}
 		}
 		return null;
@@ -393,7 +399,7 @@ public class SysApp {
 		for(Employee e : p.getEmployeeList()){
 			e.getActivityList().remove(p);
 		}
-		activityList.remove(p);
+		projectList.remove(p);
 		return true;
 	}
 	

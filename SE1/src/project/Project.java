@@ -22,9 +22,9 @@ public class Project {
 		this.sysApp = sys;
 		this.projectID = setUniqueID();
 		this.name = name.toUpperCase();
-		this.startWeek = sW;
-		this.endWeek = eW;
-		this.deadline = dL;
+		this.setStartWeek(sW);
+		this.setEndWeek(eW);
+		this.setDeadline(dL);
 		this.employeeList = new ArrayList<Employee>();
 		this.projectManager = null;
 		this.activityList = new ArrayList<Activity>();
@@ -67,6 +67,30 @@ public class Project {
 		return this.name;
 	}
 	
+	public Week getStartWeek() {
+		return startWeek;
+	}
+
+	public void setStartWeek(Week startWeek) {
+		this.startWeek = startWeek;
+	}
+
+	public Week getEndWeek() {
+		return endWeek;
+	}
+
+	public void setEndWeek(Week endWeek) {
+		this.endWeek = endWeek;
+	}
+
+	public Week getDeadline() {
+		return deadline;
+	}
+
+	public void setDeadline(Week deadline) {
+		this.deadline = deadline;
+	}
+
 	public void setReportComment(String comment,Week w){
 		this.reports.put(w, comment);
 	}
@@ -97,7 +121,6 @@ public class Project {
 	public double getActivityDiversion(Employee e, Activity a, Week w) throws IllegalOperationException{
 		return e.getWorkHours(a, w)[7];
 	}
-
 	
 	public void setBudget(double d) {
 		budget = d;
