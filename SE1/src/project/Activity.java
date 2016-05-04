@@ -27,19 +27,6 @@ public class Activity {
 		this.activityID = setUniqueID();
 	}
 	
-	//ID counter implemented in SysApp
-	/*private String setUniqueID() {
-		System.out.println("hello");
-		int ID = sysApp.getaIDCount();
-		System.out.println("man");
-		String newID = "ID" + ID;
-		return newID;
-	}
-	
-	public String checkUniqueID() {
-		return this.activityID;
-	}
-	*/
 	private String setUniqueID() {
 		String newID = "ID" + sysApp.getAcount();
 		return newID;
@@ -48,7 +35,6 @@ public class Activity {
 	public String checkUniqueID() {
 		return this.activityID;
 	}
-	
 	
 	//Makes it possible to extend the end week.
 	public void setEndWeek(Week endweek){
@@ -60,6 +46,7 @@ public class Activity {
 	public Week getEndWeek(){
 		return this.endWeek;
 	}
+	
 	public Week getStartWeek(){
 		return this.startWeek;
 	}
@@ -73,7 +60,6 @@ public class Activity {
 		return false;
 	}
 
-	
 	public boolean assignProject(Project project) {
 
 		if (project!=null && !projectlist.contains(project)) {
@@ -93,6 +79,10 @@ public class Activity {
 	
 	public List<Project> getProject(){
 		return this.projectlist;
+	}
+
+	public String getName() {
+		return this.name;
 	}
 	
 	//If needed add more methods

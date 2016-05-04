@@ -79,5 +79,4 @@ public class TestSysApp extends TestBasis{
 		//assertTrue(sysApp.setWeekReport(s));
 		//(sysApp.getSystemLog());
 		
-	}
 }
