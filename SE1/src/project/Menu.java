@@ -267,7 +267,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("\"" + e.getInitials() + "\" not assigned to any Projects", sys.ui.style[2]);
+			sys.ui.print("\"" + e.getInitials() + "\" not assigned to any Projects", sys.ui.style[3]);
 		}
 	}
 	
@@ -309,7 +309,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("\"" + e.getInitials() + "\" not assigned to any activities", sys.ui.style[2]);
+			sys.ui.print("\"" + e.getInitials() + "\" not assigned to any activities", sys.ui.style[3]);
 		}
 	}
 	
@@ -328,7 +328,7 @@ public class Menu {
 				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
 			}
 			else if(!emp.activityList.contains(a)){
-				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assignet to Activity \"" + act + "\"", sys.ui.style[3]);
+				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assigned to Activity \"" + act + "\"", sys.ui.style[3]);
 			}
 			else{
 				break;
@@ -368,7 +368,7 @@ public class Menu {
 				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
 			}
 			else if(!emp.activityList.contains(a)){
-				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assignet to Activity \"" + act + "\"", sys.ui.style[3]);
+				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assigned to Activity \"" + act + "\"", sys.ui.style[3]);
 			}
 			else{
 				break;
@@ -407,7 +407,7 @@ public class Menu {
 				sys.ui.print("Error: Activity with ID or Name \"" + act + "\" dosen't exist.", sys.ui.style[3]);
 			}
 			else if(!emp.activityList.contains(a)){
-				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assignet to Activity \"" + act + "\"", sys.ui.style[3]);
+				sys.ui.print("Error: \""+emp.getInitials()+"\" Not assigned to Activity \"" + act + "\"", sys.ui.style[3]);
 			}
 			else{
 				break;
@@ -630,7 +630,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("No Employees assigned to \"" + a.getType() + "\"", sys.ui.style[2]);
+			sys.ui.print("No Employees assigned to \"" + a.getType() + "\"", sys.ui.style[3]);
 		}
 	}
 	
@@ -666,7 +666,7 @@ public class Menu {
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("\"" + a.getType() + "\" not assignet to any Projects", sys.ui.style[2]);
+			sys.ui.print("\"" + a.getType() + "\" not assigned to any Projects", sys.ui.style[3]);
 		}
 	}	
 	
@@ -712,7 +712,6 @@ public class Menu {
 			sys.ui.clear();
 			sys.ui.cancel();
 		}
-		
 	}
 	
 	private void changeBudgetActivity() {
@@ -756,7 +755,7 @@ public class Menu {
 				
 				str[i*9] = e.getInitials()+":";
 				for(int j=0; j<7; j++){
-					str[(i*9)+(j+1)] = ""+temp[j];
+					str[(i*9)+(j+1)] = "Weekday "+(j+1)+": "+temp[j];
 				}
 				total += temp[7];
 				str[i*9+8] = "Total hours: "+temp[7];
@@ -835,8 +834,6 @@ public class Menu {
 			sys.ui.cancel();
 		}
 	}
-		
-	
 	
 	private void manageProject(){
 		sys.currentMenu = this;
@@ -874,8 +871,6 @@ public class Menu {
 		String initials = sys.ui.next().toUpperCase();
 		currentProject.addEmployee(sys.employeeByInitials(initials));
 		sys.ui.print("Employee with initials:" + initials + " added to " + currentProject.getName());
-		
-		
 	}
 
 	private void getAllEmployeesOnProject() {
@@ -944,7 +939,7 @@ public class Menu {
 		for (int i = 0; i < s.length; i++) {
 			s[i] = Integer.toString(i);
 		}
-		sys.ui.listDisplay(s, "Logs And Shit", 10);
+		sys.ui.listDisplay(s, "Log of events", 10);
 	}
 	
 	public void showDate() {
