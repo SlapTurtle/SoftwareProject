@@ -16,6 +16,15 @@ import project.*;
 public class TestDateServer extends TestBasis {
 	@Test
 	public void testDateServer(){
-		//TODO make tests
+		//creates DateServer
+		DateServer ds = new DateServer();
+		
+		//tests getCalendar
+		Calendar cal = new GregorianCalendar();
+		assertEquals(ds.getCalendar(), cal);
+		
+		//tests getWeek
+		Week w = new Week(cal.get(Calendar.YEAR), cal.get(Calendar.WEEK_OF_YEAR));
+		assertEquals(ds.getToday().toString(), w.toString());
 	}
 }

@@ -17,10 +17,12 @@ import project.*;
 public class TestEmployee extends TestBasis{
 	
 	@Test
-	public void testInitials() {
-		//test initials field
+	public void testFields() {
 		Employee e = new Employee("BRAN");
 		assertEquals(e.getInitials(), "BRAN");
+		assertEquals(e.getProjectList().size(), 0);
+		assertEquals(e.getActivityList().size(), 0);
+		assertEquals(e.getWorkHourList().size(), 0);
 	}
 	
 	@Test

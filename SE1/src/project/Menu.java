@@ -987,7 +987,6 @@ public class Menu {
 			sys.ui.clear();
 			sys.ui.cancel();
 		}
-		
 	}
 	
 	
@@ -1373,7 +1372,7 @@ public class Menu {
 	
 	public void showDate() {
 		sys.ui.clear();
-		sys.ui.print(sys.getDateServer().stringToday(), UserInterface.style[2]);
+		sys.ui.print(sys.getDateServer().getToday().toString(), UserInterface.style[2]);
 	}
 	
 	public void logOff(String s) {
