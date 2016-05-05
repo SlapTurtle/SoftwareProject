@@ -1,7 +1,6 @@
 package project;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class Menu {
@@ -375,15 +374,15 @@ public class Menu {
 		//Gets weekday
 		int j = getUserInputInt(1,7, "Enter weekday","Invalid weekday.");
 		//Gets Hours
-		double d = getUserInputDouble("Enter amount of hours of work to to \"" + a.getType() + "\" in week "+w.getWeek(), "Error: Invalid amount.");
+		double d = getUserInputDouble("Enter amount of hours of work to to \"" + a.getType() + "\" in week "+w, "Error: Invalid amount.");
 		//Puts it all together
 		double k = 0.0;
 		try {
 			k = emp.getWorkHours(a, w)[j];
-			if(sys.ui.yesNoQuestion("Are you sure you want to change workshours of \""+a.getType()+"\" on weekday "+j+" of week "+w.getWeek()+" from "+k+" to "+d+"?")){
+			if(sys.ui.yesNoQuestion("Are you sure you want to change workshours of \""+a.getType()+"\" on weekday "+j+" of week "+w+" from "+k+" to "+d+"?")){
 				emp.setHours(a, d, w, j);
 				sys.ui.clear();
-				sys.ui.print("Successfully added "+d+" hours to \""+a.getType()+"\" on weekday "+j+" of week "+w.getWeek(), UserInterface.style[2]);
+				sys.ui.print("Successfully added "+d+" hours to \""+a.getType()+"\" on weekday "+j+" of week "+w, UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
@@ -918,9 +917,16 @@ public class Menu {
 
 	private void setProjectReportComment() {
 		Project p = parent.currentProject;
-		int y = getUserInputInt(0,0, "Enter Year of week", "");
-		int i = getUserInputInt(p.getStartWeek().getWeek(), p.getEndWeek().getWeek(), "Enter week for report comment  \" "+ p.getName() +" \"", "Invalid week");
-		
+		int st = 1;
+		int en = 53;
+		int y = getUserInputInt(p.getStartWeek().getYear(), p.getDeadline().getYear(), "Enter Year of week", "");
+		if(y == p.getStartWeek().getYear()){
+			st = p.getStartWeek().getWeek();
+		}
+		if(y == p.getEndWeek().getYear()){
+			en = p.getEndWeek().getWeek();
+		}
+		int i = getUserInputInt(st, en, "Enter week for report comment", "Invalid week");
 		Week w = new Week(y, i);
 		sys.ui.print("Enter report comment", UserInterface.style[6]);
 		String s = sys.ui.next();
@@ -931,17 +937,26 @@ public class Menu {
 
 	private void getWeeklyReport() {
 		Project p = parent.currentProject;
-		int y = getUserInputInt(0,0, "Enter Year of week", "");
-		int i = getUserInputInt(p.getStartWeek().getWeek(), p.getEndWeek().getWeek(), "Enter week for report comment", "Invalid week");
+		int st = 1;
+		int en = 53;
+		int y = getUserInputInt(p.getStartWeek().getYear(), p.getDeadline().getYear(), "Enter Year of week", "");
+		if(y == p.getStartWeek().getYear()){
+			st = p.getStartWeek().getWeek();
+		}
+		if(y == p.getEndWeek().getYear()){
+			en = p.getEndWeek().getWeek();
+		}
+		int i = getUserInputInt(st, en, "Enter week for report comment", "Invalid week");
 		Week w = new Week(y, i);
-		if(p.getWeeklyReport(w) != null){
-			sys.ui.clear();
-			sys.ui.print("Report for "+w+" is: " +p.getWeeklyReport(w),UserInterface.style[2]);
+		if(p.getWeeklyReport(w) == null){
+			p.setReportComment(" --- --- --- ", w);
 		}
-		else{
-			sys.ui.clear();
-			sys.ui.print("No report for choosen week",UserInterface.style[3]);
-		}
+		String[] s = {
+				"Report Comment for "+w+" is: " +p.getWeeklyReport(w),
+				//TODO ADD MORE
+		};
+		sys.ui.clear();
+		sys.ui.listDisplay(s, "Weekly Report, "+w, 1);
 	}
 
 	private void removeProject() {
