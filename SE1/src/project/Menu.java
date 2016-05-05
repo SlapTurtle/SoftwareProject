@@ -74,20 +74,19 @@ public class Menu {
 		while(true){
 			try{
 				String s = "("+low+"-"+high+")";
-				if(low == -1){
+				if(low == 0 && high == 0){
+					s = "";
+				}
+				else if(low == 0){
 					s = "( <= "+high+" )";
 				}
-				else if(high == -1){
+				else if(high == 0){
 					s = "( >= "+low+" )";
 				}
-				else if(low == 0 && high == 0){
-					s = "";
-					high = -1;
-					low = -1;
-				}
+				
 				sys.ui.print(prompt+s, UserInterface.style[6]);
 				int i = Integer.parseInt(sys.ui.next());
-				if(!((low <= i || low == -1) && (high >= i || high == -1))){
+				if(!((low <= i || low == 0) && (high >= i || high == 0))){
 					throw new NumberFormatException();
 				}
 				
@@ -368,9 +367,17 @@ public class Menu {
 			}
 		}
 		//Gets week
-		int y = getUserInputInt(0,0, "Enter Year of week", "");
-		int i = getUserInputInt(a.getStartWeek().getWeek(), a.getEndWeek().getWeek(), "Enter Week within \""+a.getType()+"\"", "Invalid Week");
-		Week w = new Week(y, i);
+		int y = getUserInputInt(a.getStartWeek().getYear(), a.getEndWeek().getYear(), "Enter Year of week", "Invalid year");
+		int st = 1;
+		int en = 53;
+		if(y == a.getStartWeek().getYear()){
+			st = a.getStartWeek().getWeek();
+		}
+		if(y == a.getEndWeek().getYear()){
+			en = a.getEndWeek().getWeek();
+		}
+		int in = getUserInputInt(st, en, "Enter week within Activity \"" + a.getType() + "\"", "Invalid week");
+		Week w = new Week(y, in);
 		//Gets weekday
 		int j = getUserInputInt(1,7, "Enter weekday","Invalid weekday.");
 		//Gets Hours
@@ -416,9 +423,17 @@ public class Menu {
 			}
 		}
 		//Gets week
-		int y = getUserInputInt(0,0, "Enter Year of week", "");
-		int j = getUserInputInt(a.getStartWeek().getWeek(), a.getEndWeek().getWeek(), "Enter Week within \""+a.getType()+"\"", "Invalid Week");
-		Week w = new Week(y, j);
+		int y = getUserInputInt(a.getStartWeek().getYear(), a.getEndWeek().getYear(), "Enter Year of week", "Invalid year");
+		int st = 1;
+		int en = 53;
+		if(y == a.getStartWeek().getYear()){
+			st = a.getStartWeek().getWeek();
+		}
+		if(y == a.getEndWeek().getYear()){
+			en = a.getEndWeek().getWeek();
+		}
+		int in = getUserInputInt(st, en, "Enter week within Activity \"" + a.getType() + "\"", "Invalid week");
+		Week w = new Week(y, in);
 		//output
 		String[] str = new String[8];
 		try {
@@ -428,7 +443,7 @@ public class Menu {
 			}
 			str[7] = "Total for week: "+d[7];
 			sys.ui.clear();
-			sys.ui.listDisplay(str, "Work hours of \""+a.getType()+"\" in week "+j, 9);
+			sys.ui.listDisplay(str, "Work hours of \""+a.getType()+"\" in week "+w, 9);
 		} catch (IllegalOperationException e) {
 			//should never happen
 		}
@@ -567,7 +582,7 @@ public class Menu {
 				b = false;
 			}
 		}
-		int y = getUserInputInt(sys.getDateServer().getToday().getYear(), -1, "Enter Year of starting week", "Invalid year");
+		int y = getUserInputInt(sys.getDateServer().getToday().getYear(), 0, "Enter Year of starting week", "Invalid year");
 		int st = 1;
 		int en = 53;
 		if(y == sys.getDateServer().getToday().getYear()){
@@ -576,7 +591,7 @@ public class Menu {
 		int i = getUserInputInt(st, en, "Enter starting week of Project \"" + name + "\"", "Invalid week");
 		Week start = new Week(y, i);
 		
-		y = getUserInputInt(start.getYear(),-1, "Enter Year of ending week", "Invalid year");
+		y = getUserInputInt(start.getYear(),0, "Enter Year of ending week", "Invalid year");
 		if(y == start.getYear()){
 			st = start.getWeek();
 			en = 53;
@@ -588,7 +603,7 @@ public class Menu {
 		int j = getUserInputInt(st, en, "Enter ending week of Project \"" + name + "\"", "Invalid week");
 		Week end = new Week(y, j);
 		
-		y = getUserInputInt(end.getYear(),-1, "Enter Year of deadline week", "Invalid year");
+		y = getUserInputInt(end.getYear(),0, "Enter Year of deadline week", "Invalid year");
 		if(y == end.getYear()){
 			st = end.getWeek();
 			en = 53;
@@ -845,7 +860,7 @@ public class Menu {
 		if(now.compareTo(p.getDeadline()) < 0){
 			int st = 1;
 			int en = 53;
-			int y = getUserInputInt(p.getEndWeek().getYear(),-1, "Enter Year of deadline week", "Invalid year");
+			int y = getUserInputInt(p.getEndWeek().getYear(),0, "Enter Year of deadline week", "Invalid year");
 			if(y == p.getEndWeek().getYear()){
 				if(p.getEndWeek().compareTo(now) < 0){
 					st = now.getWeek();
@@ -1001,7 +1016,7 @@ public class Menu {
 				b = false;
 			}
 		}
-		int y = getUserInputInt(sys.getDateServer().getToday().getYear(), -1, "Enter Year of starting week", "Invalid year");
+		int y = getUserInputInt(sys.getDateServer().getToday().getYear(), 0, "Enter Year of starting week", "Invalid year");
 		int st = 1;
 		int en = 53;
 		if(y == sys.getDateServer().getToday().getYear()){
@@ -1010,7 +1025,7 @@ public class Menu {
 		int i = getUserInputInt(st, en, "Enter starting week of Activity \"" + name + "\"", "Invalid week");
 		Week start = new Week(y, i);
 		
-		y = getUserInputInt(start.getYear(),-1, "Enter Year of ending week", "Invalid year");
+		y = getUserInputInt(start.getYear(),0, "Enter Year of ending week", "Invalid year");
 		if(y == start.getYear()){
 			st = start.getWeek();
 			en = 53;
@@ -1218,7 +1233,7 @@ public class Menu {
 		if(now.compareTo(a.getEndWeek()) <= 0){
 			int st = 1;
 			int en = 53;
-			int y = getUserInputInt(now.getYear(),-1, "Enter Year of ending week", "Invalid year");
+			int y = getUserInputInt(now.getYear(),0, "Enter Year of ending week", "Invalid year");
 			if(y == a.getStartWeek().getYear()){
 				if(a.getStartWeek().compareTo(now) < 0){
 					st = now.getWeek();
@@ -1275,8 +1290,16 @@ public class Menu {
 	
 	private void getActivityStatusByWeek() {
 		Activity a = parent.currentActivity;
-		int y = getUserInputInt(0,0, "Enter Year of week", "");
-		int in = getUserInputInt(a.getStartWeek().getWeek(), a.getEndWeek().getWeek(), "Enter week within \""+a.getType()+"\"", "Invalid Week");
+		int y = getUserInputInt(a.getStartWeek().getYear(), a.getEndWeek().getYear(), "Enter Year of week", "Invalid year");
+		int st = 1;
+		int en = 53;
+		if(y == a.getStartWeek().getYear()){
+			st = a.getStartWeek().getWeek();
+		}
+		if(y == a.getEndWeek().getYear()){
+			en = a.getEndWeek().getWeek();
+		}
+		int in = getUserInputInt(st, en, "Enter week within Activity \"" + a.getType() + "\"", "Invalid week");
 		Week w = new Week(y, in);
 		int k = a.getEmployeeList().size();
 		String[] str = new String[k*9];
