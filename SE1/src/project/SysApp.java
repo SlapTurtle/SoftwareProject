@@ -102,9 +102,9 @@ public class SysApp {
 		 */
 		try{
 			//Dummy Project
-			Week week1 = new Week(2016, 2);
-			Week week2 = new Week(2016, 3);
-			Week week3 = new Week(2016, 4);
+			Week week1 = new Week(2016, 10);
+			Week week2 = new Week(2016, 20);
+			Week week3 = new Week(2016, 30);
 			
 			Project p1 = new Project(this, "pro1", week1,week2,week3);
 			Project p2 = new Project(this, "pro2", week1,week2,week3);
@@ -118,9 +118,51 @@ public class SysApp {
 			addActivity(a2);
 			
 			//Dummy Employees
-			addEmployee("emp1");
-			addEmployee("emp2");
-
+			Employee e1 = new Employee("emp1");
+			Employee e2 = new Employee("emp2");
+			addEmployee(e1);
+			addEmployee(e2);
+			
+			//Dummy Evaluation
+			p1.addActivity(a1);
+			a1.assignProject(p1);
+			
+			p1.addActivity(a2);
+			a2.assignProject(p1);
+			
+			p1.addEmployee(e1);
+			e1.assignProject(p1);
+			
+			p1.addEmployee(e2);
+			e2.assignProject(p1);
+			
+			a1.assignEmployee(e1);
+			e1.assignActivity(a1);
+			
+			a1.assignEmployee(e2);
+			e2.assignActivity(a1);
+			
+			a2.assignEmployee(e1);
+			e1.assignActivity(a2);
+			
+			a2.assignEmployee(e2);
+			e2.assignActivity(a2);
+			
+			e1.setHours(a1, 3, week2, 2);
+			e1.setHours(a1, 5, week2, 3);
+			e1.setHours(a1, 2, week2, 4);
+			
+			e1.setHours(a2, 5, week2, 5);
+			e1.setHours(a2, 5, week2, 6);
+			e1.setHours(a2, 10, week2, 7);
+			
+			e2.setHours(a1, 7, week2, 2);
+			e2.setHours(a1, 3, week2, 3);
+			e2.setHours(a1, 15, week2, 4);
+			
+			e2.setHours(a2, 2, week2, 5);
+			e2.setHours(a2, 9, week2, 6);
+			e2.setHours(a2, 9, week2, 7);
 		}
 		catch(Exception e){
 			System.exit(0);

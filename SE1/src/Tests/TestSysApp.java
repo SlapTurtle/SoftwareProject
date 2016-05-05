@@ -45,9 +45,8 @@ public class TestSysApp extends TestBasis{
 		assertFalse(sysApp.addProject(p1));
 		
 		// test if get projekt by name works
-		
-	//	Project p = sysApp.projectByName("ID1");       ------   The Test for porject by name
-	//	assertTrue(p==p1);
+		Project p = sysApp.projectByName(p1.getName());
+		assertEquals(p,p1);
 		
 		//Test if add activity works and if you can add the same twice
 		
@@ -56,8 +55,8 @@ public class TestSysApp extends TestBasis{
 		
 		//Test if get activity by name works
 		
-		Activity a = sysApp.activityByName("01xxx");
-		assertTrue(a==a1);
+		Activity a = sysApp.activityByName(a1.getType());
+		assertEquals(a, a1);
 		
 		// test that get available employees works
 		

@@ -363,15 +363,22 @@ public class Menu {
 		//Gets Hours
 		double d = getUserInputDouble("Enter amount of hours of work to to \"" + a.getType() + "\" in week "+w.getWeek(), "Error: Invalid amount.");
 		//Puts it all together
-		if(sys.ui.yesNoQuestion("Are you sure you want to add "+d+" hours to \""+a.getType()+"\" on weekday "+j+" of week "+w.getWeek()+"?")){
-			emp.setHours(a, d, w, j);
-			sys.ui.clear();
-			sys.ui.print("Successfully added "+d+" hours to \""+a.getType()+"\" on weekday "+j+" of week "+w.getWeek(), UserInterface.style[2]);
+		double k = 0.0;
+		try {
+			k = emp.getWorkHours(a, w)[j];
+			if(sys.ui.yesNoQuestion("Are you sure you want to change workshours of \""+a.getType()+"\" on weekday "+j+" of week "+w.getWeek()+" from "+k+" to "+d+"?")){
+				emp.setHours(a, d, w, j);
+				sys.ui.clear();
+				sys.ui.print("Successfully added "+d+" hours to \""+a.getType()+"\" on weekday "+j+" of week "+w.getWeek(), UserInterface.style[2]);
+			}
+			else{
+				sys.ui.clear();
+				sys.ui.cancel();
+			}
+		} catch (IllegalOperationException e) {
+			//should never happen
 		}
-		else{
-			sys.ui.clear();
-			sys.ui.cancel();
-		}
+		
 	}
 	
 	private void getWorkHoursForActivitiesForWeek() {
@@ -852,25 +859,27 @@ public class Menu {
 	}
 
 	private void setProjectReportComment() {
-		sys.ui.clear();
-		int i = getUserInputInt(1, 53, "Enter week for report comment  \" "+ parent.currentProject.getName() +" \"", "Invalid week");
+		Project p = parent.currentProject;
+		int i = getUserInputInt(p.getStartWeek().getWeek(), p.getEndWeek().getWeek(), "Enter week for report comment  \" "+ p.getName() +" \"", "Invalid week");
 		Week w = sys.getDateServer().getWeek(i);
 		sys.ui.print("Enter report comment", UserInterface.style[6]);
 		String s = sys.ui.next();
-		parent.currentProject.setReportComment(s, w);
+		p.setReportComment(s, w);
 		sys.ui.clear();
 		sys.ui.print("Comment for week " + w.getWeek() + " is set to: \"" + s + "\"", UserInterface.style[2]);
 	}
 
 	private void getWeeklyReport() {
-		int i = getUserInputInt(1, 53, "Enter week for report comment", "Invalid week");
+		Project p = parent.currentProject;
+		int i = getUserInputInt(p.getStartWeek().getWeek(), p.getEndWeek().getWeek(), "Enter week for report comment", "Invalid week");
 		Week w = sys.getDateServer().getWeek(i);
-		if(!w.equals(null)){
-		sys.ui.print("Report for week " + w.getWeek() + " is: " +parent.currentProject.getWeeklyReport(w),UserInterface.style[2]);
+		if(w != null){
+			sys.ui.clear();
+			sys.ui.print("Report for week " + w.getWeek() + " is: " +p.getWeeklyReport(w),UserInterface.style[2]);
 		}
 		else{
 			sys.ui.clear();
-			sys.ui.print("No report for choosen week",UserInterface.style[6]);
+			sys.ui.print("No report for choosen week",UserInterface.style[3]);
 		}
 	}
 
@@ -1173,12 +1182,9 @@ public class Menu {
 		String[] str = new String[k*9];
 		double total = 0.0;
 		for(int i=0; i<k; i++){
-			
 			try {
 				Employee e = a.getEmployeeList().get(i);
-				
 				double[] temp = e.getWorkHours(a, w);
-				
 				str[i*9] = e.getInitials()+":";
 				for(int j=0; j<7; j++){
 					str[(i*9)+(j+1)] = "Weekday "+(j+1)+": "+temp[j];
@@ -1199,16 +1205,15 @@ public class Menu {
 		String[] str = new String[k];
 		for(int i=0; i<k; i++){
 			Employee emp = a.getEmployeeList().get(i);
-			int weekcount = a.getStartWeek().weekDifference(a.getEndWeek());
+			int weekcount = a.getStartWeek().weekDifference(a.getEndWeek())+1;
 			double count = 0.0;
 			for(int j=0; j<weekcount; j++) {
 				try {
 					Week w = new Week(a.getStartWeek().getYear(), a.getStartWeek().getWeek()+j);
 					count += emp.getWorkHours(a, w)[7];
 				} catch (IllegalOperationException e) {
-					//should never happen
+					System.out.println("ERROR");
 				}
-				
 			}
 			str[i] = emp.getInitials()+": "+count;
 		}

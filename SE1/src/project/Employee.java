@@ -12,7 +12,7 @@ public class Employee {
 	private List<Object> workHourList;
 	
 	public Employee(String initials){
-		this.initials = initials;
+		this.initials = initials.toUpperCase();
 		projectList = new ArrayList<Project>();
 		activityList = new ArrayList<Activity>();
 		workHourList = new ArrayList<Object>();
@@ -63,8 +63,6 @@ public class Employee {
 	public void updateActivityWeeks(Activity a, int newSize){
 		List<double[]> list = (List<double[]>) (workHourList.get(activityList.indexOf(a)));
 		int size = list.size();
-		System.out.println("cur size: "+size);
-		System.out.println("new size: "+newSize);
 		while(size != newSize){
 			if(size > newSize){
 				size--;
@@ -140,5 +138,3 @@ public class Employee {
 		return list;
 	}
 }
-
-
