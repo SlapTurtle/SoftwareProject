@@ -15,33 +15,18 @@ public class TestWeek extends TestBasis {
 	private static final int wInc = 5;		//week increment
 	private static final int maxWeeksOfYear = new GregorianCalendar().getMaximum(Calendar.WEEK_OF_YEAR);
 	
-	@Before @Override
-	public void setup() throws IllegalOperationException{
-		super.setup();
-		year = 2016;
-		week = 15;
-	}
-	
 	@Test
 	public void testConstructor(){
-		//creates valid week
-		try {
-			//Create week
-			Week w = new Week(year, week);
-			
-			//Tests fields
-			assertEquals(w.getYear(), year);
-			assertEquals(w.getWeek(), week);
-			
-		} catch(Exception e){
-			//incorrect Exception
-			e.printStackTrace();
-			fail(); 
-		}
+		//Create week
+		Week w = new Week(year, week);
 		
+		//Tests fields
+		assertEquals(w.getYear(), year);
+		assertEquals(w.getWeek(), week);
+
 		//forcing overflow constructions
-		testWeekConstructor(year, -week, year-1, -week+maxWeeksOfYear);				//week < 1
-		testWeekConstructor(year, week+maxWeeksOfYear, year+1, week);//week > 53
+		testWeekConstructor(year, -week, year-1, -week+maxWeeksOfYear);	//week < 1
+		testWeekConstructor(year, week+maxWeeksOfYear, year+1, week);	//week > 53
 	}
 	
 	private void testWeekConstructor(int y, int w, int yExp, int wExp){
@@ -51,7 +36,7 @@ public class TestWeek extends TestBasis {
 	}
 	
 	@Test
-	public void testMethods() throws Exception{
+	public void testMethods(){
 		//creates every scenario
 		Week week1 = new Week(year, week); 				// basis
 		Week week2 = new Week(year, week); 				// == basis
@@ -78,7 +63,7 @@ public class TestWeek extends TestBasis {
 	private void testWeek(Week w1, Week w2, int yearDiff, int weekDiff, int i) {
 		int yDiff = w1.yearDifference(w2);
 		int wDiff = w1.weekDifference(w2);
-		assertTrue(w1.compareTo(w2) == i);	//test compareTo
+		assertEquals(w1.compareTo(w2), i);	//test compareTo
 		assertEquals(yearDiff, yDiff);		//test yearDifference
 		assertEquals(weekDiff, wDiff);		//test weekDifference
 	}

@@ -101,11 +101,11 @@ public class Project {
 	}
 
 	public void setReportComment(String comment,Week w){
-		this.reports.put(w.getYear()*53+w.getWeek(), comment);
+		this.reports.put((w.getYear()-2016)*53+w.getWeek(), comment);
 	}
  
 	public String getWeeklyReport(Week w){
-		return this.reports.get(w.getYear()*53+w.getWeek());
+		return this.reports.get((w.getYear()-2016)*53+w.getWeek());
 	}
 	 
 	public double getBudget(){

@@ -1,7 +1,5 @@
 package project;
 
-import static org.mockito.Mockito.when;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 

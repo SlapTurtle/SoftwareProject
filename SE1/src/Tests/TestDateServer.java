@@ -15,7 +15,7 @@ import project.*;
 
 public class TestDateServer extends TestBasis {
 	@Test
-	public void testDateServer() throws IllegalOperationException{
-		
+	public void testDateServer(){
+		//TODO make tests
 	}
 }

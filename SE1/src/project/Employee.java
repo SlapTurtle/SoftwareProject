@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Employee {
 	
+	@SuppressWarnings("unused")
 	private SysApp sysApp;
 	private String initials;
 	private List<Project> projectList;
@@ -60,6 +61,7 @@ public class Employee {
 		workHourList.add(0,a_list);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void updateActivityWeeks(Activity a, int newSize){
 		List<double[]> list = (List<double[]>) (workHourList.get(activityList.indexOf(a)));
 		int size = list.size();
@@ -83,6 +85,7 @@ public class Employee {
 		return workHourList;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public boolean setHours(Activity a, double hours, Week w, int weekday) {
 		if (	a != null && activityList.contains(a) && hours > 0.0 && 
 				w.getWeek() > 0 && w.getWeek() <= 53 &&
@@ -105,12 +108,13 @@ public class Employee {
 		for(Activity a : list){
 			try {
 				double d = getWorkHours(a,w)[7];
-				count = d;
+				count += d;
 			} catch (IllegalOperationException e) {}
 		}
 		return count;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public double[] getWorkHours(Activity a, Week w) throws IllegalOperationException {
 		double[] hourList = new double[8];
 		if(a.getStartWeek().compareTo(w) <= 0 && a.getEndWeek().compareTo(w) >= 0){
