@@ -74,11 +74,24 @@ public class Menu {
 	private int getUserInputInt(int low, int high, String prompt, String errorMessage){
 		while(true){
 			try{
-				sys.ui.print(prompt+" ("+low+"-"+high+")", UserInterface.style[6]);
+				String s = "("+low+"-"+high+")";
+				if(low == -1){
+					s = "( <= "+high+" )";
+				}
+				else if(high == -1){
+					s = "( >= "+low+" )";
+				}
+				else if(low == 0 && high == 0){
+					s = "";
+					high = -1;
+					low = -1;
+				}
+				sys.ui.print(prompt+s, UserInterface.style[6]);
 				int i = Integer.parseInt(sys.ui.next());
-				if(!(low==0 && high==0) && !(i >= low && i <= high)){
+				if(!((low <= i || low == -1) && (high >= i || high == -1))){
 					throw new NumberFormatException();
 				}
+				
 				else{
 					return i;
 				}
@@ -356,8 +369,9 @@ public class Menu {
 			}
 		}
 		//Gets week
+		int y = getUserInputInt(0,0, "Enter Year of week", "");
 		int i = getUserInputInt(a.getStartWeek().getWeek(), a.getEndWeek().getWeek(), "Enter Week within \""+a.getType()+"\"", "Invalid Week");
-		Week w = sys.getDateServer().getWeek(i);
+		Week w = new Week(y, i);
 		//Gets weekday
 		int j = getUserInputInt(1,7, "Enter weekday","Invalid weekday.");
 		//Gets Hours
@@ -403,8 +417,9 @@ public class Menu {
 			}
 		}
 		//Gets week
+		int y = getUserInputInt(0,0, "Enter Year of week", "");
 		int j = getUserInputInt(a.getStartWeek().getWeek(), a.getEndWeek().getWeek(), "Enter Week within \""+a.getType()+"\"", "Invalid Week");
-		Week w = sys.getDateServer().getWeek(j);
+		Week w = new Week(y, j);
 		//output
 		String[] str = new String[8];
 		try {
@@ -447,8 +462,8 @@ public class Menu {
 		double[] temp;
 		double total = 0.0;
 		for(int i = 0; i<k; i++){
-			Week w = sys.getDateServer().getWeek(a.getStartWeek().getWeek()+i);
-			str[i*9] = "Week "+w.getWeek();
+			Week w = new Week(a.getStartWeek().getYear(), a.getStartWeek().getWeek()+i);
+			str[i*9] = ""+w;
 			try {
 				temp = emp.getWorkHours(a, w);
 				for(int j = 0; j<7; j++){
@@ -466,8 +481,9 @@ public class Menu {
 	
 	private void getWorkHoursForWeek() {
 		Employee emp = parent.currentEmployee;
+		int y = getUserInputInt(0,0, "Enter Year of week", "");
 		int in = getUserInputInt(1,53, "Enter week.", "Invalid week.");
-		Week w = sys.getDateServer().getWeek(in);
+		Week w = new Week(y, in);
 		ArrayList<Activity> a_list = emp.getWeeklyActivities(w);
 		//output
 		int k = a_list.size();
@@ -489,13 +505,14 @@ public class Menu {
 			}
 		}
 		sys.ui.clear();
-		sys.ui.listDisplay(str, "Hour for week "+w.getWeek()+", Total Hours: "+total, 9);
+		sys.ui.listDisplay(str, "Hour for "+w+", Total Hours: "+total, 9);
 	}
 
 	private void getActivitiesForWeek(){
 		Employee emp = parent.currentEmployee;
+		int y = getUserInputInt(0,0, "Enter Year of week", "");
 		int j = getUserInputInt(1,53, "Enter week.", "Invalid week.");
-		Week w = sys.getDateServer().getWeek(j);
+		Week w = new Week(y, j);
 		ArrayList<Activity> list = emp.getWeeklyActivities(w);
 		String[] str = new String[list.size()];
 		for(int i=0; i<str.length; i++){
@@ -551,14 +568,38 @@ public class Menu {
 				b = false;
 			}
 		}
-		int i = getUserInputInt(1, 53, "Enter starting week of Project \"" + name + "\"", "Invalid week");
-		Week start = sys.getDateServer().getWeek(i);
+		int y = getUserInputInt(sys.getDateServer().getToday().getYear(), -1, "Enter Year of starting week", "Invalid year");
+		int st = 1;
+		int en = 53;
+		if(y == sys.getDateServer().getToday().getYear()){
+			st = sys.getDateServer().getToday().getWeek();
+		}
+		int i = getUserInputInt(st, en, "Enter starting week of Project \"" + name + "\"", "Invalid week");
+		Week start = new Week(y, i);
 		
-		int j = getUserInputInt(i, 53, "Enter ending week of Project \"" + name + "\"", "Invalid week");
-		Week end = sys.getDateServer().getWeek(j);
+		y = getUserInputInt(start.getYear(),-1, "Enter Year of ending week", "Invalid year");
+		if(y == start.getYear()){
+			st = start.getWeek();
+			en = 53;
+		}
+		else{
+			st = 1;
+			en = 53;
+		}
+		int j = getUserInputInt(st, en, "Enter ending week of Project \"" + name + "\"", "Invalid week");
+		Week end = new Week(y, j);
 		
-		int k = getUserInputInt(j, 53, "Enter deadline week of Project \"" + name + "\"", "Invalid week");
-		Week dL = sys.getDateServer().getWeek(k);
+		y = getUserInputInt(end.getYear(),-1, "Enter Year of deadline week", "Invalid year");
+		if(y == end.getYear()){
+			st = end.getWeek();
+			en = 53;
+		}
+		else{
+			st = 1;
+			en = 53;
+		}
+		int k = getUserInputInt(st, en, "Enter deadline week of Project \"" + name + "\"", "Invalid week");
+		Week dL = new Week(y, k);
 		
 		Project p = new Project(sys, name, start, end, dL);
 		if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + name + "\" to the system?")){
@@ -724,23 +765,23 @@ public class Menu {
 			sys.ui.print("No Activities assigned to \"" + p.getName() + "\"", UserInterface.style[3]);
 		}
 	}
-	
-
 
 	private void setProjectStartDate() {
 		Project p = parent.currentProject;
-		int tY = sys.getDateServer().getToday().get(Calendar.YEAR);
-		int tW = sys.getDateServer().getToday().get(Calendar.WEEK_OF_YEAR);
-		Week now = null;
-		try {
-			now = new Week(tY, tW);
-		} catch (IllegalOperationException e) {
-			//should not happen
-		}
+		Week now = sys.getDateServer().getToday();
 		if(now.compareTo(p.getStartWeek()) < 0){
-			int i = getUserInputInt(1, p.getEndWeek().getWeek(), "Enter starting week of Project \"" + p.getName() + "\"", "Invalid week");
-			Week w = sys.getDateServer().getWeek(i);
-			if(sys.ui.yesNoQuestion("Are you sure you want to change starting week of \""+p.getName()+"\" from "+p.getEndWeek().getWeek()+" to "+i+"?")){
+			int y = getUserInputInt(now.getYear(), p.getEndWeek().getYear(), "Enter Year of starting week", "Invalid year");
+			int st = 1;
+			int en = 53;
+			if(y == now.getYear()){
+				st = now.getWeek();
+			}
+			if(y == p.getEndWeek().getYear()){
+				en = p.getEndWeek().getWeek();
+			}
+			int i = getUserInputInt(st, en, "Enter starting week of Project \"" + p.getName() + "\"", "Invalid week");
+			Week w = new Week(y, i);
+			if(sys.ui.yesNoQuestion("Are you sure you want to change starting week of \""+p.getName()+"\" from "+p.getStartWeek()+" to "+w+"?")){
 				p.setStartWeek(w);
 				sys.ui.clear();
 				sys.ui.print("Staring week changed to "+i, UserInterface.style[2]);
@@ -758,21 +799,34 @@ public class Menu {
 
 	private void setProjectEndDate() {
 		Project p = parent.currentProject;
-		int tY = sys.getDateServer().getToday().get(Calendar.YEAR);
-		int tW = sys.getDateServer().getToday().get(Calendar.WEEK_OF_YEAR);
-		Week now = null;
-		try {
-			now = new Week(tY, tW);
-		} catch (IllegalOperationException e) {
-			//should not happen
-		}
+		Week now = sys.getDateServer().getToday();
 		if(now.compareTo(p.getEndWeek()) < 0){
-			int i = getUserInputInt(p.getStartWeek().getWeek(), p.getDeadline().getWeek(), "Enter ending week of Project \"" + p.getName() + "\"", "Invalid week");
-			Week w = sys.getDateServer().getWeek(i);
-			if(sys.ui.yesNoQuestion("Are you sure you want to change ending week of \""+p.getName()+"\" from "+p.getEndWeek().getWeek()+" to "+i+"?")){
+			int st = 1;
+			int en = 53;
+			int y = getUserInputInt(now.getYear(),p.getDeadline().getYear(), "Enter Year of ending week", "Invalid year");
+			if(y == p.getStartWeek().getYear()){
+				if(p.getStartWeek().compareTo(now) < 0){
+					st = now.getWeek();
+				}
+				else{
+					st = p.getStartWeek().getWeek();
+				}
+			}
+			else{
+				st = 1;
+			}
+			if(y == p.getDeadline().getYear()){
+				en = p.getDeadline().getWeek();
+			}
+			else{
+				en = 53;
+			}
+			int i = getUserInputInt(st, en, "Enter ending week of Project \"" + p.getName() + "\"", "Invalid week");
+			Week w = new Week(y, i);
+			if(sys.ui.yesNoQuestion("Are you sure you want to change ending week of \""+p.getName()+"\" from "+p.getEndWeek()+" to "+w+"?")){
 				p.setEndWeek(w);
 				sys.ui.clear();
-				sys.ui.print("Staring week changed to "+i, UserInterface.style[2]);
+				sys.ui.print("Staring week changed to "+w, UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
@@ -788,21 +842,25 @@ public class Menu {
 
 	private void setPrjocetDeadline() {
 		Project p = parent.currentProject;
-		int tY = sys.getDateServer().getToday().get(Calendar.YEAR);
-		int tW = sys.getDateServer().getToday().get(Calendar.WEEK_OF_YEAR);
-		Week now = null;
-		try {
-			now = new Week(tY, tW);
-		} catch (IllegalOperationException e) {
-			//should not happen
-		}
+		Week now = sys.getDateServer().getToday();
 		if(now.compareTo(p.getDeadline()) < 0){
-			int i = getUserInputInt(p.getDeadline().getWeek(), 53, "Enter deadline week of Project \"" + p.getName() + "\"", "Invalid week");
-			Week w = sys.getDateServer().getWeek(i);
-			if(sys.ui.yesNoQuestion("Are you sure you want to change deadline week of \""+p.getName()+"\" from "+p.getEndWeek().getWeek()+" to "+i+"?")){
+			int st = 1;
+			int en = 53;
+			int y = getUserInputInt(p.getEndWeek().getYear(),-1, "Enter Year of deadline week", "Invalid year");
+			if(y == p.getEndWeek().getYear()){
+				if(p.getEndWeek().compareTo(now) < 0){
+					st = now.getWeek();
+				}
+				else{
+					st = p.getEndWeek().getWeek();
+				}
+			}
+			int k = getUserInputInt(st, en, "Enter deadline week of Project \"" + p.getName() + "\"", "Invalid week");
+			Week w = new Week(y, k);
+			if(sys.ui.yesNoQuestion("Are you sure you want to change deadline week of \""+p.getName()+"\" from "+p.getDeadline()+" to "+w+"?")){
 				p.setDeadline(w);
 				sys.ui.clear();
-				sys.ui.print("Deadline week changed to "+i, UserInterface.style[2]);
+				sys.ui.print("Deadline week changed to "+w, UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
@@ -860,22 +918,25 @@ public class Menu {
 
 	private void setProjectReportComment() {
 		Project p = parent.currentProject;
+		int y = getUserInputInt(0,0, "Enter Year of week", "");
 		int i = getUserInputInt(p.getStartWeek().getWeek(), p.getEndWeek().getWeek(), "Enter week for report comment  \" "+ p.getName() +" \"", "Invalid week");
-		Week w = sys.getDateServer().getWeek(i);
+		
+		Week w = new Week(y, i);
 		sys.ui.print("Enter report comment", UserInterface.style[6]);
 		String s = sys.ui.next();
 		p.setReportComment(s, w);
 		sys.ui.clear();
-		sys.ui.print("Comment for week " + w.getWeek() + " is set to: \"" + s + "\"", UserInterface.style[2]);
+		sys.ui.print("Comment for "+w+" is set to: \"" + s + "\"", UserInterface.style[2]);
 	}
 
 	private void getWeeklyReport() {
 		Project p = parent.currentProject;
+		int y = getUserInputInt(0,0, "Enter Year of week", "");
 		int i = getUserInputInt(p.getStartWeek().getWeek(), p.getEndWeek().getWeek(), "Enter week for report comment", "Invalid week");
-		Week w = sys.getDateServer().getWeek(i);
-		if(w != null){
+		Week w = new Week(y, i);
+		if(p.getWeeklyReport(w) != null){
 			sys.ui.clear();
-			sys.ui.print("Report for week " + w.getWeek() + " is: " +p.getWeeklyReport(w),UserInterface.style[2]);
+			sys.ui.print("Report for "+w+" is: " +p.getWeeklyReport(w),UserInterface.style[2]);
 		}
 		else{
 			sys.ui.clear();
@@ -925,12 +986,26 @@ public class Menu {
 				b = false;
 			}
 		}
+		int y = getUserInputInt(sys.getDateServer().getToday().getYear(), -1, "Enter Year of starting week", "Invalid year");
+		int st = 1;
+		int en = 53;
+		if(y == sys.getDateServer().getToday().getYear()){
+			st = sys.getDateServer().getToday().getWeek();
+		}
+		int i = getUserInputInt(st, en, "Enter starting week of Activity \"" + name + "\"", "Invalid week");
+		Week start = new Week(y, i);
 		
-		int i = getUserInputInt(1, 53, "Enter starting week of Activity \"" + name + "\"", "Invalid week");
-		Week start = sys.getDateServer().getWeek(i);
-		
-		int j = getUserInputInt(i, 53, "Enter ending week of Activity \"" + name + "\"", "Invalid week");
-		Week end = sys.getDateServer().getWeek(j);
+		y = getUserInputInt(start.getYear(),-1, "Enter Year of ending week", "Invalid year");
+		if(y == start.getYear()){
+			st = start.getWeek();
+			en = 53;
+		}
+		else{
+			st = 1;
+			en = 53;
+		}
+		int j = getUserInputInt(st, en, "Enter ending week of Activity \"" + name + "\"", "Invalid week");
+		Week end = new Week(y, j);
 		
 		Activity a = new Activity(sys, name, start, end);
 		if(sys.ui.yesNoQuestion("Are you sure you want to add \"" + name + "\" to the system?")){
@@ -1093,21 +1168,23 @@ public class Menu {
 	
 	private void setStartDateOfActivity() {
 		Activity a = parent.currentActivity;
-		int tY = sys.getDateServer().getToday().get(Calendar.YEAR);
-		int tW = sys.getDateServer().getToday().get(Calendar.WEEK_OF_YEAR);
-		Week now = null;
-		try {
-			now = new Week(tY, tW);
-		} catch (IllegalOperationException e) {
-			//should not happen
-		}
+		Week now = sys.getDateServer().getToday();
 		if(now.compareTo(a.getStartWeek()) < 0){
-			int j = getUserInputInt(1, a.getEndWeek().getWeek(), "Enter new starting week", "Invalid Week");
-			Week w = sys.getDateServer().getWeek(j);
-			if(sys.ui.yesNoQuestion("Are you sure you want to change starting week of \""+a.getType()+"\" from "+a.getStartWeek().getWeek()+" to "+j+"?")){
+			int y = getUserInputInt(now.getYear(), a.getEndWeek().getYear(), "Enter Year of starting week", "Invalid year");
+			int st = 1;
+			int en = 53;
+			if(y == now.getYear()){
+				st = now.getWeek();
+			}
+			if(y == a.getEndWeek().getYear()){
+				en = a.getEndWeek().getWeek();
+			}
+			int i = getUserInputInt(st, en, "Enter starting week of Activity \"" + a.getType() + "\"", "Invalid week");
+			Week w = new Week(y, i);
+			if(sys.ui.yesNoQuestion("Are you sure you want to change starting week of \""+a.getType()+"\" from "+a.getStartWeek()+" to "+w+"?")){
 				a.setStartWeek(w);
 				sys.ui.clear();
-				sys.ui.print("Successfully change starting week of \"" + a.getType() + "\" to \""+ j +"\"", UserInterface.style[2]);
+				sys.ui.print("Successfully change starting week of \"" + a.getType() + "\" to \""+ w +"\"", UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
@@ -1122,21 +1199,28 @@ public class Menu {
 
 	private void setEndDateOfActivity() {
 		Activity a = parent.currentActivity;
-		int tY = sys.getDateServer().getToday().get(Calendar.YEAR);
-		int tW = sys.getDateServer().getToday().get(Calendar.WEEK_OF_YEAR);
-		Week now = null;
-		try {
-			now = new Week(tY, tW);
-		} catch (IllegalOperationException e) {
-			//should not happen
-		}
+		Week now = sys.getDateServer().getToday();
 		if(now.compareTo(a.getEndWeek()) <= 0){
-			int j = getUserInputInt(now.getWeek(), 53, "Enter new ending week", "Invalid Week");
-			Week w = sys.getDateServer().getWeek(j);
-			if(sys.ui.yesNoQuestion("Are you sure you want to change ending week of \""+a.getType()+"\" from "+a.getEndWeek().getWeek()+" to "+j+"?")){
+			int st = 1;
+			int en = 53;
+			int y = getUserInputInt(now.getYear(),-1, "Enter Year of ending week", "Invalid year");
+			if(y == a.getStartWeek().getYear()){
+				if(a.getStartWeek().compareTo(now) < 0){
+					st = now.getWeek();
+				}
+				else{
+					st = a.getStartWeek().getWeek();
+				}
+			}
+			else{
+				st = 1;
+			}
+			int i = getUserInputInt(st, en, "Enter ending week of Project \"" + a.getType() + "\"", "Invalid week");
+			Week w = new Week(y, i);
+			if(sys.ui.yesNoQuestion("Are you sure you want to change ending week of \""+a.getType()+"\" from "+a.getEndWeek()+" to "+w+"?")){
 				a.setEndWeek(w);
 				sys.ui.clear();
-				sys.ui.print("Successfully changed ending week of \"" + a.getType() + "\" to \""+ j +"\"", UserInterface.style[2]);
+				sys.ui.print("Successfully changed ending week of \"" + a.getType() + "\" to \""+ w +"\"", UserInterface.style[2]);
 			}
 			else{
 				sys.ui.clear();
@@ -1176,8 +1260,9 @@ public class Menu {
 	
 	private void getActivityStatusByWeek() {
 		Activity a = parent.currentActivity;
+		int y = getUserInputInt(0,0, "Enter Year of week", "");
 		int in = getUserInputInt(a.getStartWeek().getWeek(), a.getEndWeek().getWeek(), "Enter week within \""+a.getType()+"\"", "Invalid Week");
-		Week w = sys.getDateServer().getWeek(in);
+		Week w = new Week(y, in);
 		int k = a.getEmployeeList().size();
 		String[] str = new String[k*9];
 		double total = 0.0;

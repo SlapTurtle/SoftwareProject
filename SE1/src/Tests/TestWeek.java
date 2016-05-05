@@ -39,29 +39,15 @@ public class TestWeek extends TestBasis {
 			fail(); 
 		}
 		
-		//forcing bad constructions
-		testWeekConstructor(year, -week);				//week < 1
-		testWeekConstructor(year, week+maxWeeksOfYear);	//week > 53
-		testWeekConstructor(-year, week);				//year < 0
-		testWeekConstructor(-year, -week);				//year < 0 && week < 1
-		testWeekConstructor(-year, week+maxWeeksOfYear);//year < 0 && week > 53
+		//forcing overflow constructions
+		testWeekConstructor(year, -week, year-1, -week+maxWeeksOfYear);				//week < 1
+		testWeekConstructor(year, week+maxWeeksOfYear, year+1, week);//week > 53
 	}
 	
-	private void testWeekConstructor(int y, int w){
-		try {
-			Week weekt = new Week(y, w);
-			fail();
-		} catch(IllegalOperationException e){
-			String s;
-			if(y < 0){
-				s = "Invalid Year; must be above 0";
-			}
-			else{
-				s = "Invalid Week; must be between 1-"+maxWeeksOfYear;
-			}
-			assertEquals(e.getMessage(), s);
-			assertEquals(e.getErrorClass(), Week.class);
-		}
+	private void testWeekConstructor(int y, int w, int yExp, int wExp){
+		Week week = new Week(y,w);
+		assertEquals(week.getYear(), y, Double.MAX_VALUE);
+		assertEquals(week.getWeek(), w, Double.MAX_VALUE);
 	}
 	
 	@Test

@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class SysApp {
@@ -102,9 +103,9 @@ public class SysApp {
 		 */
 		try{
 			//Dummy Project
-			Week week1 = new Week(2016, 10);
-			Week week2 = new Week(2016, 20);
-			Week week3 = new Week(2016, 30);
+			Week week1 = new Week(2016, 43);
+			Week week2 = new Week(2017, 3);
+			Week week3 = new Week(2017, 5);
 			
 			Project p1 = new Project(this, "pro1", week1,week2,week3);
 			Project p2 = new Project(this, "pro2", week1,week2,week3);
@@ -321,11 +322,11 @@ public class SysApp {
 	 
 	private boolean writeToLog(String entry) throws IOException {
 		FileWriter note = new FileWriter(this.systemLog);
-		Calendar cal = this.dateServer.getToday();
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH);
-		int day = cal.get(Calendar.DAY_OF_MONTH);
-		String s = " | "+year+"/"+month+"/"+day+" - "+entry+" | ";
+		Week today = this.dateServer.getToday();
+		int year = today.getYear();
+		int month = today.getWeek();
+		int day = GregorianCalendar.getInstance().get(Calendar.DAY_OF_MONTH);
+		String s = " | "+year+"\\"+month+"\\"+day+" - "+entry+" | ";
 		note.write(s);
 		note.flush();
 		note.close();

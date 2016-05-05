@@ -10,12 +10,18 @@ public class Week implements Comparable<Week> {
 	private int week;
 	
 	//Constructor
-	public Week(int year, int week) throws IllegalOperationException {
-		if(year < 0){
-			throw new IllegalOperationException("Invalid Year; must be above 0", this.getClass());
+	public Week(int year, int week) {
+		if(week < 1) {
+			while(week + maxWeeksOfYear >= 0){
+				week += maxWeeksOfYear;
+				year--;
+			}
 		}
-		if(week <= 0 || week > maxWeeksOfYear){
-			throw new IllegalOperationException("Invalid Week; must be between 1-"+maxWeeksOfYear, this.getClass());
+		if(week > maxWeeksOfYear) {
+			while(week - maxWeeksOfYear >= 0){
+				week -= maxWeeksOfYear;
+				year++;
+			}
 		}
 		this.year = year;
 		this.week = week;
@@ -41,7 +47,7 @@ public class Week implements Comparable<Week> {
 	
 	@Override
 	public String toString(){
-		return "Year: "+year+".   Week:"+week;
+		return year+"\\"+week;
 	}
 	
 	public int yearDifference(Week other){
