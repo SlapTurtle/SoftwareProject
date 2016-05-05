@@ -31,8 +31,8 @@ public class TestWeek extends TestBasis {
 	
 	private void testWeekConstructor(int y, int w, int yExp, int wExp){
 		Week week = new Week(y,w);
-		assertEquals(week.getYear(), y, Double.MAX_VALUE);
-		assertEquals(week.getWeek(), w, Double.MAX_VALUE);
+		assertTrue(week.getYear()==yExp);
+		assertTrue(week.getWeek()==wExp);
 	}
 	
 	@Test
