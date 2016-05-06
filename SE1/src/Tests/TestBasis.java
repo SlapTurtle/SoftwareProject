@@ -32,31 +32,41 @@ public class TestBasis {
 	Employee e3;
 	
 	@Before
-	public void setup() throws IllegalOperationException{
-		//Mocks dateServer
-		DateServer dS = mock(DateServer.class);
-		Calendar cal = new GregorianCalendar();
-		cal.set(Calendar.YEAR, year); 			//set Year
-		cal.set(Calendar.WEEK_OF_YEAR, week); 	//Set Week
-		when(dS.getToday()).thenReturn(cal);
+	public void setup() {
+		//Makes work constants
+		year = 2016;
+		week = 20;
 		
+		//Creates instance of sysApp
 		sysApp = new SysApp(true);
 		
-		year = 2016;
-		week = 10;
-
-		week1 = new Week(year, week);
-		week2 = new Week(year, week+1);
-		week3 = new Week(year, week+2);
+		//mocks dateServer
+		//mocks return calendar for dS.getToday()
+		DateServer dS = mock(DateServer.class);
+		Calendar cal = new GregorianCalendar();
+		cal.set(Calendar.YEAR, year);
+		cal.set(Calendar.WEEK_OF_YEAR, week);
+		when(dS.getCalendar()).thenReturn(cal);
+		when(dS.getToday()).thenReturn(new Week(year, week));
 		
+		sysApp.setDateServer(dS);
+		
+		//three dummy weeks
+		week1 = new Week(year, week*1);
+		week2 = new Week(year, week*2);
+		week3 = new Week(year, week*3);
+		
+		//three dummy projects
 		p1 = new Project(sysApp, "Project1", week1, week2, week3);
 		p2 = new Project(sysApp, "Project2", week1, week2, week3);
 		p3 = new Project(sysApp, "Project3", week1, week2, week3);
 		
+		//three dummy activities
 		a1 = new Activity(sysApp, "Activity01", week1, week3);
 		a2 = new Activity(sysApp, "Activity02", week2, week2);
 		a3 = new Activity(sysApp, "Activity03", week2, week3);
 		
+		//three dummy employees
 		e1 = new Employee("AAAA");
 		e2 = new Employee("BBBB");
 		e3 = new Employee("CCCC");
