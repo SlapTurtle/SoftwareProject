@@ -21,7 +21,7 @@ public class TestDateServer extends TestBasis {
 		
 		//tests getCalendar
 		Calendar cal = new GregorianCalendar();
-		assertEquals(ds.getCalendar(), cal);
+		assertEquals(ds.getCalendar(), cal); 
 		
 		//tests getWeek
 		Week w = new Week(cal.get(Calendar.YEAR), cal.get(Calendar.WEEK_OF_YEAR));
