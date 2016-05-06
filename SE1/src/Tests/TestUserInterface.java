@@ -16,7 +16,7 @@ public class TestUserInterface extends TestBasis {
 	public void setup() {
 		super.setup();
 		sysApp.ui = new UserInterface(sysApp);
-	}
+	} 
 	
 	@Test
 	public void TestUserInterface() throws IllegalOperationException {

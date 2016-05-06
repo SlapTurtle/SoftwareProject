@@ -110,7 +110,7 @@ public class Project {
 	 
 	public double getBudget(){
 		return this.budget;
-	}
+	} 
 	
 	public double[] getSpentBudget(){
 		int size = activityList.size();

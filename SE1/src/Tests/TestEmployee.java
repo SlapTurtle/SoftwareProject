@@ -210,7 +210,7 @@ public class TestEmployee extends TestBasis{
 		setFullWeekHours(e1, a2, 6.0, week2);
 		setFullWeekHours(e1, a3, 4.0, week2);
 		setFullWeekHours(e1, a3, 4.0, week3);
-		
+	 	
 		//Tests for getWeeklyHours
 		double d1 = e1.getWeeklyHours(week1);
 		double d2 = e1.getWeeklyHours(week2);

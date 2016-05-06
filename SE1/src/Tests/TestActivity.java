@@ -151,7 +151,7 @@ public class TestActivity extends TestBasis{
 		assertFalse(a1.assignEmployee(e2));
 		assertFalse(a1.assignEmployee(e3));
 		assertEquals(3, a1.getEmployeeList().size());
-	}
+	} 
 	
 	
 	@Test

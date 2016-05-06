@@ -3,7 +3,7 @@ package project;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class DateServer {
+public class DateServer { 
 	
 	public Calendar getCalendar(){
 		return GregorianCalendar.getInstance();

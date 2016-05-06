@@ -35,7 +35,7 @@ public class TestProject extends TestBasis{
 		assertFalse(p1.getActivityList().contains(a2));
 		assertFalse(p1.removeActivity(a2));
 		
-		
+		 
 		//Test UniqueID
 		//Set ID is used in the constructor and is thus not tested here
 		assertEquals(p1.checkUniqueID(),"ID1"); 

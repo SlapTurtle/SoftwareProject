@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
+ 
 public class UserInterface {
 	public SysApp sys;
 	public JFrame frame = new JFrame("UI");

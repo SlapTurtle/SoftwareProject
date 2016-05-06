@@ -5,7 +5,7 @@ public class IllegalOperationException extends Exception {
 	//Fields
 	private Class<?> errorClass;
 	
-	//Constructor
+	//Constructor 
 	public IllegalOperationException(String errormsg, Class<?> errorClass){
 		super(errormsg);
 		this.errorClass = errorClass;

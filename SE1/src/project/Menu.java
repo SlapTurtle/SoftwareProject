@@ -1368,7 +1368,7 @@ public class Menu {
 		}
 		sys.ui.clear();
 		sys.ui.listDisplay(s, "Log of events", 10);
-	}
+	} 
 	
 	public void showDate() {
 		sys.ui.clear();

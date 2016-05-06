@@ -21,7 +21,7 @@ public class TestSysApp extends TestBasis{
 		// Test that no employee is logged in
 		assertFalse(sysApp.loggedIn());
 		
-		
+		 
 		//Tests if addEmployee works
 		
 		assertTrue(sysApp.addEmployee(e1));

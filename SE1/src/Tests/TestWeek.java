@@ -27,7 +27,7 @@ public class TestWeek extends TestBasis {
 		//forcing overflow constructions
 		testWeekConstructor(year, -week, year-1, -week+maxWeeksOfYear);	//week < 1
 		testWeekConstructor(year, week+maxWeeksOfYear, year+1, week);	//week > 53
-	}
+	} 
 	
 	private void testWeekConstructor(int y, int w, int yExp, int wExp){
 		Week week = new Week(y,w);

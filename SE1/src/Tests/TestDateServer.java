@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import project.*;
-
+ 
 public class TestDateServer extends TestBasis {
 	@Test
 	public void testDateServer(){

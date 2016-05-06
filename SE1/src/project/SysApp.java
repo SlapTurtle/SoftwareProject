@@ -317,7 +317,7 @@ public class SysApp {
 		}	
 		return available;
 	} 
-	 
+	  
 	private boolean writeToLog(String entry) throws IOException {
 		FileWriter note = new FileWriter(this.systemLog);
 		Week today = this.dateServer.getToday();

@@ -7,7 +7,7 @@ public class Message {
 
 	public JLabel lbl = new JLabel();
 	public int offset;
-	
+	 
 	public Message(String message, MessageStyle style, int offset) {
 		this.offset = offset;
 		lbl.setText("  " + message);

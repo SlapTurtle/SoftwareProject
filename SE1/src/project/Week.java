@@ -43,7 +43,7 @@ public class Week implements Comparable<Week> {
 			return this.week - other.getWeek();
 		}
 		return this.getYear() - other.getYear();
-	}
+	} 
 	
 	@Override
 	public String toString(){
