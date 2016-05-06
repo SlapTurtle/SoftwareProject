@@ -53,26 +53,14 @@ public class TestProject extends TestBasis{
 		p1.setBudget(100);
 		assertEquals(p1.getBudget(), 100, Double.MAX_VALUE);
 
+		
 		//Test get activity diversion
 		e1.assignActivity(a1);
 		e1.setHours(a1, 3.5 ,week1, 1);
-		
+		//assertTrue(p1.getActivityDiversion(e1, a1, week1)==3.5);
 
 		
 		
 	}
-	/*public void testDublicates() throws Exception {
-		Project makeCastle = new Project("Build a Castle", new Week(2017, 5), new Week(2017, 6), new Week(2017, 7));
-		Project makeCastle = new Project("Build a Castle", new Week(2017, 5), new Week(2017, 6), new Week(2017, 7));
-		
-		Employee timHansson = new Employee("TIHAN");
-		sysApp.projectByID("ID1").addEmployee(timHansson);
-		assertTrue(makeCastle.findEmployee(timHansson));
-		
-		//Test UniqueID
-		assertEquals(makeCastle.checkUniqueID(),"ID1");
-		assertEquals(makeCastle.checkUniqueID(),"ID2");
-	}
-*/
 	
 }
