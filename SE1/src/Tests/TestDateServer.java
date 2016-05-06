@@ -25,6 +25,6 @@ public class TestDateServer extends TestBasis {
 		
 		//tests getWeek
 		Week w = new Week(cal.get(Calendar.YEAR), cal.get(Calendar.WEEK_OF_YEAR));
-		assertEquals(ds.getToday().toString(), w.toString());
+		assertEquals(ds.getToday().compareTo(w), 0);
 	}
 }
