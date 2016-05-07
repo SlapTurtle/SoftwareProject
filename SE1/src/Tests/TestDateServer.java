@@ -1,11 +1,6 @@
 package Tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import org.junit.*;
 import java.util.Calendar;
@@ -21,7 +16,9 @@ public class TestDateServer extends TestBasis {
 		
 		//tests getCalendar
 		Calendar cal = new GregorianCalendar();
-		assertEquals(ds.getCalendar(), cal); 
+		assertEquals(ds.getCalendar().get(Calendar.YEAR), cal.get(Calendar.YEAR));
+		assertEquals(ds.getCalendar().get(Calendar.WEEK_OF_YEAR), cal.get(Calendar.WEEK_OF_YEAR)); 
+		assertEquals(ds.getCalendar().get(Calendar.DAY_OF_YEAR), cal.get(Calendar.DAY_OF_YEAR)); 
 		
 		//tests getWeek
 		Week w = new Week(cal.get(Calendar.YEAR), cal.get(Calendar.WEEK_OF_YEAR));

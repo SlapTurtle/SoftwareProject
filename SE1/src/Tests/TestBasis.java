@@ -70,9 +70,5 @@ public class TestBasis {
 		e1 = new Employee("AAAA");
 		e2 = new Employee("BBBB");
 		e3 = new Employee("CCCC");
-		
-		sysApp.addEmployee(e1);
-		sysApp.addEmployee(e2);
-		sysApp.addEmployee(e3);
 	}
 }

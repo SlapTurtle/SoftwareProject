@@ -15,6 +15,13 @@ import project.*;
 
 
 public class TestEmployee extends TestBasis{
+	@Before @Override
+	public void setup(){
+		super.setup();
+		sysApp.addEmployee(e1);
+		sysApp.addEmployee(e2);
+		sysApp.addEmployee(e3);
+	}
 	
 	@Test
 	public void testFields() {

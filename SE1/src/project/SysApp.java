@@ -1,12 +1,12 @@
 package project;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
+
+import java.io.File;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class SysApp {
 	//Fields
@@ -27,6 +27,7 @@ public class SysApp {
 	public ArrayList<Menu> menuActMng = new ArrayList<Menu>();
 	
 	public SysApp() {
+		
 		menuEmpMng.add(new Menu(this, "Assign To Project"));
 		menuEmpMng.add(new Menu(this, "Get All Assigned Projects"));
 		menuEmpMng.add(new Menu(this, "Get Manager Assigned Projects"));
@@ -280,7 +281,7 @@ public class SysApp {
 			return true;
 		}
 		//error - no user is currently logged in
-		return true;
+		return false;
 	}
 	
 	public boolean addEmployee(String initials){
@@ -332,18 +333,19 @@ public class SysApp {
 		return available;
 	}
 	
-	
-	  
-	private boolean writeToLog(String entry) throws IOException {
-		FileWriter note = new FileWriter(this.systemLog);
-		Week today = this.dateServer.getToday();
-		int year = today.getYear();
-		int month = today.getWeek();
-		int day = GregorianCalendar.getInstance().get(Calendar.DAY_OF_MONTH);
-		String s = " | "+year+"\\"+month+"\\"+day+" - "+entry+" | ";
-		note.write(s);
-		note.flush();
-		note.close();
+	public boolean writeToLog(String entry) {
+		String s = entry + " - \"" + currentUser.getInitials()+"\"";
+        try {
+        	Logger logger = Logger.getLogger(systemLog.getAbsolutePath());
+        	FileHandler fh = new FileHandler(systemLog.getAbsolutePath());
+        	fh.setFormatter(new SimpleFormatter());
+        	logger.addHandler(fh);
+            logger.info(s);
+             
+        } catch (Exception e) {
+        	//should 
+        }
+
 		return true;
 	}
 	
@@ -430,7 +432,7 @@ public class SysApp {
 			a.getProjectList().remove(p);
 		}
 		for(Employee e : p.getEmployeeList()){
-			e.getActivityList().remove(p);
+			e.getProjectList().remove(p);
 		}
 		projectList.remove(p);
 		return true;
