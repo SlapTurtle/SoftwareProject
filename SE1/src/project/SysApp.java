@@ -40,6 +40,7 @@ public class SysApp {
 		menuEmpMng.add(new Menu(this, "Get Activities For Week"));
 		menuEmpMng.add(new Menu(this, "Remove Employee"));
 		
+		menuPrjMng.add(new Menu(this, "Assign Manager"));
 		menuPrjMng.add(new Menu(this, "Set Project Name"));
 		menuPrjMng.add(new Menu(this, "Add Employee to Project"));
 		menuPrjMng.add(new Menu(this, "Get All Employees on Project"));

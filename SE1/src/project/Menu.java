@@ -145,6 +145,7 @@ public class Menu {
 		case "Manage Project": manageProject(); break;
 		case "Get All Projects": getAllProjects(); break;
 		// Project Sub-Menus
+		case "Assign Manager": assignManager(); break;
 		case "Set Project Name": setProjectName(); break;
 		case "Add Employee to Project": addEmployeeToProject(); break;
 		case "Get All Employees on Project": getAllEmployeesOnProject(); break;
@@ -690,6 +691,33 @@ public class Menu {
 	/*
 	 * PROJECT SUB-MENUS
 	 */
+	private void assignManager() throws ActionCancelledException {
+		Project p = parent.currentProject;
+		sys.ui.print("Enter initials of employee:", UserInterface.style[6]);
+		String initials = sys.ui.next(true).toUpperCase();
+		Employee e = sys.employeeByInitials(initials);
+		if(e == null){
+			sys.ui.clear();
+			sys.ui.print("Error: Employee with initials \"" + initials + "\" does not exist.", UserInterface.style[3]);
+		}
+		else{
+			if(sys.ui.yesNoQuestion("Are you sure you want to assign \""+e.getInitials()+"\" as manager of project \""+p.getName()+"\"?")){
+				p.assignManager(e);
+				sys.ui.clear();
+				sys.ui.print("Succesfully assigned \""+e.getInitials()+"\" as manager of project \""+p.getName()+"\".", UserInterface.style[2]);
+				if(!(sys.getCurrentUser() == e)){
+					parent.parent.show();
+					return;
+				}
+			}
+			else{
+				sys.ui.clear();
+				sys.ui.cancel();
+			}
+		}
+		
+	}
+	
 	private void setProjectName() throws ActionCancelledException {
 		Project p = parent.currentProject;
 		String name = null;
