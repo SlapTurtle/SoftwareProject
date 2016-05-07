@@ -29,6 +29,7 @@ public class SysApp {
 	public SysApp() {
 		menuEmpMng.add(new Menu(this, "Assign To Project"));
 		menuEmpMng.add(new Menu(this, "Get All Assigned Projects"));
+		menuEmpMng.add(new Menu(this, "Get Manager Assigned Projects"));
 		menuEmpMng.add(new Menu(this, "Assign To Activity"));
 		menuEmpMng.add(new Menu(this, "Get All Assigned Activities"));
 		menuEmpMng.add(new Menu(this, "Set Work Hours For Activity By Week"));
@@ -162,6 +163,9 @@ public class SysApp {
 			e2.setHours(a2, 2, week2, 5);
 			e2.setHours(a2, 9, week2, 6);
 			e2.setHours(a2, 9, week2, 7);
+			
+			p1.assignManager(e1);
+			p2.assignManager(e2);
 		}
 		catch(Exception e){
 			System.exit(0);

@@ -125,6 +125,7 @@ public class Menu {
 		// Employee Sub-Menu
 		case "Assign To Project": assignToProject(); break;
 		case "Get All Assigned Projects": getProjectListEmployee(); break;
+		case "Get Manager Assigned Projects": getManagerAssignedProjects(); break;
 		case "Assign To Activity": assignToActivity(); break;
 		case "Get All Assigned Activities": getActivityListEmployee(); break;
 		case "Set Work Hours For Activity By Week": setWorkHoursForActivityForWeek(); break;
@@ -301,6 +302,17 @@ public class Menu {
 			sys.ui.clear();
 			sys.ui.print("\"" + e.getInitials() + "\" not assigned to any Projects", UserInterface.style[3]);
 		}
+	}
+	
+	private void getManagerAssignedProjects() {
+		Employee e = parent.currentEmployee;
+		List<Project> list = e.getProjectToManage();
+		String[] str = new String[list.size()];
+		for(int i=0; i<str.length; i++){
+			str[i] = list.get(i).getName();
+		}
+		sys.ui.clear();
+		sys.ui.listDisplay(str, "All Projects \""+e.getInitials()+"\" is manager of.", 10);
 	}
 	
 	private void assignToActivity(){

@@ -26,7 +26,7 @@ public class TestEmployee extends TestBasis{
 	}
 	
 	@Test
-	public void testAssignProject(){
+	public void testProject(){
 		//tests assigning of projects.
 		assertEquals(e1.getProjectList().size(), 0);
 		
@@ -44,6 +44,20 @@ public class TestEmployee extends TestBasis{
 		assertFalse(e1.assignProject(p2));
 		assertFalse(e1.assignProject(p3));
 		assertEquals(e1.getProjectList().size(), 3);
+		
+		//tests that employee can show which projects it is manager of.
+		p1.addEmployee(e1);
+		p2.addEmployee(e1);
+		p3.addEmployee(e1);
+		
+		assertTrue(p1.assignManager(e1));
+		assertEquals(e1.getProjectToManage().size(), 1);
+		
+		assertTrue(p2.assignManager(e1));
+		assertEquals(e1.getProjectToManage().size(), 2);
+		
+		assertTrue(p3.assignManager(e1));
+		assertEquals(e1.getProjectToManage().size(), 3);
 	}
 	
 	@Test

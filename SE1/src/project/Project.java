@@ -30,8 +30,13 @@ public class Project {
 		this.budget = 0;
 	}
 
-	public void assignManager(Employee employee){
-		projectManager = employee;
+	public boolean assignManager(Employee employee){
+		if(employeeList.contains(employee)){
+			projectManager = employee;
+			return true;
+		}
+		return false;
+		
 	}
 	
 	public Employee getManager(){
