@@ -70,7 +70,7 @@ public class Menu {
 		}
 	}
 	
-	private int getUserInputInt(int low, int high, String prompt, String errorMessage){
+	private int getUserInputInt(int low, int high, String prompt, String errorMessage) throws ActionCancelledException{
 		while(true){
 			try{
 				String s = "("+low+"-"+high+")";
@@ -85,7 +85,7 @@ public class Menu {
 				}
 				
 				sys.ui.print(prompt+s, UserInterface.style[6]);
-				int i = Integer.parseInt(sys.ui.next());
+				int i = Integer.parseInt(sys.ui.next(true));
 				if(!((low <= i || low == 0) && (high >= i || high == 0))){
 					throw new NumberFormatException();
 				}
@@ -99,7 +99,7 @@ public class Menu {
 		}
 	}
 	
-	private double getUserInputDouble(String prompt, String errorMessage, boolean b){
+	private double getUserInputDouble(String prompt, String errorMessage, boolean b) throws ActionCancelledException{
 		while(true){
 			try{
 				String s = prompt;
@@ -107,7 +107,7 @@ public class Menu {
 					s += " (0.0-24.0)";
 				}
 				sys.ui.print(s, UserInterface.style[6]);
-				double d = Double.parseDouble(sys.ui.next());
+				double d = Double.parseDouble(sys.ui.next(true));
 				if(d < 0.0 || (b && d > 24.0)){
 					throw new NumberFormatException();
 				}
@@ -121,6 +121,7 @@ public class Menu {
 	}
 	
 	public void runMethod() {
+		try {
 		switch (header) {
 		// Employee - Top-Menu
 		case "Add Employee": addEmployee(); break;
@@ -188,18 +189,22 @@ public class Menu {
 		//Error?
 		default: break;
 		}
+		} catch (ActionCancelledException e) {
+			sys.ui.clear();
+			sys.ui.cancel();
+		}
 		parent.show();
 	}
 
 	/*
 	 *  EMPLOYEE MENUES
 	 */
-	private void addEmployee(){
+	private void addEmployee() throws ActionCancelledException{
 		String initials = null;
 		boolean b = false;
 		while(!b){
 			sys.ui.print("Enter initials of new employee:", UserInterface.style[6]);
-			initials = sys.ui.next().toUpperCase();
+			initials = sys.ui.next(true).toUpperCase();
 			b = true;
 			for(Employee e : sys.getEmployeeList()){
 				if(initials.equals(e.getInitials())){
@@ -211,7 +216,7 @@ public class Menu {
 				sys.ui.print("Error: The name  \"" + initials + "\" is already taken.", UserInterface.style[3]);
 			}
 			else if (initials.length() != 4){
-				sys.ui.print("Initials must be of 4 characters excatly", UserInterface.style[3]);
+				sys.ui.print("Initials must be of 4 characters excatly.", UserInterface.style[3]);
 				b = false;
 			}
 		}
@@ -232,10 +237,10 @@ public class Menu {
 		}
 	}
 	
-	private void manageEmployee(){
+	private void manageEmployee() throws ActionCancelledException{
 		sys.currentMenu = this;
 		sys.ui.print("Enter initials of employee to manage:", UserInterface.style[6]);
-		String initials = sys.ui.next().toUpperCase();
+		String initials = sys.ui.next(true).toUpperCase();
 		Employee e = sys.employeeByInitials(initials);
 		if(e == null){
 			sys.ui.clear();
@@ -264,10 +269,10 @@ public class Menu {
 	/*
 	 * EMPLOYEE SUB-MENUS
 	 */
-	private void assignToProject(){
+	private void assignToProject() throws ActionCancelledException{
 		Employee e = parent.currentEmployee;
 		sys.ui.print("Enter Name or ID of Project:", UserInterface.style[6]);
-		String project = sys.ui.next().toUpperCase();
+		String project = sys.ui.next(true).toUpperCase();
 		Project p = sys.projectByID(project);
 		if(p == null){
 			p = sys.projectByName(project);
@@ -319,10 +324,10 @@ public class Menu {
 		sys.ui.listDisplay(str, "All Projects \""+e.getInitials()+"\" is manager of.", 10);
 	}
 	
-	private void assignToActivity(){
+	private void assignToActivity() throws ActionCancelledException{
 		Employee e = parent.currentEmployee;
 		sys.ui.print("Enter Name or ID of Activity:", UserInterface.style[6]);
-		String act = sys.ui.next().toUpperCase();
+		String act = sys.ui.next(true).toUpperCase();
 		Activity a = sys.activityByID(act);
 		if(a == null){
 			a = sys.activityByName(act);
@@ -361,13 +366,13 @@ public class Menu {
 		}
 	}
 	
-	private void setWorkHoursForActivityForWeek(){
+	private void setWorkHoursForActivityForWeek() throws ActionCancelledException{
 		Employee emp = parent.currentEmployee;
 		//Gets Activity
 		Activity a;
 		while(true){
 			sys.ui.print("Enter Name or ID of Activity:", UserInterface.style[6]);
-			String act = sys.ui.next().toUpperCase();
+			String act = sys.ui.next(true).toUpperCase();
 			a = sys.activityByID(act);
 			if(a == null){
 				a = sys.activityByName(act);
@@ -417,13 +422,13 @@ public class Menu {
 		
 	}
 	
-	private void getWorkHoursForActivitiesForWeek() {
+	private void getWorkHoursForActivitiesForWeek() throws ActionCancelledException {
 		Employee emp = parent.currentEmployee;
 		//Gets Activity
 		Activity a;
 		while(true){
 			sys.ui.print("Enter Name or ID of Activity:", UserInterface.style[6]);
-			String act = sys.ui.next().toUpperCase();
+			String act = sys.ui.next(true).toUpperCase();
 			a = sys.activityByID(act);
 			if(a == null){
 				a = sys.activityByName(act);
@@ -465,13 +470,13 @@ public class Menu {
 		}
 	}
 	
-	private void getWorkHoursForActivity() {
+	private void getWorkHoursForActivity() throws ActionCancelledException {
 		Employee emp = parent.currentEmployee;
 		//Gets Activity
 		Activity a;
 		while(true){
 			sys.ui.print("Enter Name or ID of Activity:", UserInterface.style[6]);
-			String act = sys.ui.next().toUpperCase();
+			String act = sys.ui.next(true).toUpperCase();
 			a = sys.activityByID(act);
 			if(a == null){
 				a = sys.activityByName(act);
@@ -509,7 +514,7 @@ public class Menu {
 		sys.ui.listDisplay(str, "\""+a.getType()+"\", Total Hours: "+total, 9);
 	}
 	
-	private void getWorkHoursForWeek() {
+	private void getWorkHoursForWeek() throws ActionCancelledException {
 		Employee emp = parent.currentEmployee;
 		int y = getUserInputInt(0,0, "Enter Year of week", "");
 		int in = getUserInputInt(1,53, "Enter week.", "Invalid week.");
@@ -538,7 +543,7 @@ public class Menu {
 		sys.ui.listDisplay(str, "Hour for "+w+", Total Hours: "+total, 9);
 	}
 
-	private void getActivitiesForWeek(){
+	private void getActivitiesForWeek() throws ActionCancelledException{
 		Employee emp = parent.currentEmployee;
 		int y = getUserInputInt(0,0, "Enter Year of week", "");
 		int j = getUserInputInt(1,53, "Enter week.", "Invalid week.");
@@ -556,8 +561,12 @@ public class Menu {
 		Employee e = parent.currentEmployee;
 		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + e.getInitials() + "\" from the system?")) {
 			if(sys.getCurrentUser() == e){
+<<<<<<< HEAD
 				sys.ui.clear();
 				sys.ui.print("Error: Cannot Remove Yourself", UserInterface.style[3]);
+=======
+				sys.ui.print("Error: Cannot remove yourself from system.", UserInterface.style[3]);
+>>>>>>> branch 'master' of https://github.com/SlapTurtle/SoftwareProject
 			}
 			else if(sys.removeEmployee(e)){
 				sys.ui.clear();
@@ -567,7 +576,7 @@ public class Menu {
 			}
 			else {
 				sys.ui.clear();
-				sys.ui.print("Error: Cannot remove only Employee in system", UserInterface.style[3]);
+				sys.ui.print("Error: Cannot remove only employee in system.", UserInterface.style[3]);
 			}
 		} else {
 			sys.ui.clear();
@@ -578,12 +587,12 @@ public class Menu {
 	/*
 	 * PROJECT MENUS
 	 */
-	private void addProject() {
+	private void addProject() throws ActionCancelledException {
 		String name = null;
 		boolean b = false;
 		while(!b){
 			sys.ui.print("Enter name of new Project", UserInterface.style[6]);
-			name = sys.ui.next().toUpperCase();
+			name = sys.ui.next(true).toUpperCase();
 			b = true;
 			for(Project pro : sys.getProjectList()){
 				if(name.equals(pro.getName())){
@@ -648,10 +657,10 @@ public class Menu {
 		}
 	}
 	
-	private void manageProject(){
+	private void manageProject() throws ActionCancelledException{
 		sys.currentMenu = this;
 		sys.ui.print("Enter ID of project to manage:", UserInterface.style[6]);
-		String name = sys.ui.next().toUpperCase();
+		String name = sys.ui.next(true).toUpperCase();
 		Project p = sys.projectByName(name);
 		if(p == null){
 			sys.ui.clear();
@@ -680,13 +689,13 @@ public class Menu {
 	/*
 	 * PROJECT SUB-MENUS
 	 */
-	private void setProjectName() {
+	private void setProjectName() throws ActionCancelledException {
 		Project p = parent.currentProject;
 		String name = null;
 		boolean b = false;
 		while(!b){
 			sys.ui.print("Enter new name of Project", UserInterface.style[6]);
-			name = sys.ui.next().toUpperCase();
+			name = sys.ui.next(true).toUpperCase();
 			b = true;
 			for(Project pro : sys.getProjectList()){
 				if(name.equals(pro.getName())){
@@ -715,10 +724,10 @@ public class Menu {
 		
 	}
 	
-	private void addEmployeeToProject() {
+	private void addEmployeeToProject() throws ActionCancelledException {
 		Project p = parent.currentProject;
 		sys.ui.print("Enter initials of employee:", UserInterface.style[6]);
-		String initials = sys.ui.next().toUpperCase();
+		String initials = sys.ui.next(true).toUpperCase();
 		Employee e = sys.employeeByInitials(initials);
 		if(e != null){
 			if(p.addEmployee(e)){
@@ -755,10 +764,10 @@ public class Menu {
 		
 	}
 	
-	private void addProjectActivity() {
+	private void addProjectActivity() throws ActionCancelledException {
 		Project p = parent.currentProject;
 		sys.ui.print("Enter Name or ID of Activity:", UserInterface.style[6]);
-		String act = sys.ui.next().toUpperCase();
+		String act = sys.ui.next(true).toUpperCase();
 		Activity a = sys.activityByID(act);
 		if(a == null){
 			a = sys.activityByName(act);
@@ -797,7 +806,7 @@ public class Menu {
 		}
 	}
 
-	private void setProjectStartDate() {
+	private void setProjectStartDate() throws ActionCancelledException {
 		Project p = parent.currentProject;
 		Week now = sys.getDateServer().getToday();
 		if(now.compareTo(p.getStartWeek()) < 0){
@@ -828,7 +837,7 @@ public class Menu {
 		}
 	}
 
-	private void setProjectEndDate() {
+	private void setProjectEndDate() throws ActionCancelledException {
 		Project p = parent.currentProject;
 		Week now = sys.getDateServer().getToday();
 		if(now.compareTo(p.getEndWeek()) < 0){
@@ -871,7 +880,7 @@ public class Menu {
 		
 	}
 
-	private void setPrjocetDeadline() {
+	private void setPrjocetDeadline() throws ActionCancelledException {
 		Project p = parent.currentProject;
 		Week now = sys.getDateServer().getToday();
 		if(now.compareTo(p.getDeadline()) < 0){
@@ -904,7 +913,7 @@ public class Menu {
 		}
 	}
 
-	private void setTimeBudgetOfProject() {
+	private void setTimeBudgetOfProject() throws ActionCancelledException {
 		Project p = parent.currentProject;
 		double d = getUserInputDouble("Enter timebudget hours on \"" + p.getName() + "\"", "Invalid time value", false);
 		if(sys.ui.yesNoQuestion("Are you sure you want to change the budget of \""+p.getName()+"\" from "+p.getBudget()+" to "+d+"?")){
@@ -947,7 +956,7 @@ public class Menu {
 		}
 	}
 
-	private void setProjectReportComment() {
+	private void setProjectReportComment() throws ActionCancelledException {
 		Project p = parent.currentProject;
 		int st = 1;
 		int en = 53;
@@ -961,13 +970,13 @@ public class Menu {
 		int i = getUserInputInt(st, en, "Enter week for report comment", "Invalid week");
 		Week w = new Week(y, i);
 		sys.ui.print("Enter report comment", UserInterface.style[6]);
-		String s = sys.ui.next();
+		String s = sys.ui.next(true);
 		p.setReportComment(s, w);
 		sys.ui.clear();
 		sys.ui.print("Comment for "+w+" is set to: \"" + s + "\"", UserInterface.style[2]);
 	}
 
-	private void getWeeklyReport() {
+	private void getWeeklyReport() throws ActionCancelledException {
 		Project p = parent.currentProject;
 		int st = 1;
 		int en = 53;
@@ -1010,12 +1019,12 @@ public class Menu {
 	/*
 	 * ACTVITY MENUES
 	 */
-	private void addActivity() {
+	private void addActivity() throws ActionCancelledException {
 		String name = null;
 		boolean b = false;
 		while(!b){
 			sys.ui.print("Enter name of new Activity", UserInterface.style[6]);
-			name = sys.ui.next().toUpperCase();
+			name = sys.ui.next(true).toUpperCase();
 			b = true;
 			for(Activity act : sys.getActivityList()){
 				if(name.equals(act.getType())){
@@ -1069,10 +1078,10 @@ public class Menu {
 		}
 	}
 	
-	private void manageActivity() {
+	private void manageActivity() throws ActionCancelledException {
 		sys.currentMenu = this;
 		sys.ui.print("Enter initials of Activities to manage:", UserInterface.style[6]);
-		String name = sys.ui.next().toUpperCase();
+		String name = sys.ui.next(true).toUpperCase();
 		Activity a = sys.activityByName(name);
 		if(a == null){
 			sys.ui.clear();
@@ -1101,13 +1110,13 @@ public class Menu {
 	/*
 	 * ACTIVITY SUB-MENUS
 	 */
-	private void setActivityName() {
+	private void setActivityName() throws ActionCancelledException {
 		Activity a = parent.currentActivity;
 		String name = null;
 		boolean b = false;
 		while(!b){
 			sys.ui.print("Enter new name", UserInterface.style[6]);
-			name = sys.ui.next().toUpperCase();
+			name = sys.ui.next(true).toUpperCase();
 			b = true;
 			for(Activity act : sys.getActivityList()){
 				if(name.equals(act.getType())){
@@ -1136,10 +1145,10 @@ public class Menu {
 		}
 	}
 	
-	private void addEmployeeToActivity() {
+	private void addEmployeeToActivity() throws ActionCancelledException {
 		Activity a = parent.currentActivity;
 		sys.ui.print("Enter initials of Employee:", UserInterface.style[6]);
-		String emp = sys.ui.next().toUpperCase();
+		String emp = sys.ui.next(true).toUpperCase();
 		Employee e = sys.employeeByInitials(emp);
 		if(e == null){
 			sys.ui.clear();
@@ -1175,10 +1184,10 @@ public class Menu {
 		}
 	}
 	
-	private void addActivityToProject() {
+	private void addActivityToProject() throws ActionCancelledException {
 		Activity a = parent.currentActivity;
 		sys.ui.print("Enter Name or ID of Project:", UserInterface.style[6]);
-		String project = sys.ui.next().toUpperCase();
+		String project = sys.ui.next(true).toUpperCase();
 		Project p = sys.projectByID(project);
 		if(p == null){
 			p = sys.projectByName(project);
@@ -1212,7 +1221,7 @@ public class Menu {
 		}
 	}	
 	
-	private void setStartDateOfActivity() {
+	private void setStartDateOfActivity() throws ActionCancelledException {
 		Activity a = parent.currentActivity;
 		Week now = sys.getDateServer().getToday();
 		if(now.compareTo(a.getStartWeek()) < 0){
@@ -1243,7 +1252,7 @@ public class Menu {
 		}
 	}
 
-	private void setEndDateOfActivity() {
+	private void setEndDateOfActivity() throws ActionCancelledException {
 		Activity a = parent.currentActivity;
 		Week now = sys.getDateServer().getToday();
 		if(now.compareTo(a.getEndWeek()) <= 0){
@@ -1279,7 +1288,7 @@ public class Menu {
 		}
 	}
 	
-	private void changeBudgetActivity() {
+	private void changeBudgetActivity() throws ActionCancelledException {
 		Activity a = parent.currentActivity;
 		double d = getUserInputDouble("Enter new hour-budget","Invalid value", false);
 		if(sys.ui.yesNoQuestion("Are you sure you want to change hour-budget of \""+a.getType()+"\" from "+a.getHourBudget()+" to "+d+"?")){
@@ -1304,7 +1313,7 @@ public class Menu {
 		sys.ui.listDisplay(str, "Budget Status for \""+a.getType()+"\"", str.length);
 	}
 	
-	private void getActivityStatusByWeek() {
+	private void getActivityStatusByWeek() throws ActionCancelledException {
 		Activity a = parent.currentActivity;
 		int y = getUserInputInt(a.getStartWeek().getYear(), a.getEndWeek().getYear(), "Enter Year of week", "Invalid year");
 		int st = 1;
