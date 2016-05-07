@@ -556,6 +556,7 @@ public class Menu {
 		Employee e = parent.currentEmployee;
 		if (sys.ui.yesNoQuestion("Are you sure you want to remove \"" + e.getInitials() + "\" from the system?")) {
 			if(sys.getCurrentUser() == e){
+				sys.ui.clear();
 				sys.ui.print("Error: Cannot Remove Yourself", UserInterface.style[3]);
 			}
 			else if(sys.removeEmployee(e)){

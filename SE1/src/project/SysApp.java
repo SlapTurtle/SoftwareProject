@@ -341,9 +341,8 @@ public class SysApp {
         	fh.setFormatter(new SimpleFormatter());
         	logger.addHandler(fh);
             logger.info(s);
-             
         } catch (Exception e) {
-        	//should 
+        	//should never happen
         }
 
 		return true;

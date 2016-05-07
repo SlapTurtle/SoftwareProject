@@ -6,19 +6,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import org.junit.Test;
-import org.junit.Before;
 
 public class TestSysApp extends TestBasis{
 	
@@ -51,15 +45,21 @@ public class TestSysApp extends TestBasis{
 		//already logged in
 		sysApp.addEmployee(e2);
 		assertFalse(sysApp.login(e2));
+		assertFalse(sysApp.login(e2.getInitials()));
 		assertNotEquals(sysApp.getCurrentUser(), e2);
 		
 		//log off
 		assertTrue(sysApp.logoff());
 		assertFalse(sysApp.logoff());	//already logged off
 		
+		//Attempt at logging in as non-existing user
+		assertFalse(sysApp.login("NONE"));
+		
 		//another user logs in
 		assertTrue(sysApp.login(e2.getInitials()));
-		assertEquals(sysApp.getCurrentUser(), e2);	
+		assertEquals(sysApp.getCurrentUser(), e2);
+		
+		
 	}
 	
 	@Test
