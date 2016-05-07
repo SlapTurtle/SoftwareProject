@@ -3,10 +3,11 @@ package Tests;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.*;
+
+import Project.*;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import project.*;
  
 public class TestDateServer extends TestBasis {
 	@Test

@@ -1,4 +1,4 @@
-package project;
+package Interface;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +12,8 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import Project.*;
 
 public class InputField{
 	SysApp sys;

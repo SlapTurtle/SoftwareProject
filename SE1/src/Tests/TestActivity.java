@@ -1,15 +1,15 @@
 package Tests;
 
-import project.*;
-
 import static org.junit.Assert.*;
 import org.junit.Test;
+
+import Project.*;
 
 public class TestActivity extends TestBasis{
 	
 	@Test
 	public void testFields() {
-		sysApp = new SysApp(true);
+		sysApp = new SysApp(false);
 		Activity act1 = new Activity(sysApp, "act1", week1, week3);
 		assertEquals("act1".toUpperCase(), act1.getType());
 		assertEquals(week1, act1.getStartWeek());

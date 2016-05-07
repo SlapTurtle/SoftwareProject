@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.junit.*;
 
-import project.*;
+import Project.*;
 
 
 public class TestEmployee extends TestBasis{

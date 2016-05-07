@@ -8,7 +8,9 @@ import static org.junit.Assert.fail;
 import java.lang.ProcessBuilder.Redirect;
 
 import org.junit.*;
-import project.*;
+
+import Interface.*;
+import Project.*;
 
 public class TestUserInterface extends TestBasis {
 	

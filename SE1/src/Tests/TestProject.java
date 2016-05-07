@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import project.Employee;
-import project.Project;
-import project.Week;
+import Project.Employee;
+import Project.Project;
+import Project.Week;
 
 public class TestProject extends TestBasis{
 	

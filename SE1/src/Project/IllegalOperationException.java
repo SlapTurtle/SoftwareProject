@@ -1,4 +1,4 @@
-package project;
+package Project;
 
 @SuppressWarnings("serial")
 public class IllegalOperationException extends Exception {

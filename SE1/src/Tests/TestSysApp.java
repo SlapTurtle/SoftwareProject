@@ -1,7 +1,5 @@
 package Tests;
 
-import project.*;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertFalse;
@@ -14,11 +12,13 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import Project.*;
+
 public class TestSysApp extends TestBasis{
 	
 	@Test
 	public void testConstructor() {
-		sysApp = new SysApp(true);
+		sysApp = new SysApp(false);
 		assertEquals(sysApp.getEmployeeList(), new ArrayList<Employee>());
 		assertEquals(sysApp.getProjectList(),new ArrayList<Project>());
 		assertEquals(sysApp.getActivityList(), new ArrayList<Activity>());

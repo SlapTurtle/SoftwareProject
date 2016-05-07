@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import org.junit.*;
 
-import project.*;
+import Project.*;
 
 public class TestBasis {
 	
@@ -38,7 +38,7 @@ public class TestBasis {
 		week = 20;
 		
 		//Creates instance of sysApp
-		sysApp = new SysApp(true);
+		sysApp = new SysApp(false);
 		
 		//mocks dateServer
 		//mocks return calendar for dS.getToday()

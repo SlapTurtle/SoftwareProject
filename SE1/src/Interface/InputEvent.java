@@ -1,4 +1,4 @@
-package project;
+package Interface;
 
 public class InputEvent {
 	private String message;

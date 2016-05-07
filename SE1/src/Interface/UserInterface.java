@@ -1,4 +1,4 @@
-package project;
+package Interface;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import Project.SysApp;
  
 public class UserInterface {
 	public SysApp sys;
@@ -173,6 +175,7 @@ public class UserInterface {
 		print("Action has been cancelled.", style[3]);
 		sys.currentMenu.parent.show();
 	}
+	
 	public boolean yesNoQuestion(String message){
 		print(message + " (y / n)", style[5]);
 		while(true){
@@ -185,6 +188,86 @@ public class UserInterface {
 			}
 			invalidInput();
 		}
+	}
+	
+	public ArrayList<Menu> menus = new ArrayList<Menu>();
+	public void initializeMenus(){
+		
+		ArrayList<Menu> menuEmpMng = new ArrayList<Menu>();
+		ArrayList<Menu> menuPrjMng = new ArrayList<Menu>();
+		ArrayList<Menu> menuActMng = new ArrayList<Menu>();
+		
+			
+			menuEmpMng.add(new Menu(sys, "Assign To Project"));
+			menuEmpMng.add(new Menu(sys, "Get All Assigned Projects"));
+			menuEmpMng.add(new Menu(sys, "Get Manager Assigned Projects"));
+			menuEmpMng.add(new Menu(sys, "Assign To Activity"));
+			menuEmpMng.add(new Menu(sys, "Get All Assigned Activities"));
+			menuEmpMng.add(new Menu(sys, "Set Work Hours For Activity By Week"));
+			menuEmpMng.add(new Menu(sys, "Get Work Hours For Activity By Week"));
+			menuEmpMng.add(new Menu(sys, "Get Work Hours For Activity"));
+			menuEmpMng.add(new Menu(sys, "Get Work Hours For Week"));
+			menuEmpMng.add(new Menu(sys, "Get Activities For Week"));
+			menuEmpMng.add(new Menu(sys, "Remove Employee"));
+			
+			menuPrjMng.add(new Menu(sys, "Assign Manager"));
+			menuPrjMng.add(new Menu(sys, "Set Project Name"));
+			menuPrjMng.add(new Menu(sys, "Add Employee to Project"));
+			menuPrjMng.add(new Menu(sys, "Get All Employees on Project"));
+			menuPrjMng.add(new Menu(sys, "Add Project Activity"));
+			menuPrjMng.add(new Menu(sys, "Get All Activities on Project"));
+			menuPrjMng.add(new Menu(sys, "Set Start Date of Project"));
+			menuPrjMng.add(new Menu(sys, "Set End Date of Project"));
+			menuPrjMng.add(new Menu(sys, "Set Deadline of Project"));
+			menuPrjMng.add(new Menu(sys, "Set Time Budget of Project"));
+			menuPrjMng.add(new Menu(sys, "Get Total Project Budget Price"));
+			menuPrjMng.add(new Menu(sys, "Get Activeness of Activity in Project"));
+			menuPrjMng.add(new Menu(sys, "Set Report Comment"));
+			menuPrjMng.add(new Menu(sys, "Get Weekly Report"));
+			menuPrjMng.add(new Menu(sys, "Remove Project"));
+			
+			menuActMng.add(new Menu(sys, "Set Activity Name"));
+			menuActMng.add(new Menu(sys, "Add Employee to Activity"));
+			menuActMng.add(new Menu(sys, "Get All Employees on Activity"));
+			menuActMng.add(new Menu(sys, "Add Activity to Project"));
+			menuActMng.add(new Menu(sys, "Get Assigned Projects"));
+			menuActMng.add(new Menu(sys, "Set Start Date Of Activity"));
+			menuActMng.add(new Menu(sys, "Set End Date of Activity"));
+			menuActMng.add(new Menu(sys, "Set Time Budget"));
+			menuActMng.add(new Menu(sys, "Get Hours Spent on Activity"));
+			menuActMng.add(new Menu(sys, "Get Activity Status By Week"));
+			menuActMng.add(new Menu(sys, "Get Activity Status"));
+			menuActMng.add(new Menu(sys, "Remove Activity"));
+			
+			menus.add(new Menu(sys, "Add Employee")); // 0
+			menus.add(new Menu(sys, "Manage Employee"));
+			menus.add(new Menu(sys, "Manage Employee", menuEmpMng.toArray(new Menu[menuEmpMng.size()]), true, true));
+			menus.add(new Menu(sys, "Get All Employees"));
+			menus.add(new Menu(sys, "Add Project")); // 4
+			menus.add(new Menu(sys, "Manage Project"));
+			menus.add(new Menu(sys, "Manage Project", menuPrjMng.toArray(new Menu[menuPrjMng.size()]), true, true));
+			menus.add(new Menu(sys, "Get All Projects"));
+			menus.add(new Menu(sys, "Add Activity")); // 8
+			menus.add(new Menu(sys, "Manage Activity"));
+			menus.add(new Menu(sys, "Manage Activity", menuActMng.toArray(new Menu[menuActMng.size()]), true, true));
+			menus.add(new Menu(sys, "Get All Activities"));
+			menus.add(new Menu(sys, "Show Logs"));	// 12
+			menus.add(new Menu(sys, "Show Date"));
+			menus.add(new Menu(sys, "Set Font Size"));
+			Menu[] m = new Menu[] {
+					new Menu(sys, "Employees", new Menu[] {menus.get(0), menus.get(1), menus.get(3)}, true, true),
+					new Menu(sys, "Projects", new Menu[] {menus.get(4), menus.get(5), menus.get(7)}, true, true),
+					new Menu(sys, "Activities", new Menu[] {menus.get(8), menus.get(9), menus.get(11)}, true, true),
+					new Menu(sys, "System", new Menu[] {menus.get(12), menus.get(13)}, true, true ),
+					new Menu(sys, "Settings", new Menu[] {menus.get(14)}, true, true),
+					new Menu(sys, "Help"),
+					new Menu(sys, "Log Off"),
+					new Menu(sys, "Exit"),
+			};
+			sys.mainmenu = new Menu(sys, "Main Menu", m, true, false);
+			menus.get(2).parent = m[0];
+			menus.get(6).parent = m[1];
+			menus.get(10).parent = m[2];
 	}
 	
 }

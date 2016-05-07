@@ -1,14 +1,21 @@
-package project;
+package Interface;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import Project.Activity;
+import Project.Employee;
+import Project.IllegalOperationException;
+import Project.Project;
+import Project.SysApp;
+import Project.Week;
 
 public class Menu {
 
 	SysApp sys;
 	String header;
 	Menu[] m;
-	Menu parent;
+	public Menu parent;
 	Project currentProject;
 	Activity currentActivity;
 	Employee currentEmployee;
@@ -248,7 +255,7 @@ public class Menu {
 			sys.ui.print("Error: Employee with initials \"" + initials + "\" does not exist.", UserInterface.style[3]);
 		}
 		else{
-			Menu manageEmployee = sys.menus.get(2);
+			Menu manageEmployee = sys.ui.menus.get(2);
 			sys.currentMenu = manageEmployee;
 			manageEmployee.currentEmployee = e;
 			manageEmployee.header = "Manage Employee \""+e.getInitials()+"\"";
@@ -668,7 +675,7 @@ public class Menu {
 				sys.ui.print("Error: Permission denied. You are not the assigned manager.", UserInterface.style[3]);
 			}
 			if (p.getManager() == sys.getCurrentUser() || p.getManager() == null) {
-				Menu manageProject = sys.menus.get(6);
+				Menu manageProject = sys.ui.menus.get(6);
 				sys.currentMenu = manageProject;
 				manageProject.currentProject = p;
 				manageProject.header = "Manage Project \""+p.getName()+"\"";
@@ -1117,7 +1124,7 @@ public class Menu {
 			sys.ui.print("Error: Activity \"" + name + "\" does not exist.", UserInterface.style[3]);
 		}
 		else{
-			Menu manageEmployee = sys.menus.get(10);
+			Menu manageEmployee = sys.ui.menus.get(10);
 			sys.currentMenu = manageEmployee;
 			manageEmployee.currentActivity = a;
 			manageEmployee.header = "Manage Activity \""+a.getType()+"\"";

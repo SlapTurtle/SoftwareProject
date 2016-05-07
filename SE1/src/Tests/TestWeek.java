@@ -5,10 +5,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.*;
+
+import Project.*;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import project.*;
 
 public class TestWeek extends TestBasis {
 	private static final int yInc = 3;		//year increment

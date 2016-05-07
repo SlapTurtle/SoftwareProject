@@ -1,4 +1,6 @@
-package project;
+package Interface;
+
+import Project.SysApp;
 
 @SuppressWarnings("serial")
 public class ActionCancelledException extends Exception {
