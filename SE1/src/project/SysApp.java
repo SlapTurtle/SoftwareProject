@@ -166,6 +166,7 @@ public class SysApp {
 			
 			p1.assignManager(e1);
 			p2.assignManager(e2);
+
 		}
 		catch(Exception e){
 			System.exit(0);
@@ -321,6 +322,17 @@ public class SysApp {
 		}	
 		return available;
 	} 
+	public List<Employee> getAvailableEmployees(Week week) throws IllegalOperationException{
+		List<Employee> available = new ArrayList<Employee>();
+		for(Employee e : employeeList){
+			if(e.getWeeklyActivities(week).size() < 20){
+				available.add(e);
+			}
+		}	
+		return available;
+	}
+	
+	
 	  
 	private boolean writeToLog(String entry) throws IOException {
 		FileWriter note = new FileWriter(this.systemLog);

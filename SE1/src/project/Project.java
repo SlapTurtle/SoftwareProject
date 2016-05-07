@@ -36,7 +36,6 @@ public class Project {
 			return true;
 		}
 		return false;
-		
 	}
 	
 	public Employee getManager(){
@@ -51,8 +50,10 @@ public class Project {
 	}
 	
 	public boolean addActivity(Activity activity){
-		if(activity != null && !activityList.contains(activity)){
-			return activityList.add(activity);
+		if(projectManager==null || projectManager.equals(sysApp.getCurrentUser())){
+			if(activity != null && !activityList.contains(activity)){
+				return activityList.add(activity);
+			}
 		}
 		return false;
 	}
