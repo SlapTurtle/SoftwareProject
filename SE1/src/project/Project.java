@@ -30,8 +30,20 @@ public class Project {
 		this.budget = 0;
 	}
 
-	public void assignManager(Employee employee){
+	public boolean assignManager(Employee employee){
+		if(sysApp.loggedIn()){
+		if(projectManager==null){
 		projectManager = employee;
+		return true;
+		}
+		else{
+			if(projectManager.equals(sysApp.getCurrentUser()));{
+				projectManager = employee;
+			}
+		
+		}
+		}
+		return false;
 	}
 	
 	public Employee getManager(){
@@ -46,8 +58,10 @@ public class Project {
 	}
 	
 	public boolean addActivity(Activity activity){
-		if(activity != null && !activityList.contains(activity)){
-			return activityList.add(activity);
+		if(projectManager==null || projectManager.equals(sysApp.getCurrentUser())){
+			if(activity != null && !activityList.contains(activity)){
+				return activityList.add(activity);
+			}
 		}
 		return false;
 	}

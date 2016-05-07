@@ -99,12 +99,16 @@ public class Menu {
 		}
 	}
 	
-	private double getUserInputDouble(String prompt, String errorMessage){
+	private double getUserInputDouble(String prompt, String errorMessage, boolean b){
 		while(true){
 			try{
-				sys.ui.print(prompt, UserInterface.style[6]);
+				String s = prompt;
+				if(b){
+					s += " (0.0-24.0)";
+				}
+				sys.ui.print(s, UserInterface.style[6]);
 				double d = Double.parseDouble(sys.ui.next());
-				if(d <= 0){
+				if(d < 0.0 || (b && d > 24.0)){
 					throw new NumberFormatException();
 				}
 				else{
@@ -125,6 +129,7 @@ public class Menu {
 		// Employee Sub-Menu
 		case "Assign To Project": assignToProject(); break;
 		case "Get All Assigned Projects": getProjectListEmployee(); break;
+		case "Get Manager Assigned Projects": getManagerAssignedProjects(); break;
 		case "Assign To Activity": assignToActivity(); break;
 		case "Get All Assigned Activities": getActivityListEmployee(); break;
 		case "Set Work Hours For Activity By Week": setWorkHoursForActivityForWeek(); break;
@@ -303,6 +308,17 @@ public class Menu {
 		}
 	}
 	
+	private void getManagerAssignedProjects() {
+		Employee e = parent.currentEmployee;
+		List<Project> list = e.getProjectToManage();
+		String[] str = new String[list.size()];
+		for(int i=0; i<str.length; i++){
+			str[i] = list.get(i).getName();
+		}
+		sys.ui.clear();
+		sys.ui.listDisplay(str, "All Projects \""+e.getInitials()+"\" is manager of.", 10);
+	}
+	
 	private void assignToActivity(){
 		Employee e = parent.currentEmployee;
 		sys.ui.print("Enter Name or ID of Activity:", UserInterface.style[6]);
@@ -381,7 +397,7 @@ public class Menu {
 		//Gets weekday
 		int j = getUserInputInt(1,7, "Enter weekday","Invalid weekday.");
 		//Gets Hours
-		double d = getUserInputDouble("Enter amount of hours of work to to \"" + a.getType() + "\" in week "+w, "Error: Invalid amount.");
+		double d = getUserInputDouble("Enter amount of hours of work to to \"" + a.getType() + "\" in week "+w, "Error: Invalid amount.", true);
 		//Puts it all together
 		double k = 0.0;
 		try {
@@ -889,7 +905,7 @@ public class Menu {
 
 	private void setTimeBudgetOfProject() {
 		Project p = parent.currentProject;
-		double d = getUserInputDouble("Enter timebudget hours on \"" + p.getName() + "\"", "Invalid time value");
+		double d = getUserInputDouble("Enter timebudget hours on \"" + p.getName() + "\"", "Invalid time value", false);
 		if(sys.ui.yesNoQuestion("Are you sure you want to change the budget of \""+p.getName()+"\" from "+p.getBudget()+" to "+d+"?")){
 			p.setBudget(d);
 			sys.ui.clear();
@@ -1264,7 +1280,7 @@ public class Menu {
 	
 	private void changeBudgetActivity() {
 		Activity a = parent.currentActivity;
-		double d = getUserInputDouble("Enter new hour-budget","Invalid value");
+		double d = getUserInputDouble("Enter new hour-budget","Invalid value", false);
 		if(sys.ui.yesNoQuestion("Are you sure you want to change hour-budget of \""+a.getType()+"\" from "+a.getHourBudget()+" to "+d+"?")){
 			a.setHourBudget(d);
 			sys.ui.clear();

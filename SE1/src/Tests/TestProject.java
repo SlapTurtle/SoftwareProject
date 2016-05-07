@@ -14,7 +14,6 @@ public class TestProject extends TestBasis{
 	@Test 
 	public void Project() throws Exception{ //Uses the cases setup through the TestBasis class.
 		//Test add project
-
 		assertEquals(p1.getName(), "PROJECT1"); //Checks that project is created and that budget is set to 0.
 		
 		//Test addEmployee
@@ -23,6 +22,9 @@ public class TestProject extends TestBasis{
 		assertTrue(p1.addEmployee(e2));
 		assertFalse(p1.addEmployee(e2));
 		
+		//Test assignManager
+	
+		assertFalse(p2.assignManager(e1));
 		
 		//Test addActiviy
 		assertTrue(p1.addActivity(a1));
@@ -54,10 +56,6 @@ public class TestProject extends TestBasis{
 		assertEquals(p1.getBudget(), 100, Double.MAX_VALUE);
 
 		
-		//Test get activity diversion
-		e1.assignActivity(a1);
-		e1.setHours(a1, 3.5 ,week1, 1);
-		//assertTrue(p1.getActivityDiversion(e1, a1, week1)==3.5);
 
 		
 		

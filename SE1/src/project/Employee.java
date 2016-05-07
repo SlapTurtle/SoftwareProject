@@ -141,4 +141,14 @@ public class Employee {
 		}
 		return list;
 	}
+	
+	public List<Project> getProjectToManage(){
+		ArrayList<Project> list = new ArrayList<Project>();
+		for(Project p : projectList){
+			if(p.getManager() == this){
+				list.add(p);
+			}
+		}
+		return list;
+	}
 }
