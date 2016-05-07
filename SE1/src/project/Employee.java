@@ -90,7 +90,7 @@ public class Employee {
 		if (	a != null && activityList.contains(a) && hours > 0.0 && 
 				w.getWeek() > 0 && w.getWeek() <= 53 &&
 				weekday > 0 && weekday <= 7 &&
-				a.getStartWeek().compareTo(w) <= 0 && a.getEndWeek().compareTo(w) >= 0)
+				a.getStartWeek().compareTo(w) <= 0 && a.getEndWeek().compareTo(w) >= 0 && hours<=24)
 		{
 			int currentWeek = a.getStartWeek().weekDifference(a.getEndWeek()) - a.getEndWeek().weekDifference(w);
 			List<double[]> list = (List<double[]>) workHourList.get(activityList.indexOf(a));
