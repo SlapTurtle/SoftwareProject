@@ -47,7 +47,7 @@ public class Week implements Comparable<Week> {
 	
 	@Override
 	public String toString(){
-		return year+"\\"+week;
+		return year+"/"+week;
 	}
 	
 	public int yearDifference(Week other){

@@ -66,5 +66,6 @@ public class TestWeek extends TestBasis {
 		assertEquals(w1.compareTo(w2), i);	//test compareTo
 		assertEquals(yearDiff, yDiff);		//test yearDifference
 		assertEquals(weekDiff, wDiff);		//test weekDifference
+		assertEquals(w2.toString(), w2.getYear()+"/"+w2.getWeek());
 	}
 }
