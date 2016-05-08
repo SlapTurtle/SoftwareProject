@@ -31,10 +31,18 @@ public class Project {
 	}
 
 	public boolean assignManager(Employee employee){
-		if(employeeList.contains(employee)){
-			projectManager = employee;
-			return true;
-		}
+		 if(sysApp.loggedIn()){
+		 if(projectManager==null){
+		 projectManager = employee;
+		 return true;
+		 }
+		 else{
+		 	if(projectManager.equals(sysApp.getCurrentUser()));{
+		 		projectManager = employee;
+		 	}
+			
+		 }	
+		 }
 		return false;
 	}
 	

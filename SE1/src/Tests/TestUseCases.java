@@ -27,7 +27,6 @@ public class TestUseCases extends TestBasis{
 
 			//The employee isn’t project manager and another employee is
 			sysApp.logoff();
-			sysApp.login(e2);
 			assertFalse(p1.addActivity(a2)); //Error msg handled in Menu.java
 			assertFalse(p1.getActivityList().contains(a2));
 				
@@ -197,7 +196,6 @@ public class TestUseCases extends TestBasis{
 				
 				//Size is expected to be 3 since there is 3 employees added in TestBasis and none of them 
 				// has any hours assigned yet
-				
 				assertTrue(sysApp.getAvailableEmployees(week1).size()==3);
 	
 			
@@ -238,7 +236,6 @@ public class TestUseCases extends TestBasis{
 				
 				//The employee set hours more then 24 hours
 				e1.setHours(a1, 25.0, week2, 3);
-				System.out.println(e1.getWeeklyHours(week2));
 				assertFalse(e1.getWeeklyHours(week2)==31.0);
 				assertTrue(e1.getWeeklyHours(week2)==6.0);
 			}
