@@ -6,7 +6,13 @@ import org.junit.Test;
 import Project.*;
 
 public class TestUseCases extends TestBasis{
-	
+	@Override
+	public void setup(){
+		super.setup();
+		sysApp.addEmployee(e1);
+		sysApp.addEmployee(e2);
+		sysApp.addEmployee(e3);
+	}
 	
 		@Test
 		public void TestAddEmployee(){
@@ -158,6 +164,7 @@ public class TestUseCases extends TestBasis{
 					sysApp.login(e1);
 					p2.addActivity(a3);
 					a3.assignEmployee(e1);
+					e1.assignActivity(a3);
 					e1.setHours(a3, 5, week2, 1); //5, 5.5 & 4 hours spent during the first 4 days of week 2.
 					e1.setHours(a3, 5.5, week2, 2);
 					e1.setHours(a3, 4, week2, 4);
@@ -194,8 +201,8 @@ public class TestUseCases extends TestBasis{
 				 *	Employee tries to access available employees for a given week.
 				 */
 				
-				//Size is expected to be 3 since there is 3 employees added in TestBasis and none of them 
-				// has any hours assigned yet
+				//Size is expected to be 3 since there are 3 employees added during the Setup and none of them 
+				// has been assigned to any activities yet
 				assertTrue(sysApp.getAvailableEmployees(week1).size()==3);
 	
 			
@@ -228,7 +235,7 @@ public class TestUseCases extends TestBasis{
 				 *	Alternate Scenarios
 				 */
 			
-					//The employee sets minus hours
+				//The employee sets minus hours
 				e1.setHours(a1, -6, week2, 2);
 				assertFalse(e1.getWeeklyHours(week2)==0.0);
 				assertTrue(e1.getWeeklyHours(week2)==6.0);

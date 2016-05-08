@@ -15,6 +15,7 @@ import Project.*;
 
 
 public class TestEmployee extends TestBasis{
+	
 	@Before @Override
 	public void setup(){
 		super.setup();
@@ -52,7 +53,12 @@ public class TestEmployee extends TestBasis{
 		assertFalse(e1.assignProject(p3));
 		assertEquals(e1.getProjectList().size(), 3);
 		
+		//bad Input for assigning activity
+		assertFalse(e1.assignProject(null));
+		
 		//tests that employee can show which projects it is manager of.
+		sysApp.login(e1);
+		
 		p1.addEmployee(e1);
 		p2.addEmployee(e1);
 		p3.addEmployee(e1);
@@ -86,6 +92,9 @@ public class TestEmployee extends TestBasis{
 		assertFalse(e1.assignActivity(a2));
 		assertFalse(e1.assignActivity(a2));
 		assertEquals(e1.getActivityList().size(), 3);
+		
+		//bad Input for assigning activity
+		assertFalse(e1.assignActivity(null));
 	}
 	
 	@Test
@@ -149,6 +158,13 @@ public class TestEmployee extends TestBasis{
 		e1.assignActivity(a1);
 		e1.assignActivity(a2);
 		e1.assignActivity(a3);
+		
+		//bad input for setHours
+		assertFalse(e1.setHours(a2, 10.0, week3, 1));
+		assertFalse(e1.setHours(null, 10.0, week2, 2));
+		assertFalse(e1.setHours(new Activity(sysApp, "act4", week1, week2), 10.0, week2,3));
+		assertFalse(e1.setHours(a2, 10.0, week1, 4));
+		assertFalse(e1.setHours(a2, 10.0, week3, 5));
 		
 		//test for setHours
 		boolean[][] addedHours = {
@@ -224,7 +240,7 @@ public class TestEmployee extends TestBasis{
 		assertEquals(list2.size(), 3);
 		assertEquals(list3.size(), 2);
 		
-		//sets workhours for weeks
+		//sets work hours for weeks
 		setFullWeekHours(e1, a1, 8.0, week1);
 		setFullWeekHours(e1, a1, 8.0, week2);
 		setFullWeekHours(e1, a1, 8.0, week3);

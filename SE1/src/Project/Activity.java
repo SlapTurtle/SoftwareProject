@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 public class Activity {
 	
+	/*
+	 * FIELDS
+	 */
 	private SysApp sysApp;
 	private String activityID;
 	private String type;
@@ -14,6 +17,9 @@ public class Activity {
 	private double hourBudget;
 	private double hoursSpent;
 	
+	/*
+	 * CONSTRUCTOR
+	 */
 	public Activity(SysApp sysApp, String type, Week startWeek, Week endWeek) {
 		this.sysApp = sysApp;
 		this.activityID = setUniqueID();
@@ -26,6 +32,9 @@ public class Activity {
 		this.hoursSpent = 0.0;
 	}
 	
+	/*
+	 * GETTERS AND SETTERS
+	 */
 	public String getUniqueID() {
 		return activityID;
 	}
@@ -94,6 +103,9 @@ public class Activity {
 		hoursSpent += d;
 	}
 	
+	/*
+	 * METHODS
+	 */
 	public boolean assignEmployee(Employee employee) {
 		if (employee!=null && !employeeList.contains(employee)) {
 			employeeList.add(0,employee);

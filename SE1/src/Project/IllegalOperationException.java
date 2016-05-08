@@ -2,16 +2,23 @@ package Project;
 
 @SuppressWarnings("serial")
 public class IllegalOperationException extends Exception {
-	//Fields
+	
+	/*
+	 * FIELD
+	 */
 	private Class<?> errorClass;
 	
-	//Constructor 
+	/*
+	 * CONSTRUCTOR
+	 */
 	public IllegalOperationException(String errormsg, Class<?> errorClass){
 		super(errormsg);
 		this.errorClass = errorClass;
 	}
 	
-	//Getter
+	/*
+	 * GETTER
+	 */
 	public Class<?> getErrorClass() {
 		return this.errorClass;
 	}

@@ -58,8 +58,6 @@ public class TestSysApp extends TestBasis{
 		//another user logs in
 		assertTrue(sysApp.login(e2.getInitials()));
 		assertEquals(sysApp.getCurrentUser(), e2);
-		
-		
 	}
 	
 	@Test

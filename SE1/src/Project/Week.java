@@ -4,12 +4,17 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class Week implements Comparable<Week> {
-	//Fields
+	
+	/*
+	 * FIELDS
+	 */
 	private static final int maxWeeksOfYear = new GregorianCalendar().getMaximum(Calendar.WEEK_OF_YEAR);
 	private int year;
 	private int week;
 	
-	//Constructor
+	/*
+	 * CONSTRUCTOR
+	 */
 	public Week(int year, int week) {
 		if(week < 1) {
 			while(week + maxWeeksOfYear >= 0){
@@ -27,7 +32,9 @@ public class Week implements Comparable<Week> {
 		this.week = week;
 	}
 	
-	//Getters
+	/*
+	 * GETTERS
+	 */
 	public int getWeek() {
 		return week;
 	}
@@ -36,7 +43,9 @@ public class Week implements Comparable<Week> {
 		return year;
 	}
 	
-	//Methods
+	/*
+	 * METHODS
+	 */
 	@Override
 	public int compareTo(Week other) {
 		if(this.getYear() - other.getYear() == 0){

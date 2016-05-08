@@ -5,6 +5,9 @@ import java.util.List;
 
 public class Employee {
 	
+	/*
+	 * FIELDS
+	 */
 	@SuppressWarnings("unused")
 	private SysApp sysApp;
 	private String initials;
@@ -12,6 +15,9 @@ public class Employee {
 	private List<Activity> activityList;
 	private List<Object> workHourList;
 	
+	/*
+	 * CONSTRUCTOR
+	 */
 	public Employee(String initials){
 		this.initials = initials.toUpperCase();
 		projectList = new ArrayList<Project>();
@@ -19,8 +25,23 @@ public class Employee {
 		workHourList = new ArrayList<Object>();
 	}
 	
+	/*
+	 * GETTERS
+	 */
 	public String getInitials() {
 		return initials;
+	}
+	
+	public List<Project> getProjectList(){
+		return projectList;
+	}
+	
+	public List<Activity> getActivityList(){
+		return activityList;
+	}
+	
+	public List<Object> getWorkHourList(){
+		return workHourList;
 	}
 	
 	public boolean assignProject(Project p) {
@@ -31,10 +52,9 @@ public class Employee {
 		return false;
 	}
 	
-	public List<Project> getProjectList(){
-		return projectList;
-	}
-	
+	/*
+	 * METHODS
+	 */
 	public boolean assignActivity(Activity a) {
 		if (a != null && !activityList.contains(a)) {
 			activityList.add(0,a);
@@ -42,10 +62,6 @@ public class Employee {
 			return true;
 		}
 		return false;
-	}
-	
-	public List<Activity> getActivityList(){
-		return activityList;
 	}
 	
 	private void addWorkHourList(Activity a){
@@ -81,14 +97,10 @@ public class Employee {
 		}
 	}
 	
-	public List<Object> getWorkHourList(){
-		return workHourList;
-	}
-	
 	@SuppressWarnings("unchecked")
 	public boolean setHours(Activity a, double hours, Week w, int weekday) {
-		if (	a != null && activityList.contains(a) && hours > 0.0 &&
-				hours >= 0 && hours <= 24 &&
+		if (	a != null && activityList.contains(a) &&
+				hours >= 0.0 && hours <= 24 &&
 				a.getStartWeek().compareTo(w) <= 0 && a.getEndWeek().compareTo(w) >= 0 &&
 				weekday > 0 && weekday <= 7
 				
@@ -110,7 +122,9 @@ public class Employee {
 			try {
 				double d = getWorkHours(a,w)[7];
 				count += d;
-			} catch (IllegalOperationException e) {}
+			} catch (IllegalOperationException e) {
+				//should never happen
+			}
 		}
 		return count; 
 	}

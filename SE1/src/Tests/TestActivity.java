@@ -10,6 +10,7 @@ public class TestActivity extends TestBasis{
 	@Test
 	public void testFields() {
 		sysApp = new SysApp(false);
+		
 		Activity act1 = new Activity(sysApp, "act1", week1, week3);
 		assertEquals("act1".toUpperCase(), act1.getType());
 		assertEquals(week1, act1.getStartWeek());
@@ -152,7 +153,6 @@ public class TestActivity extends TestBasis{
 		assertFalse(a1.assignEmployee(e3));
 		assertEquals(3, a1.getEmployeeList().size());
 	} 
-	
 	
 	@Test
 	public void testAssignProject() {

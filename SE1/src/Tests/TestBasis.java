@@ -1,9 +1,5 @@
 package Tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -70,10 +66,5 @@ public class TestBasis {
 		e1 = new Employee("AAAA");
 		e2 = new Employee("BBBB");
 		e3 = new Employee("CCCC");
-		
-		
-		sysApp.addEmployee(e1);
-		sysApp.addEmployee(e2);
-		sysApp.addEmployee(e3);
 	}
 }

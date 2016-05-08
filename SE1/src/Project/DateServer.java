@@ -5,6 +5,9 @@ import java.util.GregorianCalendar;
 
 public class DateServer { 
 	
+	/*
+	 * METHODS
+	 */
 	public Calendar getCalendar(){
 		return GregorianCalendar.getInstance();
 	}
