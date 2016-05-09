@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 public class Project {
-	
+
+	/*
+	 * FIELDS
+	 */
 	private String name;
 	private String projectID;
 	private SysApp sysApp;
@@ -17,6 +20,9 @@ public class Project {
 	private double budget;
 	private HashMap<Integer, String> reports = new HashMap<Integer, String>();
 	
+	/*
+	 * CONSTRUCTOR
+	 */
 	public Project(SysApp sys, String name, Week sW,Week eW,Week dL){
 		this.sysApp = sys;
 		this.projectID = setUniqueID();
@@ -29,51 +35,10 @@ public class Project {
 		this.activityList = new ArrayList<Activity>();
 		this.budget = 0;
 	}
-
-	public boolean assignManager(Employee employee){
-		 if(sysApp.loggedIn()){
-		 if(projectManager==null){
-		 projectManager = employee;
-		 return true;
-		 }
-		 else{
-		 	if(projectManager.equals(sysApp.getCurrentUser()));{
-		 		projectManager = employee;
-		 	}
-			
-		 }	
-		 }
-		return false;
-	}
 	
-	public Employee getManager(){
-		return this.projectManager;
-	}
-	
-	public boolean addEmployee(Employee employee){
-		if(employee != null && !employeeList.contains(employee)){
-			return employeeList.add(employee);
-		}
-		return false;
-	}
-	
-	public boolean addActivity(Activity activity){
-		if(projectManager==null || projectManager.equals(sysApp.getCurrentUser())){
-			if(activity != null && !activityList.contains(activity)){
-				return activityList.add(activity);
-			}
-		}
-		return false;
-	}
-	
-	public boolean removeActivity(Activity activity){
-		if(activityList.contains(activity)){
-			activityList.remove(activity);
-			return true;
-		}
-			return false;
-	}
-	
+	/*
+	 * GETTERS AND SETTERS
+	 */
 	private String setUniqueID() {
 		return "ID" + sysApp.getPcount();
 	}
@@ -126,6 +91,63 @@ public class Project {
 		return this.budget;
 	} 
 	
+	public void setBudget(double d) {
+		budget = d;
+	}
+
+	public List<Employee> getEmployeeList() {
+		return employeeList;
+	}
+
+	public List<Activity> getActivityList() {
+		return activityList;
+	}
+	
+	/*
+	 * METHODS
+	 */
+	public boolean assignManager(Employee employee){
+		 if(sysApp.loggedIn()){
+			 if(projectManager==null){
+			 projectManager = employee;
+			 return true;
+		 }
+		 else if(projectManager.equals(sysApp.getCurrentUser()));{
+		 		projectManager = employee;
+		 	}
+		 }
+		return false;
+	}
+	
+	public Employee getManager(){
+		return this.projectManager;
+	}
+	
+	public boolean addEmployee(Employee employee){
+		if(employee != null && !employeeList.contains(employee)){
+			return employeeList.add(employee);
+		}
+		return false;
+	}
+	
+	public boolean addActivity(Activity activity){
+		if(projectManager==null || projectManager.equals(sysApp.getCurrentUser())){
+			if(activity != null && !activityList.contains(activity)){
+				return activityList.add(activity);
+			}
+		}
+		return false;
+	}
+	
+	public boolean removeActivity(Activity activity){
+		if(activityList.contains(activity)){
+			activityList.remove(activity);
+			return true;
+		}
+			return false;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public double[] getSpentBudget(){
 		int size = activityList.size();
 		double[] d = new double[size+1];
@@ -145,17 +167,5 @@ public class Project {
 			d[i] = count;
 		}
 		return d;
-	}
-	
-	public void setBudget(double d) {
-		budget = d;
-	}
-
-	public List<Employee> getEmployeeList() {
-		return employeeList;
-	}
-
-	public List<Activity> getActivityList() {
-		return activityList;
 	}
 }
