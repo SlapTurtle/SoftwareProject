@@ -83,7 +83,7 @@ public class TestSysApp extends TestBasis{
 		//tests that no double assigning can happen.
 		assertFalse(sysApp.addEmployee(e1));
 		assertFalse(sysApp.addEmployee(e2));
-		assertFalse(sysApp.addEmployee(e3));
+		assertFalse(sysApp.addEmployee("BRAN"));
 	}
 	
 	@Test
@@ -242,6 +242,8 @@ public class TestSysApp extends TestBasis{
 		//tests that no double assigning can happen
 		assertFalse(sysApp.addProject(p1));
 		assertFalse(sysApp.addProject(p2));
+		p3.setName(p2.getName());
+		assertFalse(sysApp.addProject(p3));
 	}
 	
 	@Test
@@ -319,13 +321,9 @@ public class TestSysApp extends TestBasis{
 		//tests that no double assigning can happen
 		assertFalse(sysApp.addActivity(a1));
 		assertFalse(sysApp.addActivity(a2));
+		a3.setType(a2.getType());
+		assertFalse(sysApp.addActivity(a3));
 		
-		//removes Activity
-		assertTrue(sysApp.removeActivity(a1));
-		assertEquals(null, sysApp.activityByName(a1.getType()));
-		assertEquals(null, sysApp.activityByID("ID1"));
-		assertFalse(sysApp.getActivityList().contains(a1));
-		assertEquals(sysApp.getActivityList().size(), 1);
 	}
 	
 	@Test
