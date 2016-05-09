@@ -67,4 +67,15 @@ public class TestBasis {
 		e2 = new Employee("BBBB");
 		e3 = new Employee("CCCC");
 	}
+	
+	public void updateDateServer(){
+		DateServer dS = mock(DateServer.class);
+		Calendar cal = new GregorianCalendar();
+		cal.set(Calendar.YEAR, year);
+		cal.set(Calendar.WEEK_OF_YEAR, week);
+		when(dS.getCalendar()).thenReturn(cal);
+		when(dS.getToday()).thenReturn(new Week(year, week));
+		
+		sysApp.setDateServer(dS);
+	}
 }

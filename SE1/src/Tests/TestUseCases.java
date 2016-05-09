@@ -1,6 +1,10 @@
 package Tests;
 
 import static org.junit.Assert.*;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import org.junit.Test;
 
 import Project.*;
@@ -25,7 +29,7 @@ public class TestUseCases extends TestBasis{
 			*	Project manager tries to add an activity to a project
 			*/
 			
-			p1.addActivity(a1);
+			assertTrue(p1.addActivity(a1));
 			
 			/*
 			*	Alternate Scenarios
@@ -33,6 +37,7 @@ public class TestUseCases extends TestBasis{
 
 			//The employee isn’t project manager and another employee is
 			sysApp.logoff();
+			sysApp.login(e2);
 			assertFalse(p1.addActivity(a2)); //Error msg handled in Menu.java
 			assertFalse(p1.getActivityList().contains(a2));
 				
@@ -76,11 +81,11 @@ public class TestUseCases extends TestBasis{
 			//The employee is already on the activity
 			assertFalse(p3.getActivityList().get(index).assignEmployee(e2)); //Tries to add employee again
 			//Checks if the first if e2 occurs several times
-			assertTrue(p3.getActivityList().get(index).getEmployeeList().indexOf(e2)==p3.getActivityList().get(index).getEmployeeList().lastIndexOf(e2));
+			assertEquals(p3.getActivityList().get(index).getEmployeeList().indexOf(e2),p3.getActivityList().get(index).getEmployeeList().lastIndexOf(e2));
 		}
 		
 			@Test
-			public void TestEmployeesOnActivity(){
+			public void TestEmployeesOnActivity() throws IllegalOperationException{
 				//INIT:
 					sysApp.login(e1);
 					//Creating relations between project, activity and employees. Handled by Menu class
@@ -92,17 +97,25 @@ public class TestUseCases extends TestBasis{
 					p1.addEmployee(e1);
 					p1.addEmployee(e2);
 					p1.addEmployee(e3);
+					e1.assignActivity(a1);
+					e2.assignActivity(a1);
+					e3.assignActivity(a1);
+					e1.setHours(a1, 5, week1, 1);
+					e2.setHours(a1, 10, week1, 2);
+					e3.setHours(a1, 15, week1, 3);
 				
 				/*Main scenario
 				*	Employee tries to check employees assigned to an activity
 				*/
-			
-				assertTrue(p1.getActivityList().get(0).getEmployeeList().size()==3);
-				for(Employee e : p1.getActivityList().get(0).getEmployeeList()){
-					if(e.equals(e1) || e.equals(e2) || e.equals(e3)){
-						assertTrue(true);
-					}
+				
+				double[] d = new double[a1.getEmployeeList().size()];
+				for(Employee e : a1.getEmployeeList()){
+					d[a1.getEmployeeList().indexOf(e)] = e.getWorkHours(a1, week1)[7];
 				}
+				assertTrue(d[0] == 15);
+				assertTrue(d[1] == 10);
+				assertTrue(d[2] == 5);
+				
 				
 				/*
 				*	Alternate Scenarios
@@ -124,14 +137,15 @@ public class TestUseCases extends TestBasis{
 				*/	
 				
 				assertTrue(sysApp.addProject(p4));
+				assertEquals(p4.checkUniqueID(), "ID4");
 				assertTrue(sysApp.getProjectList().contains(p4));
 				/*
 				 *	Alternate Scenarios
 				 */
 				
 				//A project with the same name already exist
-				assertTrue(sysApp.addProject(p5));
-				assertTrue(sysApp.getProjectList().contains(p5));
+				assertFalse(sysApp.addProject(p5));
+				assertFalse(sysApp.getProjectList().contains(p5));
 			}
 			
 			
@@ -154,6 +168,9 @@ public class TestUseCases extends TestBasis{
 				 */
 				
 				//The project already has a project manager
+				assertFalse(p1.assignManager(e1));
+				
+				//The e2 already is the project manager
 				assertFalse(p1.assignManager(e2));
 				
 			}
@@ -175,19 +192,20 @@ public class TestUseCases extends TestBasis{
 				/*	Main scenario
 				*	Employee tries to check hours spent on an activity
 				*/
-				double temp0 = 0;
-				double[] temp1 = sysApp.getCurrentUser().getWorkHours(a3, week2);
-
-				for(double x: temp1){
-					temp0 += x;
-				}
-				
+				double d = e1.getWorkHours(a3, week2)[7];
+				assertTrue(d == 5.0+5.5+4.0);
 				/*
 				 *	Alternate Scenarios
 				 */
+				
 			
 				//The employee isn’t assigned to the activity
-				
+				try{
+					e1.getWorkHours(a2, week2);
+					fail();
+				} catch (Exception e){
+					//test passes
+				}
 				
 			}
 			
@@ -203,7 +221,7 @@ public class TestUseCases extends TestBasis{
 				
 				//Size is expected to be 3 since there are 3 employees added during the Setup and none of them 
 				// has been assigned to any activities yet
-				assertTrue(sysApp.getAvailableEmployees(week1).size()==3);
+				assertEquals(sysApp.getAvailableEmployees(week1).size(), 3);
 	
 			
 				/*
@@ -211,6 +229,13 @@ public class TestUseCases extends TestBasis{
 				 */
 		
 				//The week requested is before the current week
+				Calendar cal = new GregorianCalendar().getInstance();
+				week = week1.getWeek()+4;
+				updateDateServer();
+				
+				assertEquals(sysApp.getAvailableEmployees(week1).size(), 0);
+				
+				
 				//Scenario handled in Menu class
 			
 				

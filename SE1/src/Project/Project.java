@@ -139,14 +139,6 @@ public class Project {
 		return false;
 	}
 	
-	public boolean removeActivity(Activity activity){
-		if(activityList.contains(activity)){
-			activityList.remove(activity);
-			return true;
-		}
-			return false;
-	}
-	
 	@SuppressWarnings("unchecked")
 	public double[] getSpentBudget(){
 		int size = activityList.size();

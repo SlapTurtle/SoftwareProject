@@ -206,6 +206,11 @@ public class SysApp {
 			return false;
 		}
 		else{
+			for(Project pro : projectList){
+				if(pro.getName().equals(p.getName())){
+					return false;
+				}
+			}
 			return this.projectList.add(p);
 		}
 	}
@@ -215,12 +220,20 @@ public class SysApp {
 			return false;
 		}
 		else{
+			for(Activity a : activityList){
+				if(a.getType().equals(ID.getType())){
+					return false;
+				}
+			}
 			return this.activityList.add(ID);
 		}
 	}
 	
 	public List<Employee> getAvailableEmployees(Activity activity, Week week) throws IllegalOperationException{
 		List<Employee> available = new ArrayList<Employee>();
+		if(dateServer.getToday().compareTo(week) > 0){
+			return available;
+		}
 		for(Employee e : employeeList){
 			if(!activity.getEmployeeList().contains(e) && e.getWeeklyActivities(week).size() < 20){
 				available.add(e);
@@ -231,6 +244,9 @@ public class SysApp {
 	
 	public List<Employee> getAvailableEmployees(Week week) throws IllegalOperationException{
 		List<Employee> available = new ArrayList<Employee>();
+		if(dateServer.getToday().compareTo(week) > 0){
+			return available;
+		}
 		for(Employee e : employeeList){
 			if(e.getWeeklyActivities(week).size() < 20){
 				available.add(e);
